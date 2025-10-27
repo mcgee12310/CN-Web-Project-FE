@@ -1,0 +1,112 @@
+.container {
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.searchBox {
+  width: 300px;
+  display: flex;
+  align-items: space-between;
+}
+
+.nameCell {
+  font-weight: 600;
+  color: #111827;
+}
+
+.emailCell {
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.phoneCell {
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.dobCell {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.active {
+  background-color: #10b981;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.inactive {
+  border-radius: 9999px;
+  padding: 8px;
+  background-color: #555;
+  color: #ffffff;
+}
+
+.roleUser {
+  background-color: #ecfdf5; /* xanh nhạt */
+  color: #047857; /* xanh ngọc đậm */
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 9999px;
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+.roleAdmin {
+  background-color: #eef2ff; /* tím nhạt */
+  color: #4338ca; /* tím đậm */
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 9999px;
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+.actions {
+  cursor: pointer;
+  color: #555;
+  align-items: center;
+}
+
+/* Custom style for Antd Table */
+.antdTable {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.antdTable .ant-table-thead > tr > th {
+  background-color: #1e3a8a;
+  color: #fff;
+  font-weight: 600;
+}
+
+.antdTable .ant-table-tbody > tr:hover > td {
+  background-color: #000000;
+}

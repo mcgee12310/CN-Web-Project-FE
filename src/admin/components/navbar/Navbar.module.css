@@ -1,0 +1,53 @@
+.navbar {
+  width: auto;
+  height: 4rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: #ffffff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.logoBox {
+  width: 48px;
+  height: 48px;
+  background-color: #4f46e5; /* xanh tím */
+  border-radius: 12px;       /* bo góc */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;         /* căn giữa sidebar nếu muốn */
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+  color: white;              /* icon trắng */
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+}
+
+.username {
+  font-weight: 500;
+  color: #111827;
+}
