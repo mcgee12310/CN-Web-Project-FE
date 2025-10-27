@@ -1,0 +1,268 @@
+.signupContainer {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signupCard {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  overflow: hidden;
+}
+
+.signupCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.signupHeader {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.signupTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.signupSubtitle {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.formInput {
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formInput::placeholder {
+  color: #999;
+}
+
+.inputError {
+  border-color: #e74c3c;
+  background: #fdf2f2;
+}
+
+.inputError:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.signupButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.signupButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.signupButton:active {
+  transform: translateY(0);
+}
+
+.signupButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.signupButton:hover::before {
+  left: 100%;
+}
+
+.signupFooter {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e5e9;
+}
+
+.loginText {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.loginLink {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+  transition: color 0.3s ease;
+}
+
+.loginLink:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .signupContainer {
+    padding: 10px;
+  }
+
+  .signupCard {
+    padding: 30px 20px;
+    border-radius: 15px;
+    max-width: 100%;
+  }
+
+  .signupTitle {
+    font-size: 1.75rem;
+  }
+
+  .signupForm {
+    gap: 16px;
+  }
+
+  .formOptions {
+    margin: 8px 0;
+  }
+
+  .checkboxLabel {
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.signupCard {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.signupButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signupButton:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.passwordStrength {
+  margin-top: 4px;
+  font-size: 0.8rem;
+}
+
+.passwordStrength.weak {
+  color: #e74c3c;
+}
+
+.passwordStrength.medium {
+  color: #f39c12;
+}
+
+.passwordStrength.strong {
+  color: #27ae60;
+}
+
+.formInput[type="tel"] {
+  letter-spacing: 1px;
+}
+
+.formInput[name="fullName"] {
+  text-transform: capitalize;
+}
+
+.confirmPasswordMatch {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #27ae60;
+}
+
+.confirmPasswordMismatch {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #e74c3c;
+}
