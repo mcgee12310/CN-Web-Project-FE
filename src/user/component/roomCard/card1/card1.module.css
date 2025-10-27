@@ -1,0 +1,88 @@
+.roomsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.roomCard {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.roomCard:hover {
+  transform: translateY(-5px);
+}
+
+.roomImageWrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.roomImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.roomInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.roomInfo h3 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  color: #222;
+}
+
+.roomInfo p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.roomFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+  padding: 0px 16px 16px 16px;
+}
+
+.review {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #fbbf24; /* vàng nhạt */
+}
+
+.star {
+  font-size: 0.9rem;
+}
+
+.ratingValue {
+  color: #555;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.roomPrice {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ff6b6b;
+}

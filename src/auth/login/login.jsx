@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
+import { useAuth } from "../auth-context";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -41,11 +42,25 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const { login } = useAuth();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form submitted:", formData);
     }
+    // decode responsive
+    const payload = {
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      user: {
+        id: 1,
+        name: "Cát Lan",
+        avatar: "",
+        email: "lan@example.com",
+        role: "user",
+      },
+    };
+
+    login(payload);
   };
 
   return (

@@ -3,18 +3,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./auth/login/login";
 import Signup from "./auth/signup/signup";
-
-function Home() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <h1>Home</h1>
-    </>
-  );
-}
+import Home from "./user/pages/HomePage/home";
+import { useAuth } from "./auth/auth-context";
 
 function App() {
+  const { user } = useAuth();
   return (
     <BrowserRouter>
       <Routes>
