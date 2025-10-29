@@ -14,11 +14,24 @@ function HomeGuest() {
     <main className={styles.homeGuest}>
       {/* Banner */}
       <section className={styles.bannerSection}>
+        {/* các layer ảnh */}
+        <span
+          className={styles.bgSlide}
+          style={{ "--bg": "url('/background.jpg')", "--i": 0 }}
+        ></span>
+        <span
+          className={styles.bgSlide}
+          style={{ "--bg": "url('/background1.jpg')", "--i": 1 }}
+        ></span>
+        <span
+          className={styles.bgSlide}
+          style={{ "--bg": "url('/background2.jpg')", "--i": 2 }}
+        ></span>
+
+        {/* overlay + nội dung cũ */}
         <div className={styles.bannerOverlay}>
           <div className={styles.bannerContent}>
-            <h1 className={styles.bannerTitle}>
-              Chào mừng đến với Khách sạn Hikari
-            </h1>
+            <h1 className={styles.bannerTitle}>Chào mừng đến với Hikari</h1>
             <p className={styles.bannerSubtitle}>
               Trải nghiệm nghỉ dưỡng tuyệt vời tại trung tâm thành phố
             </p>

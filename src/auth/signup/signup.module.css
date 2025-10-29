@@ -30,7 +30,7 @@
   padding-bottom: 3px;
   color: #333;
   margin: 0 0 8px 0;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -71,7 +71,7 @@
 
 .formInput:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #ff8e8e;
   background: white;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -98,7 +98,7 @@
 }
 
 .signupButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff8e8e 0%, #ff6b6b 100%);
   color: white;
   border: none;
   padding: 14px 20px;
@@ -155,7 +155,7 @@
 }
 
 .loginLink {
-  color: #667eea;
+  color: #ff8e8e;
   text-decoration: none;
   font-weight: 600;
   margin-left: 4px;
@@ -163,7 +163,7 @@
 }
 
 .loginLink:hover {
-  color: #764ba2;
+  color: #ff6b6b;
   text-decoration: underline;
 }
 
@@ -240,10 +240,6 @@
 
 .formInput[type="tel"] {
   letter-spacing: 1px;
-}
-
-.formInput[name="fullName"] {
-  text-transform: capitalize;
 }
 
 .confirmPasswordMatch {

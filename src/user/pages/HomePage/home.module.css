@@ -1,43 +1,80 @@
 .homeGuest {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   padding: 0;
 }
 
 .bannerSection {
+  --count: 3; /* số ảnh */
+  --duration: 40s; /* thời gian 1 vòng */
+  background-color: #000; /* fallback nếu ảnh chưa tải */
   position: relative;
-  height: 100vh;
-  background-image: url("/background.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
+/* lớp ảnh nền động */
+.bgSlide {
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 0;
+
+  /* crossfade có overlap + ổn định khung đầu/cuối */
+  animation: bgCycle var(--duration) ease-in-out infinite both;
+
+  /* lệch pha giữa các ảnh */
+  animation-delay: calc(
+    var(--i) * (var(--duration) / var(--count)) - var(--duration)
+  );
+
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* keyframes có overlap để luôn có ít nhất 1 ảnh đang hiển thị */
+@keyframes bgCycle {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  } /* chuẩn bị vào */
+  3% {
+    opacity: 1;
+    transform: scale(1.02);
+  } /* vào sớm */
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  } /* giữ lâu ở trạng thái hiển thị */
+  58% {
+    opacity: 0;
+    transform: scale(1.05);
+  } /* bắt đầu mờ đi (ra muộn) */
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+/* gradient overlay bạn đã có */
 .bannerSection::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+  z-index: 1;
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
   animation: gradientShift 8s ease-in-out infinite;
 }
 
-@keyframes gradientShift {
-  0%,
-  100% {
-    background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
-  }
-  50% {
-    background: linear-gradient(45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
-  }
-}
-
+/* giữ overlay và content ở trên cùng */
 .bannerOverlay {
   position: relative;
   z-index: 2;
@@ -82,7 +119,7 @@
 }
 
 .bannerSubtitle {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 2rem;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   animation: slideInRight 1.8s ease-out 0.3s both;
@@ -165,7 +202,7 @@
 }
 
 .featuredRooms {
-  padding: 80px 0;
+  padding: 80px 60px;
   background: white;
 }
 
