@@ -1,0 +1,50 @@
+.container {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.chartsSection {
+  padding: 2rem 0;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.chartCard {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+}
+
+.chartLegend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+}
+
+.legendLabel {
+  font-size: 0.875rem;
+  color: #4b5563;
+}

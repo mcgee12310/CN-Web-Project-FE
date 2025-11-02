@@ -1,0 +1,155 @@
+.container {
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 48px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* USER INFO */
+.userInfo {
+  width: 280px;
+  border-right: 1px solid #e5e5e5;
+  padding-right: 24px;
+}
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.roleUser {
+  background-color: #ecfdf5; /* xanh nhạt */
+  color: #047857; /* xanh ngọc đậm */
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+.roleAdmin {
+  background-color: #eef2ff; /* tím nhạt */
+  color: #4338ca; /* tím đậm */
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  display: inline-block;
+  font-size: 0.85rem;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px dashed #eee;
+}
+
+.infoItem span:first-child {
+  color: #666;
+}
+
+/* BOOKING SECTION */
+.bookingSection {
+  flex: 1;
+}
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bookingTitle {
+  font-weight: 600;
+}
+
+.search {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.search:focus {
+  border-color: #6b5bff;
+}
+
+/* TABLE */
+.codeCell {
+  font-weight: 600;
+  color: #1677ff; /* Màu chủ đạo Ant Design */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.codeCell:hover {
+  color: #0958d9;
+}
+
+.totalRoomCell {
+  text-align: center;
+  font-weight: 500;
+  color: #262626;
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  min-width: 40px;
+}
+
+.priceCell {
+  font-weight: 600;
+  color: #52c41a; /* xanh tiền */
+}
+
+.priceCell::after {
+  content: " VNĐ";
+  font-size: 12px;
+  color: #999;
+}
+
+.dateCell {
+  color: #595959;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.viewBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
