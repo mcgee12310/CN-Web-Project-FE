@@ -1,0 +1,121 @@
+.sidebar {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 24px;
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.filterSection {
+  margin-bottom: 32px;
+}
+
+.filterSection:last-child {
+  margin-bottom: 0;
+}
+
+.filterTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 16px 0;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+.checkboxText {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.filterButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.filterButton:hover {
+  color: #2563eb;
+}
+
+.filterButton span {
+  font-weight: 500;
+}
+
+.arrowIcon {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.filterButton:hover .arrowIcon {
+  color: #2563eb;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: static;
+    top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    padding: 20px;
+  }
+
+  .filterTitle {
+    font-size: 1rem;
+  }
+
+  .filterButton {
+    font-size: 0.95rem;
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    padding: 16px;
+  }
+
+  .filterSection {
+    margin-bottom: 24px;
+  }
+
+  .filterTitle {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .checkboxText {
+    font-size: 0.9rem;
+  }
+}

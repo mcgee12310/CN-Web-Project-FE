@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "antd": "^5.27.6",
     "lucide-react": "^0.548.0",
+=======
+    "axios": "^1.13.2",
+    "framer-motion": "^12.23.24",
+>>>>>>> 6671ffb (home-explore)
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.65.0",

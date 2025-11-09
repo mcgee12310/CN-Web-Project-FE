@@ -1,9 +1,11 @@
-import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./auth/login/login";
 import Signup from "./auth/signup/signup";
+import OTP from "./auth/otp/otp";
 import Home from "./user/pages/HomePage/home";
+import ExploreRoom from "./user/pages/ExplorePage/exploreRoom";
+import RoomDetail from "./user/pages/RoomDetailPage/roomDetail";
 import { useAuth } from "./auth/auth-context";
 
 // Admin imports would go here
@@ -17,10 +19,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<>404 - Page not found</>} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />       {/* mặc định /admin */}
@@ -28,6 +30,9 @@ function App() {
           <Route path="users" element={<UserList />} />
           <Route path="users/:id" element={<UserDetail />} />
         </Route>
+        <Route path="/otp" element={<OTP />} />
+        <Route path="/rooms" element={<ExploreRoom />} />
+        <Route path="/room/:id" element={<RoomDetail />} />
       </Routes>
     </BrowserRouter>
   );

@@ -86,3 +86,55 @@
   font-weight: bold;
   color: #ff6b6b;
 }
+
+@media (max-width: 1024px) {
+  .roomsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .roomsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .roomInfo {
+    padding: 14px;
+  }
+
+  .roomInfo h3 {
+    font-size: 1.1rem;
+  }
+
+  .roomInfo p {
+    font-size: 0.9rem;
+  }
+
+  .roomPrice {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .roomsGrid {
+    gap: 16px;
+  }
+
+  .roomImageWrapper {
+    height: 200px;
+  }
+
+  .roomInfo {
+    padding: 12px;
+  }
+
+  .roomInfo h3 {
+    font-size: 1rem;
+  }
+
+  .roomPrice {
+    font-size: 1.1rem;
+  }
+}

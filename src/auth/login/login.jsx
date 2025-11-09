@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useAuth } from "../auth-context";
+import authService from "../../services/auth";
+import ErrorMessage from "../../user/component/error/ErrorMessage";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -43,24 +45,22 @@ const Login = () => {
   };
 
   const { login } = useAuth();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form submitted:", formData);
     }
-    // decode responsive
-    const payload = {
-      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-      user: {
-        id: 1,
-        name: "Cát Lan",
-        avatar: "",
-        email: "lan@example.com",
-        role: "user",
-      },
-    };
-
-    login(payload);
+    try {
+      const response = await authService.login(
+        formData.email,
+        formData.password
+      );
+      console.log("Response login", response);
+      login(response);
+    } catch (error) {
+      setErrors(err.message);
+      console.log("Error", errors);
+    }
   };
 
   return (
@@ -72,6 +72,7 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
+          {/* <ErrorMessage message={errors} /> */}
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.formLabel}>
               Email
@@ -91,7 +92,6 @@ const Login = () => {
               <span className={styles.errorMessage}>{errors.email}</span>
             )}
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="password" className={styles.formLabel}>
               Mật khẩu
@@ -111,7 +111,6 @@ const Login = () => {
               <span className={styles.errorMessage}>{errors.password}</span>
             )}
           </div>
-
           <div className={styles.formOptions}>
             <label className={styles.checkboxContainer}>
               <input type="checkbox" className={styles.checkbox} />
@@ -121,7 +120,6 @@ const Login = () => {
               Quên mật khẩu?
             </a>
           </div>
-
           <button type="submit" className={styles.loginButton}>
             Đăng Nhập
           </button>

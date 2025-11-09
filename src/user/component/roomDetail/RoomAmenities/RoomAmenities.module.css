@@ -1,0 +1,86 @@
+.amenities {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 24px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.amenityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.amenityItem:hover {
+  background: #e9ecef;
+  transform: translateX(4px);
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: #ff6b6b;
+  flex-shrink: 0;
+}
+
+.amenityText {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .amenities {
+    padding: 24px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .amenityItem {
+    padding: 10px;
+  }
+
+  .icon {
+    font-size: 1.3rem;
+  }
+
+  .amenityText {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .amenities {
+    padding: 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+}

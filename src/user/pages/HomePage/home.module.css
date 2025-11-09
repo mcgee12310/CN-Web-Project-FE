@@ -6,8 +6,9 @@
 
 .bannerSection {
   --count: 3; /* số ảnh */
-  --duration: 40s; /* thời gian 1 vòng */
-  background-color: #000; /* fallback nếu ảnh chưa tải */
+  --duration: 30s; /* thời gian 1 vòng */
+  background-image: url("/background2.jpg");
+  background-size: cover;
   position: relative;
   height: 80vh;
   display: flex;
@@ -28,12 +29,11 @@
   z-index: 0;
 
   /* crossfade có overlap + ổn định khung đầu/cuối */
-  animation: bgCycle var(--duration) ease-in-out infinite both;
+  /* animation: bgCycle var(--duration) ease-in-out infinite both; */
+  animation: bgCycle var(--duration) linear infinite both;
 
   /* lệch pha giữa các ảnh */
-  animation-delay: calc(
-    var(--i) * (var(--duration) / var(--count)) - var(--duration)
-  );
+  animation-delay: calc(var(--i) * (var(--duration) / var(--count)));
 
   will-change: opacity, transform;
   backface-visibility: hidden;
@@ -182,12 +182,12 @@
 /* Hotel Description */
 .hotelDescription {
   padding: 80px 0;
-  background: #f8f9fa;
+  background: white;
 }
 
 .hotelDescription h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   margin-bottom: 2rem;
   color: #333;
 }
@@ -201,16 +201,86 @@
   margin: 0 auto;
 }
 
+.highlightsSection {
+  padding: 80px 20px;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.highlightsSection h2 {
+  font-size: 2.2rem;
+  margin-bottom: 50px;
+  color: #333;
+}
+
+.highlightsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.highlightItem {
+  background: white;
+  padding: 20px 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.highlightItem:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+  font-size: 2.4rem;
+  color: #ff6b6b;
+  margin-bottom: 10px;
+}
+
+.highlightItem h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.highlightItem p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+}
+
 .featuredRooms {
-  padding: 80px 60px;
+  padding: 80px 100px;
   background: white;
 }
 
 .featuredRooms h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   margin-bottom: 3rem;
   color: #333;
+}
+
+@media (max-width: 1024px) {
+  .bannerTitle {
+    font-size: 3rem;
+  }
+
+  .bannerSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .highlightsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+  }
+
+  .featuredRooms {
+    padding: 60px 40px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -233,5 +303,100 @@
 
   .roomsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .hotelDescription {
+    padding: 60px 0;
+  }
+
+  .hotelDescription h2 {
+    font-size: 1.8rem;
+  }
+
+  .hotelDescription p {
+    font-size: 1.1rem;
+  }
+
+  .highlightsSection {
+    padding: 60px 20px;
+  }
+
+  .highlightsSection h2 {
+    font-size: 1.8rem;
+    margin-bottom: 40px;
+  }
+
+  .highlightsGrid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .featuredRooms {
+    padding: 60px 20px;
+  }
+
+  .featuredRooms h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bannerSection {
+    height: 60vh;
+  }
+
+  .bannerTitle {
+    font-size: 2rem;
+  }
+
+  .bannerSubtitle {
+    font-size: 1rem;
+  }
+
+  .bannerCta {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .hotelDescription {
+    padding: 40px 0;
+  }
+
+  .hotelDescription h2 {
+    font-size: 1.5rem;
+  }
+
+  .hotelDescription p {
+    font-size: 1rem;
+  }
+
+  .highlightsSection {
+    padding: 40px 16px;
+  }
+
+  .highlightsSection h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .highlightItem {
+    padding: 16px;
+  }
+
+  .highlightItem h3 {
+    font-size: 1.1rem;
+  }
+
+  .highlightItem p {
+    font-size: 0.9rem;
+  }
+
+  .featuredRooms {
+    padding: 40px 16px;
+  }
+
+  .featuredRooms h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
   }
 }

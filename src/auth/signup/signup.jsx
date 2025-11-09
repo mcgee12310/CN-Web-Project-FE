@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styles from "./signup.module.css";
+import authService from "../../services/auth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: "",
+    dateOfBirth: "",
     email: "",
     phone: "",
     password: "",
@@ -46,6 +48,10 @@ const Signup = () => {
       newErrors.phone = "Số điện thoại không hợp lệ";
     }
 
+    if (!formData.dateOfBirth) {
+      newErrors.dateOfBirth = "Ngày sinh là bắt buộc";
+    }
+
     if (!formData.password) {
       newErrors.password = "Mật khẩu là bắt buộc";
     } else if (formData.password.length < 6) {
@@ -62,10 +68,21 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form submitted:", formData);
+    }
+    try {
+      const payload = await authService.signup(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.phone,
+        formData.dateOfBirth
+      );
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -135,6 +152,25 @@ const Signup = () => {
             />
             {errors.phone && (
               <span className={styles.errorMessage}>{errors.phone}</span>
+            )}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="dateOfBirth" className={styles.formLabel}>
+              Ngày sinh
+            </label>
+            <input
+              type="date"
+              id="dateOfBirth"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              className={`${styles.formInput} ${
+                errors.dateOfBirth ? styles.inputError : ""
+              }`}
+            />
+            {errors.dateOfBirth && (
+              <span className={styles.errorMessage}>{errors.dateOfBirth}</span>
             )}
           </div>
 
