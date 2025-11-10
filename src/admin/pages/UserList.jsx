@@ -190,6 +190,7 @@ const UserList = () => {
             placeholder="Tìm kiếm người dùng..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 250, marginLeft: 8 }}
           />
         </div>
       </div>

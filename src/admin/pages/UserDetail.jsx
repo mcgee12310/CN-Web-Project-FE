@@ -18,7 +18,7 @@ const user = {
     {
       id: 0,
       bookingCode: "string",
-      "bookingDate": "2025-11-02T07:56:54.831Z",
+      "bookingDate": "2025-11-15T07:56:54.831Z",
       "status": "PENDING",
       "declineReason": "string",
       "requests": [
@@ -49,7 +49,7 @@ const user = {
     {
       id: 1,
       bookingCode: "string",
-      "bookingDate": "2025-11-02T07:56:54.831Z",
+      "bookingDate": "2025-11-01T07:56:54.831Z",
       "status": "CONFIRMED",
       "declineReason": "string",
       "requests": [],
@@ -68,27 +68,28 @@ const user = {
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "a",
+      requests: [1, 2, 3]
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "b",
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "c",
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "d",
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "e",
     },
     {
       id: 2,
-      bookingCode: "string",
+      bookingCode: "f",
     },
   ]
 }
@@ -151,28 +152,40 @@ const UserDetail = () => {
       title: "Code",
       dataIndex: "bookingCode",
       key: "code",
+      sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
       render: (text) => <span className={styles.codeCell}>{text}</span>,
     },
     {
       title: "Total room",
       key: "rooms",
+      sorter: (a, b) => a.rooms - b.rooms,
       render: (_, record) => <div className={styles.totalRoomCell}>{record.requests?.length || 0}</div>,
     },
     {
       title: "Total Price",
       dataIndex: "price",
       key: "price",
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      filters: [
+        { text: 'PENDING', value: 'PENDING' },
+        { text: 'CONFIRMED', value: 'CONFIRMED' },
+        { text: 'CANCELED', value: 'CANCELED' },
+        { text: 'COMPLETED', value: 'COMPLETED' },
+      ],
+      onFilter: (value, record) => record.status === value,
       render: (_, record) => getBookingStatusTag(record.status)
     },
     {
       title: "Create at",
       dataIndex: "bookingDate",
       key: "date",
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
       render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
     },
     {

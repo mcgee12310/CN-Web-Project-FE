@@ -13,6 +13,8 @@ import AdminLayout from "./admin/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
 import UserList from "./admin/pages/UserList";
 import UserDetail from "./admin/pages/UserDetail";
+import BookingList from "./admin/pages/BookingList";
+import BookingDetail from "./admin/pages/BookingDetail";
 
 function App() {
   const { user } = useAuth();
@@ -29,6 +31,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="users" element={<UserList />} />
           <Route path="users/:id" element={<UserDetail />} />
+          <Route path="bookings" element={<BookingList />} />
+          <Route path="bookings/:id" element={<BookingDetail />} />
         </Route>
         <Route path="/otp" element={<OTP />} />
         <Route path="/rooms" element={<ExploreRoom />} />
