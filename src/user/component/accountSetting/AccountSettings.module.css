@@ -1,0 +1,161 @@
+.accountPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+/* Rank Styles */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+.badge::before {
+  content: '★';
+  font-size: 18px;
+}
+
+.silver {
+  background: #e8e8e8;
+  color: #555;
+  border: 2px solid #c0c0c0;
+}
+
+.gold {
+  background: #fff9e6;
+  color: #d4a017;
+  border: 2px solid #f1c40f;
+}
+
+.gold::before {
+  color: #f1c40f;
+}
+
+.diamond {
+  background: #e6f7ff;
+  color: #0066cc;
+  border: 2px solid #00bfff;
+}
+
+.diamond::before {
+  color: #00bfff;
+  content: '◆';
+}
+
+/* Thống kê */
+.stats {
+  display: flex;
+  margin: auto;
+  gap: 20px;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: #777;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.field input,
+.field select {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  background-color: #f9fafb;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: #6366f1;
+  background-color: white;
+}
+
+.submit {
+  margin-top: 1rem;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit:hover {
+  background-color: #4f46e5;
+}
+
+.delete {
+  margin-top: -0.5rem;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete:hover {
+  background-color: #d9363e;
+}

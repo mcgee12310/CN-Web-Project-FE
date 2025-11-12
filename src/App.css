@@ -7,7 +7,7 @@ body {
 }
 
 #root {
-  width: min(100%, 1520px);
+  width: min(100%);
   min-height: 100svh;
   height: auto;
   box-sizing: border-box;

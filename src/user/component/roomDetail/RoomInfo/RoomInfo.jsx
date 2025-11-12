@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { IoPeople, IoBed, IoWater } from "react-icons/io5";
+import { IoPeople, IoBed, IoWater, IoPricetag } from "react-icons/io5";
 import styles from "./RoomInfo.module.css";
 
 function RoomInfo({ roomData }) {
@@ -15,10 +15,30 @@ function RoomInfo({ roomData }) {
     return stars;
   };
 
+  const hasPrice = Boolean(roomData.price);
+  const hasCurrency = Boolean(roomData.currency);
+
   return (
     <section className={styles.roomInfo}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{roomData.name}</h1>
+        <div className={styles.headerTop}>
+          <h1 className={styles.title}>{roomData.name}</h1>
+          <div className={styles.priceWrapper}>
+            {hasPrice ? (
+              <>
+                <IoPricetag className={styles.priceIcon} />
+                <span className={styles.priceAmount}>{roomData.price}</span>
+                {hasCurrency && (
+                  <span className={styles.priceCurrency}>
+                    {roomData.currency}
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className={styles.pricePending}>Giá đang cập nhật</span>
+            )}
+          </div>
+        </div>
         <div className={styles.rating}>
           <span className={styles.stars}>{renderStars(roomData.rating)}</span>
           <span className={styles.ratingValue}>
