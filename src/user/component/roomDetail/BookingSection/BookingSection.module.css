@@ -49,6 +49,12 @@
   gap: 8px;
 }
 
+.dateRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
 .roomListTitle {
   font-size: 1.2rem;
   font-weight: 700;
@@ -208,6 +214,10 @@
 @media (max-width: 480px) {
   .bookingSection {
     padding: 16px;
+  }
+
+  .dateRow {
+    grid-template-columns: 1fr;
   }
 
   .priceAmount {

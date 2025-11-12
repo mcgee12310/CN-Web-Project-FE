@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styles from "./BookingSection.module.css";
-import { IoPeople } from "react-icons/io5";
+import { IoPeople, IoCalendar } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-function BookingSection({ roomData, roomsList, checkInDate, checkOutDate }) {
+function BookingSection({
+  roomData,
+  roomsList,
+  checkInDate: initialCheckInDate = "",
+  checkOutDate: initialCheckOutDate = "",
+}) {
   // Nếu có roomsList từ API, sử dụng nó; nếu không, sử dụng danh sách mặc định
   const [rooms, setRooms] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState([]);
+  const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
+  const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const navigate = useNavigate();
+  const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (roomsList && roomsList.length > 0) {
@@ -27,8 +35,32 @@ function BookingSection({ roomData, roomsList, checkInDate, checkOutDate }) {
   }, [roomsList]);
 
   useEffect(() => {
+    setCheckInDate(initialCheckInDate || "");
+  }, [initialCheckInDate]);
+
+  useEffect(() => {
+    setCheckOutDate(initialCheckOutDate || "");
+  }, [initialCheckOutDate]);
+
+  useEffect(() => {
     setSelectedRooms([]);
   }, [checkInDate, checkOutDate]);
+
+  const handleCheckInChange = (value) => {
+    setCheckInDate(value);
+
+    if (
+      value &&
+      checkOutDate &&
+      new Date(checkOutDate).getTime() <= new Date(value).getTime()
+    ) {
+      setCheckOutDate("");
+    }
+  };
+
+  const handleCheckOutChange = (value) => {
+    setCheckOutDate(value);
+  };
 
   const handleRoomClick = (roomId) => {
     const room = rooms.find((r) => r.id === roomId);
@@ -105,6 +137,40 @@ function BookingSection({ roomData, roomsList, checkInDate, checkOutDate }) {
   return (
     <section className={styles.bookingSection}>
       <div className={styles.bookingForm}>
+        <div className={styles.formGroup}>
+          <h3 className={styles.roomListTitle}>Thời gian lưu trú</h3>
+          <div className={styles.dateRow}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                <IoCalendar className={styles.labelIcon} />
+                Check-in
+              </label>
+              <input
+                type="date"
+                className={styles.input}
+                value={checkInDate}
+                onChange={(e) => handleCheckInChange(e.target.value)}
+                min={today}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                <IoCalendar className={styles.labelIcon} />
+                Check-out
+              </label>
+              <input
+                type="date"
+                className={styles.input}
+                value={checkOutDate}
+                onChange={(e) => handleCheckOutChange(e.target.value)}
+                min={checkInDate || today}
+                disabled={!checkInDate}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className={styles.formGroup}>
           <h3 className={styles.roomListTitle}>Danh sách phòng</h3>
           {checkInDate && checkOutDate ? (
