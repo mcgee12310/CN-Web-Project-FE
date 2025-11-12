@@ -7,11 +7,13 @@ function ImageGallery({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.stopPropagation();
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  const handlePrev = () => {
+  const handlePrev = (e) => {
+    e.stopPropagation();
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../component/header/header";
 import Footer from "../../component/footer/footer";
 import ImageGallery from "../../component/roomDetail/ImageGallery/ImageGallery";
@@ -6,9 +6,13 @@ import RoomInfo from "../../component/roomDetail/RoomInfo/RoomInfo";
 import RoomAmenities from "../../component/roomDetail/RoomAmenities/RoomAmenities";
 import RoomReviews from "../../component/roomDetail/RoomReviews/RoomReviews";
 import BookingSection from "../../component/roomDetail/BookingSection/BookingSection";
+import DetailHeader from "../../component/roomDetail/DetailHeader/DetailHeader";
 import styles from "./roomDetail.module.css";
 
 function RoomDetail() {
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+
   const roomData = {
     id: 1,
     name: "Superior Family Room",
@@ -44,6 +48,12 @@ function RoomDetail() {
       <Header />
       <main className={styles.main}>
         <div className={styles.container}>
+          <DetailHeader
+            checkInDate={checkInDate}
+            checkOutDate={checkOutDate}
+            onChangeCheckIn={setCheckInDate}
+            onChangeCheckOut={setCheckOutDate}
+          />
           <ImageGallery images={roomData.images} />
           <div className={styles.content}>
             <div className={styles.leftColumn}>
@@ -55,7 +65,11 @@ function RoomDetail() {
               />
             </div>
             <div className={styles.rightColumn}>
-              <BookingSection roomData={roomData} />
+              <BookingSection
+                roomData={roomData}
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+              />
             </div>
           </div>
         </div>

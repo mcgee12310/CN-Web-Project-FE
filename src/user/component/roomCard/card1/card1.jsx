@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./card1.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function Card1() {
   const rooms = [
@@ -46,8 +47,15 @@ function Card1() {
     <div className={styles.container}>
       <h2>Phòng nổi bật</h2>
       <div className={styles.roomsGrid}>
-        {rooms.map((room) => (
-          <div key={room.id} className={styles.roomCard}>
+        {rooms.map((room, i) => (
+          <motion.div
+            key={room.id}
+            className={styles.roomCard}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: i * 0.5 }}
+            viewport={{ once: true, amount: 0.2 }}
+          >
             <div className={styles.roomImageWrapper}>
               <img
                 src={room.image}
@@ -66,7 +74,7 @@ function Card1() {
               </div>
               <div className={styles.roomPrice}>{room.price}</div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

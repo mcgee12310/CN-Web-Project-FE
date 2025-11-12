@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/v1/, ""),
         },
       },
+      allowedHosts: ["bethanie-monochromical-sirenically.ngrok-free.dev"],
     },
   };
 });

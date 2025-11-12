@@ -12,11 +12,7 @@ const authService = {
       });
       return response.data;
     } catch (error) {
-      const msg =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        "Đăng ký thất bại";
-      throw new Error(msg);
+      throw error;
     }
   },
 
@@ -28,11 +24,30 @@ const authService = {
       });
       return response.data;
     } catch (error) {
-      const msg =
-        error.response?.data?.error ||
-        error.response?.data?.message ||
-        "Đăng nhập thất bại";
-      throw new Error(msg);
+      throw error;
+    }
+  },
+
+  verifyOtp: async (email, otpCode) => {
+    try {
+      const response = await apiClient.post("api/auth/verify-otp", {
+        email,
+        otp: otpCode,
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  resendOtp: async (email) => {
+    try {
+      const response = await apiClient.post("api/auth/resend-otp", {
+        email,
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   },
 };

@@ -46,7 +46,7 @@ function Highlights() {
               className={styles.highlightItem}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: i * 0.6 }}
+              transition={{ duration: 1, delay: i * 0.5 }}
               viewport={{ once: true, amount: 0.2 }}
             >
               <div className={styles.icon}>{item.icon}</div>
@@ -63,7 +63,6 @@ function Home() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const handleBookNow = () => {
-    // sau này bạn có thể navigate("/rooms") hoặc mở modal đăng nhập
     if (!user) {
       console.log("Đi đến trang đặt phòng");
       navigate("/login");

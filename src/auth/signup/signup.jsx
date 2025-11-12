@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./signup.module.css";
 import authService from "../../services/auth";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ const Signup = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,19 +73,22 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-    }
     try {
-      const payload = await authService.signup(
+      const response = await authService.signup(
         formData.email,
         formData.password,
         formData.fullName,
         formData.phone,
         formData.dateOfBirth
       );
+      localStorage.setItem("pendingVerificationEmail", formData.email);
+      navigate("/otp");
     } catch (error) {
-      console.error(error);
+      if (!error.response) {
+        toast.error("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+      } else {
+        toast.error(error.response.data?.error);
+      }
     }
   };
 

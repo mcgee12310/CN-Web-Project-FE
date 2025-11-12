@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useAuth } from "../auth-context";
 import authService from "../../services/auth";
-import ErrorMessage from "../../user/component/error/ErrorMessage";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -45,21 +46,29 @@ const Login = () => {
   };
 
   const { login } = useAuth();
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-    }
     try {
       const response = await authService.login(
         formData.email,
         formData.password
       );
-      console.log("Response login", response);
       login(response);
     } catch (error) {
-      setErrors(err.message);
-      console.log("Error", errors);
+      if (!error.response) {
+        toast.error("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
+        return;
+      }
+      const message = error.response.data?.error;
+      toast.error(message);
+      if (
+        message ===
+        "Tài khoản chưa được xác thực. Vui lòng xác thực OTP từ email."
+      ) {
+        localStorage.setItem("pendingVerificationEmail", formData.email);
+        navigate("/otp", { state: { email: formData.email } });
+      }
     }
   };
 
@@ -72,7 +81,6 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.loginForm}>
-          {/* <ErrorMessage message={errors} /> */}
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.formLabel}>
               Email

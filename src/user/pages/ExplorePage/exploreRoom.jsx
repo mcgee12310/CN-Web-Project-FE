@@ -4,12 +4,14 @@ import Footer from "../../component/footer/footer";
 import Card2 from "../../component/roomCard/card2/card2";
 import FilterSidebar from "../../component/filterSidebar/filterSidebar";
 import styles from "./exploreRoom.module.css";
+import DetailHeader from "../../component/roomDetail/DetailHeader/DetailHeader";
 
 function ExploreRoom() {
   return (
     <div className={styles.page}>
       <Header />
       <main className={styles.main}>
+        <DetailHeader />
         <div className={styles.content}>
           <aside className={styles.sidebarContainer}>
             <FilterSidebar />
