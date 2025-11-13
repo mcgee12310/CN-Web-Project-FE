@@ -1,0 +1,69 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.searchBox {
+  width: 300px;
+  display: flex;
+  align-items: space-between;
+}
+
+.codeCell {
+  font-weight: 600;
+  color: #1677ff; /* Màu chủ đạo Ant Design */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.codeCell:hover {
+  color: #0958d9;
+}
+
+.roomCell {
+  font-weight: 500;
+  color: #262626;
+  background-color: #fafafa;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  min-width: 40px;
+}
+
+.priceCell {
+  font-weight: 600;
+  color: #35a000; /* xanh tiền */
+}
+
+.dateCell {
+  color: #595959;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.viewBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.actions {
+  cursor: pointer;
+  color: #555;
+  align-items: center;
+}

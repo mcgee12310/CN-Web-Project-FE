@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Input, Select, Button, Dropdown, Menu } from "antd";
+import { Table, Input, Button, Dropdown, Menu } from "antd";
 import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined, RedoOutlined } from "@ant-design/icons";
 import styles from "./UserList.module.css";
 import { useNavigate } from "react-router-dom";

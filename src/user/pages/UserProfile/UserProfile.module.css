@@ -1,0 +1,56 @@
+.page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.backButton {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: #4f46e5;
+}
+
+.content {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.outletWrapper {
+  flex: 1;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: 400px;
+  max-width: 100%;
+  overflow-x: auto; /* Ngăn giãn vô hạn nếu có bảng rộng */
+}
+
+.loading {
+  text-align: center;
+  color: #555;
+  padding: 20px;
+  font-size: 1rem;
+  opacity: 0.8;
+}
