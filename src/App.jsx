@@ -28,38 +28,37 @@ import ChangePassword from "./user/component/changePassword/ChangePassword";
 function App() {
   const { user } = useAuth();
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<>404 - Page not found</>} />
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/resend-otp" element={<ResendOtp />} />
-        
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />       {/* mặc định /admin */}
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="users" element={<UserList />} />
-          <Route path="users/:id" element={<UserDetail />} />
-          <Route path="bookings" element={<BookingList />} />
-          <Route path="bookings/:id" element={<BookingDetail />} />
-        </Route>
+    <Routes>
+      <Route path="*" element={<>404 - Page not found</>} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/resend-otp" element={<ResendOtp />} />
 
-        {/* User Routes */}
-        <Route path="/user/:id" element={<UserProfile />}>
-          <Route path="setting" element={<AccountSettings />}/>
-          <Route path="bookings" element={<UserBookings />} />
-          <Route path="reviews" element={<MyReviews />} />
-          <Route path="password" element={<ChangePassword />} />
-        </Route>
+      {/* Admin Routes */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />       {/* mặc định /admin */}
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="users" element={<UserList />} />
+        <Route path="users/:id" element={<UserDetail />} />
+        <Route path="bookings" element={<BookingList />} />
+        <Route path="bookings/:id" element={<BookingDetail />} />
+      </Route>
+
+      {/* User Routes */}
+      <Route path="/user/:id" element={<UserProfile />}>
+        <Route index element={<AccountSettings />} />
+        <Route path="setting" element={<AccountSettings />} />
+        <Route path="bookings" element={<UserBookings />} />
+        <Route path="reviews" element={<MyReviews />} />
+        <Route path="password" element={<ChangePassword />} />
+      </Route>
 
       <Route path="/otp" element={<OTP />} />
       <Route path="/rooms" element={<ExploreRoom />} />
       <Route path="/room/:id" element={<RoomDetail />} />
       <Route path="/booking" element={<BookingPage />} />
-      </Routes>
-    </BrowserRouter>
+    </Routes>
   );
 }
 
