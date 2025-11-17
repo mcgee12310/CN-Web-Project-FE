@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Table, Input, Tag, Button } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, Input, Tag, Button, Dropdown, Menu } from "antd";
+import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
 import styles from "./UserDetail.module.css";
 
 const user = {
@@ -9,6 +9,7 @@ const user = {
   "email": "user@example.com",
   "phone": "0123456789",
   "birthDate": "2025-11-02T07:10:17.429Z",
+  "rank": "DIAMOND",
   "status": true,
   "role": "USER",
   "isVerified": true,
@@ -31,16 +32,16 @@ const user = {
           "numberOfGuests": 0,
           "status": "PENDING",
           "note": "string",
-          "guests": [
-            {
-              "id": 0,
-              "fullName": "string",
-              "identityType": "CMND",
-              "identityNumber": "string",
-              "identityIssuedDate": "2025-11-02",
-              "identityIssuedPlace": "string"
-            }
-          ]
+        },
+        {
+          "id": 1,
+          "roomId": 0,
+          "roomNumber": "string",
+          "checkIn": "2025-11-02T07:56:54.831Z",
+          "checkOut": "2025-11-02T07:56:54.831Z",
+          "numberOfGuests": 0,
+          "status": "PENDING",
+          "note": "string",
         }
       ],
       "createdAt": "2025-11-02T07:56:54.831Z",
@@ -104,6 +105,19 @@ const UserDetail = () => {
   const getAvatarUrl = (name) =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
+  const getRankClass = (rank) => {
+    switch (rank) {
+      case "SILVER":
+        return styles.silver;
+      case "GOLD":
+        return styles.gold;
+      case "DIAMOND":
+        return styles.diamond;
+      default:
+        return "";
+    }
+  };
+
   const getRoleClass = (role) => {
     switch (role.toLowerCase()) {
       case "admin":
@@ -115,9 +129,9 @@ const UserDetail = () => {
 
   const getUserStatusClass = (status) => {
     if (status) {
-      return styles.statusActive;
+      return styles.active;
     } else {
-      return styles.statusInactive;
+      return styles.inactive;
     }
   };
 
@@ -149,26 +163,44 @@ const UserDetail = () => {
   // cột của bảng booking
   const columns = [
     {
-      title: "Code",
+      title: "Mã đặt",
       dataIndex: "bookingCode",
       key: "code",
       sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
       render: (text) => <span className={styles.codeCell}>{text}</span>,
     },
     {
-      title: "Total room",
+      title: "Tên phòng",
       key: "rooms",
-      sorter: (a, b) => a.rooms - b.rooms,
-      render: (_, record) => <div className={styles.totalRoomCell}>{record.requests?.length || 0}</div>,
+      render: (_, record) => {
+        if (!record.requests || record.requests.length === 0) {
+          return <span>—</span>;
+        }
+        return (
+          <div className={styles.roomList}>
+            {record.requests.map((r, i) => (
+              <div key={i} className={styles.roomItem}>
+                {r.roomNumber}
+              </div>
+            ))}
+          </div>
+        );
+      }
     },
     {
       title: "Total Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "amount",
+      key: "amount",
+      sorter: (a, b) => a.amount - b.amount,
+    },
+    {
+      title: "Phương thức thanh toán",
+      dataIndex: "payment_method",
+      key: "payment_method",
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       filters: [
@@ -181,7 +213,7 @@ const UserDetail = () => {
       render: (_, record) => getBookingStatusTag(record.status)
     },
     {
-      title: "Create at",
+      title: "Ngày tạo",
       dataIndex: "bookingDate",
       key: "date",
       defaultSortOrder: 'descend',
@@ -189,15 +221,39 @@ const UserDetail = () => {
       render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
-      render: (_, record) => (
-        <Button
-          type="text"
-          icon={<SearchOutlined />}
-          onClick={() => handleView(record.bookingCode)}
-        />
-      ),
+      render: (_, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item
+              key="view"
+              icon={<EyeOutlined />}
+              onClick={() => handleView(record)}
+            >
+              Xem
+            </Menu.Item>
+
+            {!["COMPLETED", "CANCELED"].includes(record.status) && (
+              <Menu.Item
+                key="delete"
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(record)}
+                danger
+              >
+                Hủy đơn
+              </Menu.Item>
+            )}
+          </Menu>
+        );
+
+        return (
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <Button icon={<MoreOutlined />} />
+          </Dropdown>
+        );
+      },
+      align: "center",
     },
   ];
 
@@ -223,19 +279,25 @@ const UserDetail = () => {
             <span>{user.email}</span>
           </div>
           <div className={styles.infoItem}>
-            <span>Phone</span>
+            <span>Số điện thoại</span>
             <span>{user.phone}</span>
           </div>
           <div className={styles.infoItem}>
-            <span>Birthday</span>
+            <span>Ngày sinh</span>
             <span>{formatDate(user.birthDate)}</span>
           </div>
           <div className={styles.infoItem}>
-            <span>Status</span>
-            <span>{user.status ? "Hoạt động" : "Ngừng hoạt động"}</span>
+            <span>Hạng</span>
+            <span className={`${styles.badge} ${getRankClass(user.rank)}`}>
+              {user.rank}
+            </span>
           </div>
           <div className={styles.infoItem}>
-            <span>Create at</span>
+            <span>Trạng thái</span>
+            <span className={`${getUserStatusClass(user.status)}`}>{user.status ? "Hoạt động" : "Ngừng hoạt động"}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span>Ngày tạo tài khoản</span>
             <span>{formatDate(user.createdAt)}</span>
           </div>
         </div>
@@ -244,7 +306,7 @@ const UserDetail = () => {
         <div className={styles.bookingSection}>
           <div className={styles.bookingHeader}>
             <div className={styles.bookingTitle}>
-              Booking List ({filtered.length})
+              Lịch sử đặt phòng ({filtered.length})
             </div>
             <div>
               <SearchOutlined />

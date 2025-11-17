@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Table, Input, Tag, Button } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, Input, Tag, Button, Menu, Dropdown } from "antd";
+import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
 import styles from "./BookingList.module.css";
 
 const generateMockBookings = (count = 8) => {
@@ -116,15 +116,40 @@ const BookingList = () => {
       render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
-      render: (_, record) => (
-        <Button
-          type="text"
-          icon={<SearchOutlined />}
-          onClick={() => handleView(record.bookingCode)}
-        />
-      ),
+      render: (_, record) => {
+        const menu = (
+          <Menu>
+            <Menu.Item
+              key="view"
+              icon={<EyeOutlined />}
+              onClick={() => handleView(record)}
+            >
+              Xem
+            </Menu.Item>
+
+            {!["COMPLETED", "CANCELED"].includes(record.status) && (
+              <Menu.Item
+                key="delete"
+                icon={<DeleteOutlined />}
+                onClick={() => handleDelete(record)}
+                danger
+              >
+                Hủy đơn
+              </Menu.Item>
+            )}
+          </Menu>
+        );
+
+        return (
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <Button icon={<MoreOutlined />} />
+          </Dropdown>
+        );
+      },
+      width: 80,
+      align: "center",
     },
   ];
 

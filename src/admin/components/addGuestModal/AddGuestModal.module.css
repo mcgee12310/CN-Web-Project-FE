@@ -1,0 +1,44 @@
+.modal :global(.ant-modal-content) {
+  padding: 24px !important;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 24px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  margin-bottom: 18px;
+}
+
+.formRow label {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelBtn {
+  background: #e74c3c !important;
+  color: #fff !important;
+  border: none;
+}
+
+.saveBtn {
+  background: #4f46e5 !important;
+  color: #fff !important;
+  border: none;
+}
