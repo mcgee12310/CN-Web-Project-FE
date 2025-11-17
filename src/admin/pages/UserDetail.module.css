@@ -43,6 +43,67 @@
   border-radius: 50%;
 }
 
+/* Rank Styles */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: '★';
+  font-size: 18px;
+}
+
+.silver {
+  background: #e8e8e8;
+  color: #555;
+  border: 2px solid #c0c0c0;
+}
+
+.gold {
+  background: #fff9e6;
+  color: #d4a017;
+  border: 2px solid #f1c40f;
+}
+
+.gold::before {
+  color: #f1c40f;
+}
+
+.diamond {
+  background: #e6f7ff;
+  color: #0066cc;
+  border: 2px solid #00bfff;
+}
+
+.diamond::before {
+  color: #00bfff;
+  content: '◆';
+}
+
+.active {
+  background-color: #10b981;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 8px;
+}
+
+.inactive {
+  border-radius: 9999px;
+  padding: 8px;
+  background-color: #555;
+  color: #ffffff;
+}
+
 .roleUser {
   background-color: #ecfdf5; /* xanh nhạt */
   color: #047857; /* xanh ngọc đậm */
@@ -92,6 +153,7 @@
 }
 
 .bookingTitle {
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -118,15 +180,17 @@
   color: #0958d9;
 }
 
-.totalRoomCell {
-  text-align: center;
-  font-weight: 500;
-  color: #262626;
-  background-color: #fafafa;
-  border-radius: 8px;
-  padding: 4px 8px;
-  display: inline-block;
-  min-width: 40px;
+.roomList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.roomItem {
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .priceCell {

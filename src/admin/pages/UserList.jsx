@@ -4,8 +4,6 @@ import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined, RedoOutlined
 import styles from "./UserList.module.css";
 import { useNavigate } from "react-router-dom";
 
-
-
 const generateUsers = () => {
   const users = [];
   for (let i = 1; i <= 50; i++) {
@@ -15,6 +13,7 @@ const generateUsers = () => {
       email: `user${i}@example.com`,
       phone: `+84 9${Math.floor(10000000 + Math.random() * 90000000)}`,
       dob: `15/0${(i % 9) + 1}/199${i % 10}`,
+      rank: "SILVER",
       status: i % 3 === 0 ? true : false,
       role: i % 2 === 0 ? "ADMIN" : "USER",
       created: `2023-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 28) + 1).padStart(2, "0")}`,
@@ -35,12 +34,26 @@ const usersData = generateUsers();
 
 const UserList = () => {
   const navigate = useNavigate();
+
   const handleView = (record) => {
     navigate(`/admin/users/${record.key}`); // hoặc record.id
   };
 
   const [searchText, setSearchText] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+
+  const getRankClass = (rank) => {
+    switch (rank) {
+      case "SILVER":
+        return styles.silver;
+      case "GOLD":
+        return styles.gold;
+      case "DIAMOND":
+        return styles.diamond;
+      default:
+        return "";
+    }
+  };
 
   const filteredData = usersData.filter((item) => {
     const matchesSearch =
@@ -75,7 +88,7 @@ const UserList = () => {
       width: 200,
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "phone",
       render: (text, record) => (
         <div className={styles.phoneCell}>
@@ -95,6 +108,22 @@ const UserList = () => {
       ),
       sorter: (a, b) => a.dob.localeCompare(b.dob),
       width: 150,
+    },
+    {
+      title: "Hạng",
+      dataIndex: "rank",
+      filters: [
+        { text: "SILVER", value: "SILVER" },
+        { text: "GOLD", value: "GOLD" },
+        { text: "DIAMOND", value: "DIAMOND" },
+      ],
+      onFilter: (value, record) => record.rank === value,
+      render: rank => (
+        <div className={`${styles.badge} ${getRankClass(rank)}`}>
+          {rank}
+        </div>
+      ),
+      width: 120,
     },
     {
       title: "Trạng thái",
@@ -126,11 +155,6 @@ const UserList = () => {
       ),
       width: 120,
     },
-    // {
-    //   title: "Ngày tạo",
-    //   dataIndex: "created",
-    //   width: 150,
-    // },
     {
       title: "Hành động",
       key: "action",

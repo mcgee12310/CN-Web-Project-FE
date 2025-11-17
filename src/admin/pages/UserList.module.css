@@ -53,6 +53,51 @@
   font-weight: bold;
 }
 
+/* Rank Styles */
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin: 10px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: '★';
+  font-size: 18px;
+}
+
+.silver {
+  background: #e8e8e8;
+  color: #555;
+  border: 2px solid #c0c0c0;
+}
+
+.gold {
+  background: #fff9e6;
+  color: #d4a017;
+  border: 2px solid #f1c40f;
+}
+
+.gold::before {
+  color: #f1c40f;
+}
+
+.diamond {
+  background: #e6f7ff;
+  color: #0066cc;
+  border: 2px solid #00bfff;
+}
+
+.diamond::before {
+  color: #00bfff;
+  content: '◆';
+}
+
 .active {
   background-color: #10b981;
   border-radius: 9999px;

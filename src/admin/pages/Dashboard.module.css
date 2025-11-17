@@ -1,6 +1,21 @@
 .container {
-  padding: 1.5rem;
-  background-color: #f9fafb;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+h3{
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 20px;
 }
 
 .mainContent {
@@ -8,20 +23,46 @@
   flex-direction: column;
 }
 
-.chartsSection {
-  padding: 2rem 0;
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
-.chartsGrid {
+.statCard {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  border-left: 5px solid #6366f1;
+}
+
+.statLabel {
+  font-size: 15px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 6px;
+  color: #111827;
+}
+
+.chartsSection {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
 
 .chartCard {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  border: solid 1px #7d7d7d;
   padding: 1.5rem;
 }
 
@@ -47,4 +88,61 @@
 .legendLabel {
   font-size: 0.875rem;
   color: #4b5563;
+}
+
+.tablesSection {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.tableTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableCard {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  border: solid 1px #7d7d7d;
+}
+
+.tableTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.codeCell {
+  font-weight: 600;
+  color: #1677ff; /* Màu chủ đạo Ant Design */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nameCell {
+  font-weight: 600;
+  color: #111827;
+}
+
+.emailCell {
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.phoneCell {
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.dateCell {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
