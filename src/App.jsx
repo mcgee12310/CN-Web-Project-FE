@@ -37,7 +37,7 @@ function App() {
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />       {/* mặc định /admin */}
+        <Route index element={<Dashboard />} /> {/* mặc định /admin */}
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<UserList />} />
         <Route path="users/:id" element={<UserDetail />} />
@@ -46,7 +46,7 @@ function App() {
       </Route>
 
       {/* User Routes */}
-      <Route path="/user/:id" element={<UserProfile />}>
+      <Route path="/user/profile" element={<UserProfile />}>
         <Route index element={<AccountSettings />} />
         <Route path="setting" element={<AccountSettings />} />
         <Route path="bookings" element={<UserBookings />} />

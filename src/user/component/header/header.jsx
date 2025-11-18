@@ -17,11 +17,6 @@ const Header = () => {
   const tabsLoggedIn = [
     { id: "home", label: "Trang chủ", path: "/" },
     { id: "explore", label: "Khám phá", path: "/rooms" },
-    {
-      id: "current booking",
-      label: "Đặt phòng hiện tại",
-      path: "/current-booking",
-    },
   ];
 
   const tabs = user ? tabsLoggedIn : tabsLoggedOut;
@@ -68,7 +63,12 @@ const Header = () => {
         ) : (
           <>
             <IoNotifications />
-            <img src={user?.avatar || "/avatar-default.jpg"} alt="avatar" />
+            <img
+              src={user?.avatar || "/avatar-default.jpg"}
+              alt="avatar"
+              onClick={() => navigate("/user")}
+              style={{ cursor: "pointer" }}
+            />
           </>
         )}
       </div>

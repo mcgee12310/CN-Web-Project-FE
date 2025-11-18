@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../component/header/header";
 import Footer from "../../component/footer/footer";
 import ImageGallery from "../../component/roomDetail/ImageGallery/ImageGallery";
@@ -38,6 +38,9 @@ function RoomDetail() {
       "Safe",
     ],
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className={styles.page}>

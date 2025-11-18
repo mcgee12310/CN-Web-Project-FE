@@ -12,10 +12,6 @@
   transition: transform 0.3s ease;
 }
 
-.roomCard:hover {
-  transform: translateY(-5px);
-}
-
 .roomImageWrapper {
   width: 100%;
   height: 220px;

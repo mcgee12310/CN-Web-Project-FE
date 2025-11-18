@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useAuth } from "../auth-context";
 import authService from "../../services/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -56,7 +56,7 @@ const Login = () => {
       );
       login(response);
     } catch (error) {
-      if (!error.response) {
+      if (error.status == 404) {
         toast.error("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
         return;
       }

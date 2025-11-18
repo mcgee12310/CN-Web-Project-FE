@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./card2.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
@@ -6,6 +7,7 @@ import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 function Card2() {
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 5;
+  const navigate = useNavigate();
 
   const rooms = [
     {
@@ -146,7 +148,11 @@ function Card2() {
     <div className={styles.container}>
       <div className={styles.roomsGrid}>
         {currentRooms.map((room) => (
-          <div key={room.id} className={styles.roomCard}>
+          <div
+            key={room.id}
+            className={styles.roomCard}
+            onClick={() => navigate(`/room/${room.id}`)}
+          >
             <div className={styles.roomImageWrapper}>
               <img
                 src={room.image}

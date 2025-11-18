@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./card1.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -30,6 +31,7 @@ function Card1() {
       review: 5,
     },
   ];
+  const navigate = useNavigate();
 
   // Hàm tạo icon sao theo số review
   const renderStars = (rating) => {
@@ -49,31 +51,40 @@ function Card1() {
       <div className={styles.roomsGrid}>
         {rooms.map((room, i) => (
           <motion.div
-            key={room.id}
-            className={styles.roomCard}
             initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: i * 0.5 }}
             viewport={{ once: true, amount: 0.2 }}
           >
-            <div className={styles.roomImageWrapper}>
-              <img
-                src={room.image}
-                alt={room.name}
-                className={styles.roomImage}
-              />
-            </div>
-            <div className={styles.roomInfo}>
-              <h3>{room.name}</h3>
-              <p>{room.desc}</p>
-            </div>
-            <div className={styles.roomFooter}>
-              <div className={styles.review}>
-                <span className={styles.stars}>{renderStars(room.review)}</span>
-                <span className={styles.ratingValue}>{room.review}</span>
+            <motion.div
+              className={styles.roomCard}
+              whileHover={{
+                y: -5,
+                transition: { type: "spring", stiffness: 300, damping: 20 },
+              }}
+              onClick={() => navigate(`/room/${room.id}`)}
+            >
+              <div className={styles.roomImageWrapper}>
+                <img
+                  src={room.image}
+                  alt={room.name}
+                  className={styles.roomImage}
+                />
               </div>
-              <div className={styles.roomPrice}>{room.price}</div>
-            </div>
+              <div className={styles.roomInfo}>
+                <h3>{room.name}</h3>
+                <p>{room.desc}</p>
+              </div>
+              <div className={styles.roomFooter}>
+                <div className={styles.review}>
+                  <span className={styles.stars}>
+                    {renderStars(room.review)}
+                  </span>
+                  <span className={styles.ratingValue}>{room.review}</span>
+                </div>
+                <div className={styles.roomPrice}>{room.price}</div>
+              </div>
+            </motion.div>
           </motion.div>
         ))}
       </div>

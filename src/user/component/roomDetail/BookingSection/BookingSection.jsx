@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./BookingSection.module.css";
 import { IoPeople, IoCalendar } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function BookingSection({
   roomData,
@@ -88,7 +89,7 @@ function BookingSection({
 
   const handleBooking = () => {
     if (!checkInDate || !checkOutDate) {
-      alert("Vui lòng chọn ngày nhận phòng và trả phòng");
+      toast.warn("Vui lòng chọn ngày nhận phòng và trả phòng");
       return;
     }
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./signup.module.css";
 import authService from "../../services/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -84,7 +84,7 @@ const Signup = () => {
       localStorage.setItem("pendingVerificationEmail", formData.email);
       navigate("/otp");
     } catch (error) {
-      if (!error.response) {
+      if (error.status == 404) {
         toast.error("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
       } else {
         toast.error(error.response.data?.error);

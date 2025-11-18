@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./otp.module.css";
 import { IoArrowBack } from "react-icons/io5";
 import authService from "../../services/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const OTP = () => {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import styles from "./resendOtp.module.css";
 import authService from "../../services/auth";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 
 const emailRegex = /\S+@\S+\.\S+/;
 

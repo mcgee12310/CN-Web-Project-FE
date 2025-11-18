@@ -4,15 +4,16 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
 import { AuthProvider } from "./auth/auth-context.jsx";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <App />
+        <ToastContainer position="top-right" reverseOrder={false} />
       </AuthProvider>
     </BrowserRouter>
-    <Toaster position="top-right" reverseOrder={false} />
   </StrictMode>
 );
