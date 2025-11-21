@@ -79,13 +79,23 @@
   max-width: calc(100% - 160px);
 }
 
-.roomDetails {
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 8px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+.roomClass {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+
+  background: rgba(196, 155, 78, 0.08); /* vàng gold nhạt rất sang */
+  border: 1px solid rgba(196, 155, 78, 0.35); /* viền mảnh, tinh tế */
+
+  color: #b38a3b; /* màu gold đậm hơn chút */
+  font-weight: 600;
+  font-size: 0.8rem;
+
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+
+  max-width: max-content; /* tránh kéo dài */
 }
 
 .roomAmenities {

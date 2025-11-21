@@ -10,22 +10,21 @@ function BookingSection({
   checkInDate: initialCheckInDate = "",
   checkOutDate: initialCheckOutDate = "",
 }) {
-  // Nếu có roomsList từ API, sử dụng nó; nếu không, sử dụng danh sách mặc định
   const [rooms, setRooms] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
   const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
+
+  // Lưu số người theo từng phòng: { 4: 2, 5: 3, ... }
+  const [roomOccupancy, setRoomOccupancy] = useState({});
+
   const navigate = useNavigate();
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (roomsList && roomsList.length > 0) {
-      // Nếu có dữ liệu từ API, sử dụng nó
       setRooms(roomsList);
     } else {
-      // Mặc định: tạo 20 phòng (phòng 3, 7, 12, 15, 18 là đã đặt)
       const defaultRooms = Array.from({ length: 20 }, (_, i) => ({
         id: i + 1,
         number: i + 1,
@@ -45,6 +44,7 @@ function BookingSection({
 
   useEffect(() => {
     setSelectedRooms([]);
+    setRoomOccupancy({});
   }, [checkInDate, checkOutDate]);
 
   const handleCheckInChange = (value) => {
@@ -69,22 +69,34 @@ function BookingSection({
       return;
     }
 
-    // Toggle selection
     if (selectedRooms.includes(roomId)) {
       setSelectedRooms(selectedRooms.filter((r) => r !== roomId));
+      setRoomOccupancy((prev) => {
+        const copy = { ...prev };
+        delete copy[roomId];
+        return copy;
+      });
     } else {
       setSelectedRooms([...selectedRooms, roomId]);
+      setRoomOccupancy((prev) => ({
+        ...prev,
+        [roomId]: prev[roomId] ?? "1",
+      }));
     }
   };
 
   const getRoomStatus = (room) => {
-    if (room.status === "booked") {
-      return "booked"; // Đã đặt
-    }
-    if (selectedRooms.includes(room.id)) {
-      return "selected"; // Đang chọn
-    }
-    return "available"; // Trống
+    if (room.status === "booked") return "booked";
+    if (selectedRooms.includes(room.id)) return "selected";
+    return "available";
+  };
+
+  const handleOccupancyChange = (roomId, rawValue) => {
+    const val = rawValue.replace(/\D/g, "");
+    setRoomOccupancy((prev) => ({
+      ...prev,
+      [roomId]: val,
+    }));
   };
 
   const handleBooking = () => {
@@ -94,38 +106,43 @@ function BookingSection({
     }
 
     if (new Date(checkOutDate) <= new Date(checkInDate)) {
-      alert("Ngày trả phòng phải sau ngày nhận phòng");
+      toast.warn("Ngày trả phòng phải sau ngày nhận phòng");
       return;
     }
 
     if (selectedRooms.length === 0) {
-      alert("Vui lòng chọn ít nhất một phòng");
+      toast.warn("Vui lòng chọn ít nhất một phòng");
       return;
     }
 
-    const normalizedAdults =
-      adults === ""
-        ? 0
-        : typeof adults === "number"
-        ? adults
-        : parseInt(adults, 10) || 0;
-    const normalizedChildren =
-      children === ""
-        ? 0
-        : typeof children === "number"
-        ? children
-        : parseInt(children, 10) || 0;
+    // kiểm tra từng phòng
+    for (const roomId of selectedRooms) {
+      const raw = roomOccupancy[roomId];
+      const occ = parseInt(raw, 10);
 
-    const selectedRoomDetails = rooms.filter((room) =>
-      selectedRooms.includes(room.id)
-    );
+      if (!occ || occ < 1) {
+        toast.warn(`Vui lòng nhập số lượng người (>= 1) cho phòng ${roomId}`);
+        return;
+      }
+    }
+
+    const selectedRoomDetails = rooms
+      .filter((room) => selectedRooms.includes(room.id))
+      .map((room) => ({
+        ...room,
+        occupancy: parseInt(roomOccupancy[room.id], 10) || 1,
+      }));
+
+    const totalPeople = selectedRooms.reduce((sum, id) => {
+      const occ = parseInt(roomOccupancy[id], 10) || 0;
+      return sum + occ;
+    }, 0);
 
     navigate("/booking", {
       state: {
         checkInDate,
         checkOutDate,
-        adults: normalizedAdults,
-        children: normalizedChildren,
+        totalPeople,
         selectedRooms: selectedRoomDetails,
         roomType: roomData?.name ?? "Phòng",
         price: roomData?.price ?? "",
@@ -139,7 +156,6 @@ function BookingSection({
     <section className={styles.bookingSection}>
       <div className={styles.bookingForm}>
         <div className={styles.formGroup}>
-          <h3 className={styles.roomListTitle}>Thời gian lưu trú</h3>
           <div className={styles.dateRow}>
             <div className={styles.formGroup}>
               <label className={styles.label}>
@@ -175,66 +191,69 @@ function BookingSection({
         <div className={styles.formGroup}>
           <h3 className={styles.roomListTitle}>Danh sách phòng</h3>
           {checkInDate && checkOutDate ? (
-            <div className={styles.roomSelector}>
-              {rooms.map((room) => {
-                const status = getRoomStatus(room);
-                return (
-                  <button
-                    key={room.id}
-                    className={`${styles.roomButton} ${
-                      styles[
-                        `roomButton${
-                          status.charAt(0).toUpperCase() + status.slice(1)
-                        }`
-                      ]
-                    }`}
-                    onClick={() => handleRoomClick(room.id)}
-                    disabled={status === "booked"}
-                  >
-                    {room.number || room.id}
-                  </button>
-                );
-              })}
-            </div>
+            <>
+              <div className={styles.roomSelector}>
+                {rooms.map((room) => {
+                  const status = getRoomStatus(room);
+                  return (
+                    <button
+                      key={room.id}
+                      className={`${styles.roomButton} ${
+                        styles[
+                          `roomButton${
+                            status.charAt(0).toUpperCase() + status.slice(1)
+                          }`
+                        ]
+                      }`}
+                      onClick={() => handleRoomClick(room.id)}
+                      disabled={status === "booked"}
+                    >
+                      {room.number || room.id}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {selectedRooms.length > 0 && (
+                <div className={styles.guestsPerRoomWrapper}>
+                  {selectedRooms.map((roomId) => {
+                    const room = rooms.find((r) => r.id === roomId);
+                    const occ = roomOccupancy[roomId] ?? "";
+                    return (
+                      <div key={roomId} className={styles.roomGuestCard}>
+                        <div className={styles.formGroup}>
+                          <h4 className={styles.roomListTitle}>
+                            Phòng {room?.number ?? roomId}
+                          </h4>
+                          <div className={styles.dateRow}>
+                            <div className={styles.formGroup}>
+                              <label className={styles.label}>
+                                <IoPeople className={styles.labelIcon} />
+                                Số lượng người
+                              </label>
+                              <input
+                                type="text"
+                                className={styles.input}
+                                value={occ}
+                                onChange={(e) =>
+                                  handleOccupancyChange(roomId, e.target.value)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
           ) : (
             <div className={styles.roomSelectorPlaceholder}>
               Vui lòng chọn ngày để hiển thị danh sách phòng
             </div>
           )}
         </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>
-            <IoPeople className={styles.labelIcon} />
-            Số lượng người lớn
-          </label>
-          <input
-            type="text"
-            className={styles.input}
-            value={adults}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, "");
-              setAdults(val === "" ? "" : Math.max(1, parseInt(val)));
-            }}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label}>
-            <IoPeople className={styles.labelIcon} />
-            Số lượng trẻ em
-          </label>
-          <input
-            type="text"
-            className={styles.input}
-            value={children}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, "");
-              setChildren(val === "" ? "" : Math.max(0, parseInt(val)));
-            }}
-          />
-        </div>
-
         <button className={styles.bookButton} onClick={handleBooking}>
           Đặt phòng ngay
         </button>

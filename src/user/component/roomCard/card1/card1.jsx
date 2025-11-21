@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./card1.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 function Card1() {
   const rooms = [
@@ -32,6 +32,8 @@ function Card1() {
     },
   ];
   const navigate = useNavigate();
+  const ref = useRef(null);
+  const inView = useInView(ref, { amount: 0.2 });
 
   // Hàm tạo icon sao theo số review
   const renderStars = (rating) => {
@@ -51,10 +53,11 @@ function Card1() {
       <div className={styles.roomsGrid}>
         {rooms.map((room, i) => (
           <motion.div
+            ref={ref}
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
             transition={{ duration: 1, delay: i * 0.5 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ amount: 0.2 }}
           >
             <motion.div
               className={styles.roomCard}

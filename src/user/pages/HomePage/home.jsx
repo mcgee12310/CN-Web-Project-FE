@@ -65,7 +65,7 @@ function Home() {
   const handleBookNow = () => {
     if (!user) {
       console.log("Đi đến trang đặt phòng");
-      navigate("/login");
+      navigate("/rooms");
     }
   };
   return (

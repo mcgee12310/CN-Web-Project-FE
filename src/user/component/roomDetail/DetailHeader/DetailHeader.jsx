@@ -7,14 +7,12 @@ function DetailHeader({
   checkOutDate = "",
   onChangeCheckIn,
   onChangeCheckOut,
+  onSearch,
 }) {
   const today = new Date().toISOString().split("T")[0];
 
   const handleSearch = () => {
-    if (!checkInDate || !checkOutDate) {
-      alert("Vui lòng chọn ngày check-in và check-out");
-      return;
-    }
+    onSearch?.();
   };
 
   const handleCheckInChange = (value) => {

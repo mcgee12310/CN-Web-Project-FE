@@ -14,8 +14,7 @@ function BookingPage() {
   const {
     checkInDate,
     checkOutDate,
-    adults = 0,
-    children = 0,
+    totalPeople,
     selectedRooms = [],
     roomType = "Phòng",
     price = "",
@@ -23,6 +22,7 @@ function BookingPage() {
     heroImage = "",
   } = bookingData || {};
 
+  // 🔹 Tính số đêm
   const numberOfNights = useMemo(() => {
     if (!checkInDate || !checkOutDate) {
       return 0;
@@ -38,6 +38,7 @@ function BookingPage() {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   }, [checkInDate, checkOutDate]);
 
+  // 🔹 Đơn giá (số) từ price
   const unitPrice = useMemo(() => {
     if (!price) {
       return 0;
@@ -57,6 +58,12 @@ function BookingPage() {
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("vi-VN").format(value) + ` ${currencyUnit}`;
+
+  // 🔹 Tính tổng khách từ state nếu totalPeople chưa có
+  const effectiveTotalPeople = useMemo(() => {
+    if (typeof totalPeople === "number" && totalPeople > 0) return totalPeople;
+    return selectedRooms.reduce((sum, room) => sum + (room.occupancy || 0), 0);
+  }, [totalPeople, selectedRooms]);
 
   if (!bookingData) {
     return (
@@ -109,10 +116,7 @@ function BookingPage() {
                   </span>
                 </div>
                 <p className={styles.roomMeta}>
-                  {selectedRooms.length} phòng • {adults} người lớn
-                  {typeof children === "number" && children > 0
-                    ? ` • ${children} trẻ em`
-                    : ""}
+                  {selectedRooms.length} phòng • {effectiveTotalPeople} khách
                 </p>
               </div>
             </div>
@@ -138,10 +142,7 @@ function BookingPage() {
               <div>
                 <h2 className={styles.sectionLabel}>Số khách</h2>
                 <p className={styles.sectionValue}>
-                  {adults} người lớn
-                  {typeof children === "number" && children > 0
-                    ? `, ${children} trẻ em`
-                    : ""}
+                  {effectiveTotalPeople} khách
                 </p>
               </div>
               <div>
@@ -177,7 +178,8 @@ function BookingPage() {
                 <ul>
                   {selectedRooms.map((room) => (
                     <li key={room.id}>
-                      Phòng số {room.number ?? room.id}{" "}
+                      Phòng số {room.number ?? room.id} •{" "}
+                      <strong>{room.occupancy || 0} khách</strong>{" "}
                       {room.status === "booked" ? "(Đã đặt)" : ""}
                     </li>
                   ))}
