@@ -11,7 +11,7 @@ export const formatDate = (dateString) => {
 
 // Định dạng giá tiền
 export const formatPrice = (price) => {
-  if (price == null) return "";
+  if (price == null) return "0";
   return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
 };
 

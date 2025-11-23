@@ -3,3 +3,111 @@
   background-color: #fff;
   border-radius: 12px;
 }
+
+.header {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.cardRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.customerCard {
+  flex: 1; /* 2 card chia đều */
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.cardHeader {
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.infoRow {
+  margin: 6px 0;
+}
+
+.label {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.sectionTitle {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.requestCard {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 20px;
+}
+
+.cardIcons {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.cardIcons .delete {
+  color: red;
+}
+
+.cardBody {
+  margin-top: 10px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.colFull {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.select, .date {
+  width: 100%;
+}
+
+.saveBtn {
+  margin-top: 10px;
+  width: 120px;
+}
+
+.guestsSection {
+  margin-top: 20px;
+}
+
+.guestsHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.table {
+  margin-bottom: 10px;
+}

@@ -1,0 +1,81 @@
+.container {
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.searchBox {
+  width: 300px;
+  display: flex;
+  align-items: space-between;
+}
+
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.codeCell {
+  font-weight: 600;
+  color: #1677ff; /* Màu chủ đạo Ant Design */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.room {
+  font-weight: 600;
+  color: #222;
+}
+
+.dateCell {
+  color: #595959;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.actionIcons {
+  font-size: 18px;
+  size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editIcon {
+  color: #1677ff;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.editIcon:hover {
+  color: #4096ff;
+}
+
+.deleteIcon {
+  color: #ff4d4f;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.deleteIcon:hover {
+  color: #ff0004;
+}

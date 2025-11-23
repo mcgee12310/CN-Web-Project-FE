@@ -17,6 +17,7 @@ import UserList from "./admin/pages/UserList";
 import UserDetail from "./admin/pages/UserDetail";
 import BookingList from "./admin/pages/BookingList";
 import BookingDetail from "./admin/pages/BookingDetail";
+import Reviews from "./admin/pages/Reviews"
 
 // User imports would go here
 import UserProfile from "./user/pages/UserProfile/UserProfile";
@@ -43,6 +44,7 @@ function App() {
         <Route path="users/:id" element={<UserDetail />} />
         <Route path="bookings" element={<BookingList />} />
         <Route path="bookings/:id" element={<BookingDetail />} />
+        <Route path="reviews" element={<Reviews />} />
       </Route>
 
       {/* User Routes */}
