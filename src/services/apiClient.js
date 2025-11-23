@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "";
+const API_BASE_URL = "/v1";
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -8,10 +8,14 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("userToken");
+    config.headers["ngrok-skip-browser-warning"] = "mel"; //bo canh bao ngrok
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = user?.token;
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+    console.log("🔍 FE gửi URL:", config.url);
+    console.log("Token", token);
     return config;
   },
   (error) => {

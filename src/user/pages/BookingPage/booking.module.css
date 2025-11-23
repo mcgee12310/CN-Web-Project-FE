@@ -14,9 +14,19 @@
   width: min(1120px, 92%);
   margin: 0 auto;
   display: grid;
+  /* Chia layout 2 cột: Trái lớn (2 phần), Phải nhỏ (1 phần) */
   grid-template-columns: 2fr 1fr;
   gap: 32px;
   align-items: start;
+}
+
+/* Wrapper cho cột bên phải để chứa Note và Payment */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Khoảng cách giữa Note và Payment */
+  /* Đảm bảo cột phải không bị giãn chiều cao theo cột trái */
+  align-self: start;
 }
 
 .topBar {
@@ -52,13 +62,21 @@
   color: #1f2937;
 }
 
+/* Style chung cho các thẻ Card (Summary, Note, Payment) */
 .summaryCard,
-.paymentSection {
+.paymentSection,
+.noteSection {
   background: #fff;
   border-radius: 20px;
   padding: 32px;
   box-shadow: 0 18px 45px rgba(255, 107, 107, 0.08);
   border: 1px solid rgba(255, 107, 107, 0.12);
+}
+
+/* Riêng noteSection và paymentSection ở cột phải thì padding nhỏ hơn chút cho gọn */
+.paymentSection,
+.noteSection {
+  padding: 24px;
 }
 
 .roomHero {
@@ -211,15 +229,35 @@
   line-height: 1.5;
 }
 
+.noteInput {
+  width: 100%;
+  /* top right bottom left */
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.noteInput:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+/* --- Payment Styles --- */
 .paymentSection {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-self: start;
 }
 
 .sectionTitle {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #1f2937;
   margin: 0;
@@ -239,7 +277,7 @@
   border-radius: 14px;
   background: rgba(255, 107, 107, 0.06);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
   font-size: 1rem;
   color: #1f2937;
 }
@@ -254,6 +292,10 @@
   border-color: rgba(255, 107, 107, 0.4);
   background: rgba(255, 107, 107, 0.12);
   transform: translateY(-1px);
+}
+
+.paymentLabel {
+  font-weight: 500;
 }
 
 .confirmButton {
@@ -276,11 +318,17 @@
   box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
 }
 
+.confirmButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .paymentNote {
   margin-top: -4px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #6b7280;
   line-height: 1.6;
+  text-align: center;
 }
 
 .pageFallback {
@@ -306,17 +354,18 @@
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 26px rgba(255, 107, 107, 0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.backButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 32px rgba(255, 107, 107, 0.36);
-}
-
+/* --- Responsive --- */
 @media (max-width: 1100px) {
   .container {
+    /* Khi màn hình nhỏ hơn 1100px, gom về 1 cột */
     grid-template-columns: 1fr;
+  }
+
+  .rightColumn {
+    /* Khi về 1 cột, cột phải sẽ nằm dưới, bỏ align-self để nó full width */
+    align-self: stretch;
   }
 
   .topBar {
@@ -330,7 +379,8 @@
   }
 
   .summaryCard,
-  .paymentSection {
+  .paymentSection,
+  .noteSection {
     padding: 24px;
   }
 
@@ -357,9 +407,5 @@
 
   .confirmButton {
     padding: 14px;
-  }
-
-  .paymentOption {
-    flex-wrap: wrap;
   }
 }

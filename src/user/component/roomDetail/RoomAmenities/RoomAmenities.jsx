@@ -8,7 +8,7 @@ function RoomAmenities({ amenities }) {
       <div className={styles.grid}>
         {amenities.map((amenity, index) => (
           <div key={index} className={styles.amenityItem}>
-            <span className={styles.amenityText}>{amenity}</span>
+            <span className={styles.amenityText}>{amenity.name}</span>
           </div>
         ))}
       </div>

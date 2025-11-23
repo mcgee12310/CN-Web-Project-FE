@@ -14,6 +14,7 @@ const OTP = () => {
   const [timer, setTimer] = useState(300);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef([]);
+  const isVerifiedRef = useRef(false);
 
   const email =
     location.state?.email ||
@@ -21,7 +22,7 @@ const OTP = () => {
     "";
 
   useEffect(() => {
-    if (!email) {
+    if (!email && !isVerifiedRef.current) {
       navigate("/signup");
       return;
     }
@@ -89,10 +90,12 @@ const OTP = () => {
 
       // Tuỳ backend: nếu trả { success: true } hoặc chỉ cần HTTP 200 là ok
       if (res?.success !== false) {
+        isVerifiedRef.current = true;
         localStorage.removeItem("pendingVerificationEmail");
         toast.success("Xác thực thành công! Vui lòng đăng nhập.");
         navigate("/login", {
           state: { message: "Xác thực thành công! Vui lòng đăng nhập." },
+          replace: true,
         });
       } else {
         // server trả success=false

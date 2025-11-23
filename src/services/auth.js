@@ -3,7 +3,7 @@ import apiClient from "./apiClient";
 const authService = {
   signup: async (email, password, name, phone, birthDate) => {
     try {
-      const response = await apiClient.post("/api/auth/register", {
+      const response = await apiClient.post("api/auth/register", {
         email,
         password,
         name,
@@ -18,7 +18,7 @@ const authService = {
 
   login: async (email, password) => {
     try {
-      const response = await apiClient.post("/api/auth/login", {
+      const response = await apiClient.post("api/auth/login", {
         email,
         password,
       });
@@ -30,7 +30,7 @@ const authService = {
 
   verifyOtp: async (email, otpCode) => {
     try {
-      const response = await apiClient.post("/api/auth/verify-otp", {
+      const response = await apiClient.post("api/auth/verify-otp", {
         email,
         otp: otpCode,
       });
@@ -42,7 +42,7 @@ const authService = {
 
   resendOtp: async (email) => {
     try {
-      const response = await apiClient.post("/api/auth/resend-otp", {
+      const response = await apiClient.post("api/auth/resend-otp", {
         email,
       });
       return response.data;

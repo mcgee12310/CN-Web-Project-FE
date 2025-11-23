@@ -6,10 +6,6 @@
   margin-bottom: 24px;
 }
 
-.header {
-  margin-bottom: 24px;
-}
-
 .headerTop {
   display: flex;
   align-items: flex-start;
@@ -47,12 +43,6 @@
   line-height: 1;
 }
 
-.priceCurrency {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #777;
-}
-
 .pricePending {
   font-size: 1rem;
   color: #999;
@@ -82,19 +72,23 @@
   font-weight: 500;
 }
 
-.details {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-}
+.roomClass {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
 
-.detailItem {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #555;
+  background: rgba(196, 155, 78, 0.08); /* vàng gold nhạt rất sang */
+  border: 1px solid rgba(196, 155, 78, 0.35); /* viền mảnh, tinh tế */
+
+  color: #b38a3b; /* màu gold đậm hơn chút */
+  font-weight: 600;
   font-size: 1rem;
+
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+
+  max-width: max-content; /* tránh kéo dài */
 }
 
 .icon {

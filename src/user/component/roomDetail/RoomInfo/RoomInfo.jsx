@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
-import { IoPeople, IoBed, IoWater, IoPricetag } from "react-icons/io5";
+import { IoPricetag } from "react-icons/io5";
 import styles from "./RoomInfo.module.css";
 
 function RoomInfo({ roomData }) {
@@ -17,6 +17,9 @@ function RoomInfo({ roomData }) {
 
   const hasPrice = Boolean(roomData.price);
   const hasCurrency = Boolean(roomData.currency);
+  const formatPrice = (price) => {
+    return price.toLocaleString("vi-VN") + " VNĐ";
+  };
 
   return (
     <section className={styles.roomInfo}>
@@ -27,40 +30,24 @@ function RoomInfo({ roomData }) {
             {hasPrice ? (
               <>
                 <IoPricetag className={styles.priceIcon} />
-                <span className={styles.priceAmount}>{roomData.price}</span>
-                {hasCurrency && (
-                  <span className={styles.priceCurrency}>
-                    {roomData.currency}
-                  </span>
-                )}
+                <span className={styles.priceAmount}>
+                  {formatPrice(roomData.price)}
+                </span>
               </>
             ) : (
               <span className={styles.pricePending}>Giá đang cập nhật</span>
             )}
           </div>
         </div>
-        <div className={styles.rating}>
+        {/* <div className={styles.rating}>
           <span className={styles.stars}>{renderStars(roomData.rating)}</span>
           <span className={styles.ratingValue}>
             {roomData.rating} ({roomData.reviewCount} đánh giá)
           </span>
-        </div>
+        </div> */}
       </div>
 
-      <div className={styles.details}>
-        <div className={styles.detailItem}>
-          <IoPeople className={styles.icon} />
-          <span>{roomData.guests} khách</span>
-        </div>
-        <div className={styles.detailItem}>
-          <IoBed className={styles.icon} />
-          <span>{roomData.beds} giường</span>
-        </div>
-        <div className={styles.detailItem}>
-          <IoWater className={styles.icon} />
-          <span>{roomData.baths} phòng tắm</span>
-        </div>
-      </div>
+      <p className={styles.roomClass}>{roomData.roomClass}</p>
 
       <div className={styles.divider}></div>
 

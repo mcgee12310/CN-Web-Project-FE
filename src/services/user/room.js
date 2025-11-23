@@ -1,8 +1,9 @@
 import apiClient from "../apiClient";
+
 const roomService = {
   getAllRoomType: async () => {
     try {
-      const response = await apiClient.get("api/user/room-types/get-all");
+      const response = await apiClient.get("api/public/room-types");
       return response.data;
     } catch (error) {
       throw error;
@@ -10,9 +11,9 @@ const roomService = {
   },
   getRoomAvailable: async (checkIn, checkOut) => {
     try {
-      const response = await apiClient.post("api/user/room-types/available", {
-        checkIn,
-        checkOut,
+      const response = await apiClient.post("api/public/room-types/available", {
+        checkInDate: checkIn,
+        checkOutDate: checkOut,
       });
       return response.data;
     } catch (error) {
@@ -22,7 +23,7 @@ const roomService = {
   getRoomTypeDetail: async (id, checkInDate, checkOutDate) => {
     try {
       const response = await apiClient.get(
-        `api/user/room-types/${id}/details`,
+        `api/public/room-types/${id}/details`,
         {
           params: {
             checkInDate,
@@ -30,6 +31,14 @@ const roomService = {
           },
         }
       );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  bookingRooms: async (payload) => {
+    try {
+      const response = await apiClient.post("api/bookings", payload);
       return response.data;
     } catch (error) {
       throw error;

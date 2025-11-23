@@ -17,8 +17,7 @@ function ExploreRoom() {
   useEffect(() => {
     const fetchRooms = async () => {
       const data = await roomService.getAllRoomType();
-      //setRooms(data);
-      console.log("Data", data);
+      setRooms(data);
     };
     fetchRooms();
   }, []);
@@ -35,14 +34,22 @@ function ExploreRoom() {
         checkOutDate
       );
 
-      setRooms(data);
-      setFilteredRooms(data);
+      if (data.length) {
+        setRooms(data);
+        setFilteredRooms(data);
+      } else {
+        toast.warn("Hiện tại không có phòng phù hợp");
+      }
     } catch (error) {
       console.error("Lỗi tải phòng available:", error);
     }
   };
 
   const [filteredRooms, setFilteredRooms] = useState(rooms);
+  useEffect(() => {
+    setFilteredRooms(rooms);
+  }, [rooms]);
+
   const handleFilterChange = (selectedTypes) => {
     const activeTypes = Object.keys(selectedTypes).filter(
       (type) => selectedTypes[type] === true

@@ -14,15 +14,12 @@ function FilterSidebar({ rooms, onFilterChange }) {
   }, []); // 👈 EMPTY ARRAY — CHỈ CHẠY 1 LẦN
 
   const toggleType = (name) => {
-    setSelectedTypes((prev) => {
-      const updated = {
-        ...prev,
-        [name]: !prev[name],
-      };
-
-      onFilterChange(updated);
-      return updated;
-    });
+    const updated = {
+      ...selectedTypes,
+      [name]: !selectedTypes[name],
+    };
+    setSelectedTypes(updated);
+    onFilterChange(updated);
   };
 
   return (

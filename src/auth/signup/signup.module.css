@@ -3,20 +3,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("/background.jpg") center/cover no-repeat;
+  background: url("/background1.jpg") center/cover no-repeat;
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .signupCard {
-  background: white;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   padding: 40px;
   width: 100%;
   max-width: 400px;
-  position: relative;
-  overflow: hidden;
 }
 
 .signupHeader {
@@ -28,7 +28,7 @@
   font-size: 2rem;
   font-weight: 700;
   padding-bottom: 3px;
-  color: #333;
+  color: black;
   margin: 0 0 8px 0;
   background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
   -webkit-background-clip: text;
@@ -37,7 +37,7 @@
 }
 
 .signupSubtitle {
-  color: #666;
+  color: black;
   font-size: 0.95rem;
   margin: 0;
 }
@@ -149,7 +149,7 @@
 }
 
 .loginText {
-  color: #666;
+  color: white;
   font-size: 0.9rem;
   margin: 0;
 }
