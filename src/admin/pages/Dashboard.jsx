@@ -131,7 +131,7 @@ const Dashboard = () => {
         <div className={styles.chartsSection}>
           {/* Bar Chart */}
           <div className={styles.chartCard}>
-            <h3>Đơn mới nhất</h3>
+            <h3>Thống kê doanh thu</h3>
             <div className={styles.chartLegend}>
               <div className={styles.legendItem}>
                 <div className={styles.legendDot} style={{ backgroundColor: '#6366f1' }}></div>
