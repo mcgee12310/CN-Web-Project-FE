@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import { Table, Input, Button, Tag } from "antd";
 import styles from "./RequestCard.module.css";
-import { formatDate } from "../../utils/format";
+import { formatDate } from "../../../utils/format";
 
-import AddGuestModal from "../components/addGuestModal/AddGuestModal";
+import AddGuestModal from "../addGuestModal/AddGuestModal";
 
 const RequestCard = ({ request, onUpdate }) => {
   const [formData, setFormData] = useState(request);
   const [openAdd, setOpenAdd] = useState(false);
-
-  const handleChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
 
   const handleCheckout = () => {
     const updated = { ...formData, status: "CHECKOUT" };
@@ -183,7 +179,7 @@ const RequestCard = ({ request, onUpdate }) => {
               className={styles.addGuestBtn}
               onClick={() => setOpenAdd(true)}
             >
-              Add guest
+              Check in
             </Button>
 
             <AddGuestModal

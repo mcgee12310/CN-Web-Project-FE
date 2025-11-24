@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Table, Input, Rate, Tooltip, Popconfirm } from "antd";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import { SearchOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { formatDate } from "../../utils/format";
+import { formatDate } from "../../../utils/format";
 import styles from "./Reviews.module.css";
 
 const Reviews = () => {
@@ -104,30 +104,30 @@ const Reviews = () => {
       defaultSortOrder: "descend",
       render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
     },
-    {
-      title: "Action",
-      key: "action",
-      render: (record) => (
-        <div className={styles.actionIcons}>
-          <Tooltip title="Edit">
-            <EditOutlined
-              className={styles.editIcon}
-              onClick={() => handleFeedback(record)}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Are you sure to delete this review?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={() => handleDelete(record)}
-            >
-              <DeleteOutlined className={styles.deleteIcon} />
-            </Popconfirm>
-          </Tooltip>
-        </div>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (record) => (
+    //     <div className={styles.actionIcons}>
+    //       <Tooltip title="Edit">
+    //         <EditOutlined
+    //           className={styles.editIcon}
+    //           onClick={() => handleFeedback(record)}
+    //         />
+    //       </Tooltip>
+    //       <Tooltip title="Delete">
+    //         <Popconfirm
+    //           title="Are you sure to delete this review?"
+    //           okText="Yes"
+    //           cancelText="No"
+    //           onConfirm={() => handleDelete(record)}
+    //         >
+    //           <DeleteOutlined className={styles.deleteIcon} />
+    //         </Popconfirm>
+    //       </Tooltip>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (

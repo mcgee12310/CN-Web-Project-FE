@@ -140,6 +140,55 @@
   color: #666;
 }
 
+.infoItem.button-center {
+  display: flex;           /* biến div thành flex container */
+  justify-content: center; /* canh ngang giữa */
+  align-items: center;     /* canh dọc giữa */
+  margin: 10px 0;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px dashed #eee;
+}
+
+.deleteBtn {
+  background-color: #bc3838;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.deleteBtn:hover {
+  background-color: #a02e2e;
+  transform: translateY(-2px);
+}
+
+.restoreBtn {
+  background-color: #10835c;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.restoreBtn:hover {
+  background-color: #0a5a42;
+  transform: translateY(-2px);
+}
+
+
 /* BOOKING SECTION */
 .bookingSection {
   flex: 1;

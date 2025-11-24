@@ -1,0 +1,87 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.main {
+  flex: 1;
+  padding: 40px 40px;
+  background: #fff;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+.leftColumn {
+  flex: 1;
+  width: 100%;
+}
+
+.rightColumn {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+.deleteBtn {
+  background-color: #bc3838;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 16px;
+  width: 100%; /* Child will take up 100% of the parent's content area */
+}
+
+@media (max-width: 1024px) {
+  .main {
+    padding: 40px 40px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .rightColumn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 20px 16px;
+  }
+
+  .content {
+    margin-top: 30px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 16px 12px;
+  }
+
+  .content {
+    margin-top: 20px;
+    gap: 20px;
+  }
+}

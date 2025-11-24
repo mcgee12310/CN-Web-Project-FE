@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Table, Input, Tag, Button, Menu, Dropdown } from "antd";
 import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
 import styles from "./BookingList.module.css";
+import { useNavigate } from "react-router-dom";
+import { formatPrice, formatDate } from "../../../utils/format";
 
 const generateMockBookings = (count = 8) => {
   const statuses = ["PENDING", "CONFIRMED", "CANCELED"];
@@ -21,7 +23,7 @@ const generateMockBookings = (count = 8) => {
       totalRoom: randomRooms,
       totalPrice: randomPrice,
       status: randomStatus,
-      date: randomDate,
+      bookingDate: randomDate,
     };
   });
 };
@@ -29,9 +31,10 @@ const generateMockBookings = (count = 8) => {
 const BookingList = () => {
   const data = generateMockBookings();
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const handleView = (code) => {
-    alert(`Xem chi tiết đơn: ${code}`);
+    navigate(`/admin/bookings/${code.id}`);
   };
 
   const getBookingStatusTag = (status) => {
@@ -49,16 +52,6 @@ const BookingList = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("vi-VN");
-  };
-
-  const formatPrice = (price) => {
-  if (!price) return "0 ₫";
-  return price.toLocaleString("vi-VN"); // chỉ hiện số và dấu phẩy
-};
-
   // 🔍 lọc booking theo code
   const filteredData = data.filter((b) =>
     b.bookingCode.toLowerCase().includes(search.toLowerCase())
@@ -67,7 +60,7 @@ const BookingList = () => {
   // 🧩 cột bảng
   const columns = [
     {
-      title: "Code",
+      title: "Mã đơn",
       dataIndex: "bookingCode",
       key: "code",
       sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
@@ -80,11 +73,11 @@ const BookingList = () => {
       render: (_, record) => <div className={styles.nameCell}>{record.userName}</div>,
     },
     {
-      title: "Total room",
+      title: "Số phòng",
       key: "totalRoom",
       sorter: (a, b) => a.totalRoom - b.totalRoom,
       render: (_, record) => (
-        <div className={styles.totalRoomCell}>{record.requests?.length || 0}</div>
+        <div className={styles.totalRoomCell}>{record.totalRoom}</div>
       ),
     },
     {
@@ -95,7 +88,7 @@ const BookingList = () => {
       render: (price) => <div className={styles.priceCell}>{formatPrice(price)}</div>,
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       filters: [

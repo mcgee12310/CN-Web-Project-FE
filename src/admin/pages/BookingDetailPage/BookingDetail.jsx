@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Input, Tabs } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "./BookingDetail.module.css";
-
-import RequestCard from "./RequestCard";
+import RequestCard from "../../components/requestCard/RequestCard";
 
 const booking = {
   id: "BK-2025-001",

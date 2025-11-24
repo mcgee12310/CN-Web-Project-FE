@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Input, DatePicker, Button, Select } from "antd";
 import styles from "./AddGuestModal.module.css";
+import { toast } from "react-toastify";
 
 const AddGuestModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
@@ -16,6 +17,10 @@ const AddGuestModal = ({ open, onClose, onSave }) => {
   };
 
   const handleSubmit = () => {
+    if (!form.guestName || !form.identityType || !form.identityNumber || !form.identityIssueDate || !form.identityIssuePlace) {
+      toast.warning("Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
     onSave(form);
     onClose();
   };

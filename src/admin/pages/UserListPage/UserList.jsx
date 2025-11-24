@@ -1,0 +1,162 @@
+import React, { useState, useEffect } from "react";
+import { Table, Input, Button, Dropdown, Menu } from "antd";
+import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined, RedoOutlined } from "@ant-design/icons";
+import styles from "./UserList.module.css";
+import { useNavigate } from "react-router-dom";
+import userService from "../../../services/admin/user"; // <-- API service
+import { toast } from "react-toastify";
+
+const UserList = () => {
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await userService.getAllUsers();
+      const data = res.data.content.map((u) => ({
+        key: u.id,
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone,
+        dob: new Date(u.birthDate).toLocaleDateString("vi-VN"),
+        status: u.status,
+        role: u.role,
+        created: new Date(u.createdAt).toLocaleDateString("vi-VN"),
+      }));
+      setUsers(data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Lấy danh sách người dùng thất bại!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleView = (record) => navigate(`/admin/users/${record.id}`);
+  const handleDelete = (record) => toast.info(`Xóa user: ${record.name}`);
+  const handleRestore = (record) => toast.info(`Khôi phục user: ${record.name}`);
+
+  const filteredData = users.filter((item) =>
+    item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+    item.email.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const getRankClass = (rank) => {
+    switch (rank) {
+      case "SILVER": return styles.silver;
+      case "GOLD": return styles.gold;
+      case "DIAMOND": return styles.diamond;
+      default: return "";
+    }
+  };
+
+  const columns = [
+    {
+      title: "Tên người dùng",
+      dataIndex: "name",
+      render: (text, record) => (
+        <div className={styles.nameCell}><span>{text}</span></div>
+      ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      // width: 150,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      render: (text) => <div className={styles.emailCell}><span>{text}</span></div>,
+      sorter: (a, b) => a.email.localeCompare(b.email),
+      // width: 200,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      render: (text) => <div className={styles.phoneCell}><span>{text}</span></div>,
+      // width: 150,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "dob",
+      render: (text) => <div className={styles.dobCell}><span>{text}</span></div>,
+      // width: 150,
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role",
+      filters: [
+        { text: "Quản trị viên", value: "ADMIN" },
+        { text: "Người dùng", value: "USER" },
+      ],
+      onFilter: (value, record) => record.role === value,
+      render: (role) => (
+        <span className={role === "ADMIN" ? styles.roleAdmin : styles.roleUser}>
+          {role === "ADMIN" ? "Quản trị viên" : "Người dùng"}
+        </span>
+      ),
+      // width: 120,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      filters: [
+        { text: "Hoạt động", value: true },
+        { text: "Dừng", value: false },
+      ],
+      onFilter: (value, record) => record.status === value,
+      render: (status) => (
+        <span className={status == true ? styles.active : styles.inactive}>
+          {status == true ? "Hoạt động" : "Dừng"}
+        </span>
+      ),
+      // width: 120,
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      render: (_, record) => {
+        return (
+          <Button
+            icon={<EyeOutlined />}
+            onClick={() => handleView(record)}
+          />
+        );
+      },
+      width: 80,
+      align: "center",
+    },
+  ];
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}><h2>Danh sách người dùng</h2></div>
+      <div className={styles.controls}>
+        <div className={styles.searchBox}>
+          <SearchOutlined />
+          <Input
+            placeholder="Tìm kiếm người dùng..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 250, marginLeft: 8 }}
+          />
+        </div>
+      </div>
+
+      <Table
+        columns={columns}
+        dataSource={filteredData}
+        loading={loading}
+        pagination={{ pageSize: 10 }}
+        scroll={{ y: 500 }}
+      />
+    </div>
+  );
+};
+
+export default UserList;
