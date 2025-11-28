@@ -8,15 +8,13 @@ const FeedbackModal = ({ visible, onClose, request }) => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-  if (request) {
-    setRating(request.rating || 0);
-    setComment(request.comment || "");
-  }
-}, [request]);
+    if (request) {
+      setRating(request.rating || 0);
+      setComment(request.comment || "");
+    }
+  }, [request]);
 
   if (!request) return null;
-
-  
 
   const handleSubmit = () => {
     console.log("Feedback submitted:", {
@@ -82,7 +80,7 @@ const FeedbackModal = ({ visible, onClose, request }) => {
           // loading={loading}
           block
         >
-          Save change
+          Lưu đánh giá
         </Button>
       </div>
     </Modal>

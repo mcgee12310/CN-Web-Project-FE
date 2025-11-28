@@ -15,7 +15,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
         <h2>Thay đổi mật khẩu</h2>
       </div>
@@ -28,11 +28,11 @@ const ChangePassword = () => {
         <Form.Item
           label="Mật khẩu hiện tại"
           name="currentPassword"
-          rules={[{ required: true, message: "Please enter your password" }]}
+          rules={[{ required: true, message: "Nhập mật khẩu hiện tại" }]}
         >
           <Input.Password
             prefix={<LockOutlined />}
-            placeholder="Enter your password"
+            placeholder="Nhập mật khẩu hiện tại"
             className={styles.input}
           />
         </Form.Item>
@@ -40,11 +40,11 @@ const ChangePassword = () => {
         <Form.Item
           label="Mật khẩu mới"
           name="newPassword"
-          rules={[{ required: true, message: "Please enter your new password" }]}
+          rules={[{ required: true, message: "Nhập mật khẩu mới" }]}
         >
           <Input.Password
             prefix={<LockOutlined />}
-            placeholder="Enter your new password"
+            placeholder="Nhập mật khẩu mới"
             className={styles.input}
           />
         </Form.Item>
@@ -54,22 +54,20 @@ const ChangePassword = () => {
           name="confirmPassword"
           dependencies={["newPassword"]}
           rules={[
-            { required: true, message: "Please confirm your password" },
+            { required: true, message: "Nhập lại mật khẩu mới" },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue("newPassword") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(
-                  new Error("Passwords do not match!")
-                );
+                return Promise.reject(new Error("Passwords do not match!"));
               },
             }),
           ]}
         >
           <Input.Password
             prefix={<LockOutlined />}
-            placeholder="Confirm your password"
+            placeholder="Nhập lại mật khẩu mới"
             className={styles.input}
           />
         </Form.Item>
@@ -82,7 +80,7 @@ const ChangePassword = () => {
             className={styles.submitButton}
             block
           >
-            Change password
+            Lưu mật khẩu
           </Button>
         </Form.Item>
       </Form>

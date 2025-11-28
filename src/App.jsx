@@ -17,7 +17,7 @@ import UserList from "./admin/pages/UserList";
 import UserDetail from "./admin/pages/UserDetail";
 import BookingList from "./admin/pages/BookingList";
 import BookingDetail from "./admin/pages/BookingDetail";
-import Reviews from "./admin/pages/Reviews"
+import Reviews from "./admin/pages/Reviews";
 
 // User imports would go here
 import UserProfile from "./user/pages/UserProfile/UserProfile";
@@ -48,7 +48,7 @@ function App() {
       </Route>
 
       {/* User Routes */}
-      <Route path="/user/profile" element={<UserProfile />}>
+      <Route path="/profile" element={<UserProfile />}>
         <Route index element={<AccountSettings />} />
         <Route path="setting" element={<AccountSettings />} />
         <Route path="bookings" element={<UserBookings />} />

@@ -52,82 +52,89 @@ export default function AccountSettings() {
 
   const handleDelete = () => {
     alert("Account deleted!");
-  }
+  };
 
   return (
     <div className={styles.accountPage}>
-      <h2 className={styles.title}>Account Settings</h2>
-
-      <div className={styles.avatarSection}>
-        <img
-          src={getAvatarUrl(user.name)}
-          alt="avatar"
-          className={styles.avatar}
-        />
-        <div className={styles.name}>{user.name}</div>
-        <div className={`${styles.badge} ${getRankClass(user.rank)}`}>
-          {user.rank}
-        </div>
-
-        <div className={styles.stats}>
-          <div className={styles.statItem}>
-            <div className={styles.statValue}>{user.totalBookings}</div>
-            <div className={styles.statLabel}>Đơn đã đặt</div>
-          </div>
-          <div className={styles.statItem}>
-            <div className={styles.statValue}>
-              {user.totalSpent.toLocaleString("vi-VN")}₫
-            </div>
-            <div className={styles.statLabel}>Tổng chi tiêu</div>
-          </div>
-        </div>
+      <div className={styles.header}>
+        <h2>Thông tin tài khoản</h2>
       </div>
-
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.field}>
-          <label>Email</label>
-          <input type="email" name="email" value={formData.email} readOnly />
-        </div>
-
-        <div className={styles.field}>
-          <label>Họ và tên</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
+      <div className={styles.content}>
+        <div className={styles.avatarSection}>
+          <img
+            src={getAvatarUrl(user.name)}
+            alt="avatar"
+            className={styles.avatar}
           />
+          <div className={styles.name}>{user.name}</div>
+          <div className={`${styles.badge} ${getRankClass(user.rank)}`}>
+            {user.rank}
+          </div>
+
+          <div className={styles.stats}>
+            <div className={styles.statItem}>
+              <div className={styles.statValue}>{user.totalBookings}</div>
+              <div className={styles.statLabel}>Đơn đã đặt</div>
+            </div>
+            <div className={styles.statItem}>
+              <div className={styles.statValue}>
+                {user.totalSpent.toLocaleString("vi-VN")}₫
+              </div>
+              <div className={styles.statLabel}>Tổng chi tiêu</div>
+            </div>
+          </div>
         </div>
 
-        <div className={styles.field}>
-          <label>Ngày sinh</label>
-          <input
-            type="date"
-            name="birthday"
-            defaultValue={formData.birthday}
-            value={formData.birthday}
-            onChange={handleChange}
-          />
-        </div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.field}>
+            <label>Email</label>
+            <input type="email" name="email" value={formData.email} readOnly />
+          </div>
 
-        <div className={styles.field}>
-          <label>Số điện thoại</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
+          <div className={styles.field}>
+            <label>Họ và tên</label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+            />
+          </div>
 
-        <button type="submit" className={styles.submit}>
-          Lưu thông tin
-        </button>
-      </form>
+          <div className={styles.field}>
+            <label>Ngày sinh</label>
+            <input
+              type="date"
+              name="birthday"
+              defaultValue={formData.birthday}
+              value={formData.birthday}
+              onChange={handleChange}
+            />
+          </div>
 
-      <button type="delete" className={styles.delete} onClick={handleDelete}>
-        Vô hiệu hóa tài khoản
-      </button>
+          <div className={styles.field}>
+            <label>Số điện thoại</label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button type="submit" className={styles.submit}>
+            Lưu thông tin
+          </button>
+
+          <button
+            type="delete"
+            className={styles.delete}
+            onClick={handleDelete}
+          >
+            Vô hiệu hóa tài khoản
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

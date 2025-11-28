@@ -1,161 +1,224 @@
 import React, { useState } from "react";
-import { Table, Input, Rate, Tooltip, Popconfirm } from "antd";
-import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { SearchOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Input, Rate, Card, Empty, Button, Popconfirm, Avatar } from "antd";
+import {
+  SearchOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  CalendarOutlined,
+  HomeOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 import { formatDate } from "../../../utils/format";
 import styles from "./MyReviews.module.css";
-
 import FeedbackModal from "../feedbackModal/FeedbackModal";
-import create from "@ant-design/icons/lib/components/IconFont";
 
 const MyReviews = () => {
-  // ✅ Dữ liệu mẫu
+  // Dữ liệu mẫu - trong thực tế sẽ fetch từ API
   const reviews = [
     {
       id: "12345",
       bookingCode: "BK1111",
       roomName: "Superior Family Room",
+      roomType: "Phòng Standard",
+      roomImage: "/background.jpg",
       rating: 4,
-      comment: "Good",
-      created_at: "2023-08-20"
+      comment:
+        "Phòng rất đẹp và sạch sẽ. Nhân viên thân thiện. Tôi sẽ quay lại!",
+      created_at: "2023-08-20",
+      checkIn: "2023-08-15",
+      checkOut: "2023-08-18",
     },
     {
       id: "12344",
       bookingCode: "BK1121",
       roomName: "Superior Room",
+      roomType: "Phòng Deluxe",
+      roomImage: "/background.jpg",
       rating: 3.5,
-      comment: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ea, esse dicta in accusantium totam culpa harum qui iure, labore error, itaque quia. Accusantium itaque nesciunt blanditiis voluptas veniam, asperiores quos.",
-      created_at: "2023-08-21"
+      comment:
+        "Phòng khá tốt nhưng có một số điểm cần cải thiện. View đẹp nhưng cách âm chưa tốt lắm. Nhìn chung vẫn hài lòng với dịch vụ.",
+      created_at: "2023-08-21",
+      checkIn: "2023-08-10",
+      checkOut: "2023-08-12",
+    },
+    {
+      id: "12343",
+      bookingCode: "BK1131",
+      roomName: "Deluxe King Room",
+      roomType: "Phòng VIP",
+      roomImage: "/background1.jpg",
+      rating: 5,
+      comment:
+        "Tuyệt vời! Không có gì để chê. Phòng sang trọng, tiện nghi đầy đủ.",
+      created_at: "2023-07-15",
+      checkIn: "2023-07-10",
+      checkOut: "2023-07-13",
     },
   ];
 
-  // ✅ State
   const [search, setSearch] = useState("");
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedReview, setSelectedReview] = useState(null);
 
-  const filteredData = reviews.filter((b) =>
-    b.bookingCode.toLowerCase().includes(search.toLowerCase())
+  const filteredData = reviews.filter(
+    (review) =>
+      review.bookingCode.toLowerCase().includes(search.toLowerCase()) ||
+      review.roomName.toLowerCase().includes(search.toLowerCase())
   );
 
-  // ✅ Mở Feedback modal
-  const handleFeedback = (request) => {
-    setSelectedRequest(request);
+  const handleEdit = (review) => {
+    setSelectedReview(review);
     setIsFeedbackOpen(true);
   };
 
-  const truncateText = (text, maxLength = 20) =>
-    text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  const handleDelete = (review) => {
+    console.log("Xóa đánh giá:", review);
+    // Xử lý xóa đánh giá
+  };
 
-
-  // ✅ Cấu hình bảng
-  const columns = [
-    {
-      title: "Mã đơn",
-      dataIndex: "bookingCode",
-      key: "bookingCode",
-      sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
-      render: (bookingCode) => (
-        <div className={styles.codeCell}>
-          {bookingCode}
-        </div>
-      ),
-    },
-    {
-      title: "Tên phòng đặt",
-      dataIndex: "roomName",
-      key: "room",
-      render: (room) => <strong className={styles.room}>{room}</strong>,
-    },
-    {
-      title: "Điểm đánh giá",
-      dataIndex: "rating",
-      key: "rating",
-      render: (rating) => <Rate
-        character={({ index }) =>
-          index + 1 <= rating ? (
-            <StarFilled style={{ color: "#fbbf24" }} />
-          ) : (
-            <StarOutlined style={{ color: "#fbbf24" }} />
-          )
-        }
-        value={rating}
-        count={5}
-      />
-    },
-    {
-      title: "Bình luận",
-      dataIndex: "comment",
-      key: "comment",
-      render: (text) => (
-        <Tooltip title={text}>
-          <span>{truncateText(text, 50)}</span>
-        </Tooltip>
-      ),
-    },
-    {
-      title: "Ngày tạo",
-      dataIndex: "created_at",
-      key: "created_at",
-      sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
-      defaultSortOrder: "descend",
-      render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (record) => (
-        <div className={styles.actionIcons}>
-          <Tooltip title="Edit">
-            <EditOutlined
-              className={styles.editIcon}
-              onClick={() => handleFeedback(record)}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Are you sure to delete this review?"
-              okText="Yes"
-              cancelText="No"
-              onConfirm={() => handleDelete(record)}
-            >
-              <DeleteOutlined className={styles.deleteIcon} />
-            </Popconfirm>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
+  const getRatingText = (rating) => {
+    if (rating >= 4.5) return "Tuyệt vời";
+    if (rating >= 3.5) return "Rất tốt";
+    if (rating >= 2.5) return "Tốt";
+    if (rating >= 1.5) return "Trung bình";
+    return "Cần cải thiện";
+  };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
-        <h2>My Reviews</h2>
+        <h2>Đánh giá của tôi</h2>
+        <p className={styles.subtitle}>
+          Quản lý tất cả các đánh giá bạn đã viết cho các phòng đã đặt
+        </p>
       </div>
 
       <div className={styles.controls}>
         <div className={styles.searchBox}>
-          <SearchOutlined />
+          <SearchOutlined className={styles.searchIcon} />
           <Input
-            placeholder="Tìm theo mã đơn..."
+            placeholder="Tìm theo mã đơn hoặc tên phòng..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: 250, marginLeft: 8 }}
+            className={styles.searchInput}
           />
+        </div>
+        <div className={styles.stats}>
+          <span className={styles.statItem}>
+            Tổng đánh giá: <strong>{reviews.length}</strong>
+          </span>
         </div>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        pagination={false}
-        className={styles.table}
-      />
+      {filteredData.length === 0 ? (
+        <Empty
+          description="Không tìm thấy đánh giá nào"
+          className={styles.empty}
+        />
+      ) : (
+        <div className={styles.reviewsList}>
+          {filteredData.map((review) => (
+            <Card key={review.id} className={styles.reviewCard} hoverable>
+              <div className={styles.cardContent}>
+                {/* Ảnh phòng */}
+                <div className={styles.imageSection}>
+                  <img
+                    src={review.roomImage}
+                    alt={review.roomName}
+                    className={styles.roomImage}
+                  />
+                </div>
+
+                {/* Nội dung chính */}
+                <div className={styles.mainContent}>
+                  {/* Header */}
+                  <div className={styles.reviewHeader}>
+                    <div className={styles.roomInfo}>
+                      <h3 className={styles.roomName}>{review.roomName}</h3>
+                      <span className={styles.roomType}>{review.roomType}</span>
+                    </div>
+                    <div className={styles.bookingCode}>
+                      Mã: {review.bookingCode}
+                    </div>
+                  </div>
+
+                  {/* Đánh giá */}
+                  <div className={styles.ratingSection}>
+                    <div className={styles.ratingScore}>
+                      <div className={styles.ratingDetails}>
+                        <Rate
+                          disabled
+                          allowHalf
+                          value={review.rating}
+                          className={styles.stars}
+                        />
+                        <span className={styles.ratingText}>
+                          {getRatingText(review.rating)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bình luận */}
+                  <div className={styles.commentSection}>
+                    <p className={styles.comment}>{review.comment}</p>
+                  </div>
+
+                  {/* Footer */}
+                  <div className={styles.reviewFooter}>
+                    <div className={styles.dateInfo}>
+                      <CalendarOutlined className={styles.icon} />
+                      <span className={styles.dateText}>
+                        Lưu trú: {formatDate(review.checkIn)} -{" "}
+                        {formatDate(review.checkOut)}
+                      </span>
+                      <span className={styles.divider}>•</span>
+                      <span className={styles.dateText}>
+                        Đánh giá: {formatDate(review.created_at)}
+                      </span>
+                    </div>
+
+                    <div className={styles.actions}>
+                      <Button
+                        type="default"
+                        icon={<EditOutlined />}
+                        onClick={() => handleEdit(review)}
+                        className={styles.editBtn}
+                      >
+                        Sửa
+                      </Button>
+                      <Popconfirm
+                        title="Xóa đánh giá này?"
+                        description="Bạn có chắc chắn muốn xóa đánh giá này không?"
+                        okText="Xóa"
+                        cancelText="Hủy"
+                        onConfirm={() => handleDelete(review)}
+                        okButtonProps={{ danger: true }}
+                      >
+                        <Button
+                          danger
+                          icon={<DeleteOutlined />}
+                          className={styles.deleteBtn}
+                        >
+                          Xóa
+                        </Button>
+                      </Popconfirm>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <FeedbackModal
         visible={isFeedbackOpen}
-        onClose={() => setIsFeedbackOpen(false)}
-        request={selectedRequest}
+        onClose={() => {
+          setIsFeedbackOpen(false);
+          setSelectedReview(null);
+        }}
+        request={selectedReview}
       />
     </div>
   );

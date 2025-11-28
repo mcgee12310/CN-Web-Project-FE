@@ -1,75 +1,318 @@
+.container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  margin-bottom: 24px;
 }
 
 .header h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
   margin: 0;
 }
 
+/* Controls */
 .controls {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .searchBox {
-  width: 300px;
   display: flex;
-  align-items: space-between;
+  align-items: center;
+  flex: 1;
+  max-width: 400px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
 }
 
-.table {
+.searchIcon {
+  color: #999;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.searchInput:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+}
+
+.statItem {
+  font-size: 14px;
+  color: #666;
+}
+
+.statItem strong {
+  color: #ff6b6b;
+  font-size: 16px;
+}
+
+/* Reviews List */
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reviewCard {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #e0e0e0;
+}
+
+.reviewCard:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-color: #ff6b6b;
+}
+
+.cardContent {
+  display: flex;
+  gap: 20px;
+}
+
+/* Image Section */
+.imageSection {
+  flex-shrink: 0;
+  width: 200px;
+  height: 150px;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.codeCell {
-  font-weight: 600;
-  color: #1677ff; /* Màu chủ đạo Ant Design */
-  cursor: pointer;
-  transition: color 0.2s ease;
+.roomImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.room {
-  font-weight: 600;
-  color: #222;
+/* Main Content */
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.dateCell {
-  color: #595959;
-  font-size: 14px;
-  font-style: italic;
-  font-weight: bold;
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.actionIcons {
+.roomInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roomName {
   font-size: 18px;
-  size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.roomType {
+  font-size: 13px;
+  color: #666;
+}
+
+.bookingCode {
+  font-size: 13px;
+  color: #ff6b6b;
+  font-weight: 500;
+  padding: 4px 12px;
+  background: #f9e4e4;
+  border-radius: 6px;
+}
+
+/* Rating Section */
+.ratingSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ratingScore {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.editIcon {
-  color: #1677ff;
-  cursor: pointer;
-  transition: color 0.2s ease;
+.scoreBox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 700;
 }
 
-.editIcon:hover {
-  color: #4096ff;
+.starIcon {
+  font-size: 16px;
 }
 
-.deleteIcon {
-  color: #ff4d4f;
-  cursor: pointer;
-  transition: color 0.2s ease;
+.scoreValue {
+  font-size: 18px;
 }
 
-.deleteIcon:hover {
-  color: #ff0004;
+.ratingDetails {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stars {
+  font-size: 14px;
+}
+
+.ratingText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Comment Section */
+.commentSection {
+  padding: 12px 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 3px solid #ff6b6b;
+}
+
+.comment {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+}
+
+/* Footer */
+.reviewFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.icon {
+  color: #ff6b6b;
+}
+
+.dateText {
+  color: #666;
+}
+
+.divider {
+  color: #d9d9d9;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editBtn,
+.deleteBtn {
+  min-width: 80px;
+}
+
+/* Empty State */
+.empty {
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .searchBox {
+    max-width: 100%;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+
+  .cardContent {
+    flex-direction: column;
+  }
+
+  .imageSection {
+    width: 100%;
+    height: 200px;
+  }
+
+  .reviewHeader {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reviewFooter {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .editBtn,
+  .deleteBtn {
+    flex: 1;
+  }
 }

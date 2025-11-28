@@ -1,6 +1,14 @@
 import React, { useState, useMemo } from "react";
-import { Table, Input, Tag, Button, Dropdown, Menu } from "antd";
-import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined, RedoOutlined } from "@ant-design/icons";
+import { Input, Tag, Button, Dropdown, Menu, Card, Empty, Space } from "antd";
+import {
+  SearchOutlined,
+  EyeOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+  CalendarOutlined,
+  DollarOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 import { formatDate, formatPrice } from "../../../utils/format";
 import styles from "./BookingList.module.css";
 
@@ -10,21 +18,60 @@ const data = [
   {
     id: 1,
     bookingCode: "BK1001",
+    roomType: "Phòng Standard",
+    image: "/background.jpg",
     request: [
-      { id: 1, roomName: "Phòng Deluxe", people: 3, checkIn: "2023-09-01", checkOut: "2023-09-03", price: 1500000, status: "CHECKOUT" },
-      { id: 2, roomName: "Phòng Suite", people: 2, checkIn: "2023-09-01", checkOut: "2023-09-02", price: 2000000, status: "CONFIRMED" },
-      { id: 3, roomName: "Phòng Standard", people: 1, checkIn: "2023-09-02", checkOut: "2023-09-03", price: 1000000, status: "CONFIRMED" },
+      {
+        id: 1,
+        roomNumber: "Phòng 601",
+        guests: 3,
+        checkIn: "2023-09-01",
+        checkOut: "2023-09-03",
+        status: "CHECKOUT",
+      },
+      {
+        id: 2,
+        roomNumber: "Phòng 602",
+        guests: 2,
+        checkIn: "2023-09-01",
+        checkOut: "2023-09-03",
+        status: "CONFIRMED",
+      },
+      {
+        id: 3,
+        roomNumber: "Phòng 603",
+        guests: 1,
+        checkIn: "2023-09-01",
+        checkOut: "2023-09-03",
+        status: "CONFIRMED",
+      },
     ],
-    price: 2500000,
+    price: 5000000000,
     status: "CONFIRMED",
     bookingDate: "2023-08-20",
   },
   {
     id: 2,
     bookingCode: "BK1002",
+    roomType: "Phòng Standard",
+    image: "/background.jpg",
     request: [
-      { id: 4, roomName: "Phòng Standard", people: 2, checkIn: "2023-10-05", checkOut: "2023-10-07", price: 1200000, status: "PENDING" },
-      { id: 5, roomName: "Phòng Deluxe", people: 1, checkIn: "2023-10-05", checkOut: "2023-10-06", price: 1500000, status: "PENDING" },
+      {
+        id: 4,
+        roomNumber: "Phòng 501",
+        guests: 2,
+        checkIn: "2023-10-05",
+        checkOut: "2023-10-07",
+        status: "PENDING",
+      },
+      {
+        id: 5,
+        roomNumber: "Phòng 504",
+        guests: 1,
+        checkIn: "2023-10-05",
+        checkOut: "2023-10-07",
+        status: "PENDING",
+      },
     ],
     price: 2700000,
     status: "PENDING",
@@ -33,20 +80,28 @@ const data = [
   {
     id: 3,
     bookingCode: "BK1003",
+    roomType: "Phòng Suite đôi",
+    image: "/background.jpg",
     request: [
-      { id: 6, roomName: "Phòng Suite", people: 4, checkIn: "2023-11-10", checkOut: "2023-11-12", price: 3000000, status: "CANCELED" },
+      {
+        id: 6,
+        roomNumber: "Phòng 404",
+        guests: 4,
+        checkIn: "2023-11-10",
+        checkOut: "2023-11-12",
+        status: "CANCELED",
+      },
     ],
     price: 3000000,
     status: "CANCELED",
     bookingDate: "2023-10-01",
   },
-]
+];
 
 const BookingList = () => {
   const [search, setSearch] = useState("");
-
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleView = (code) => {
     const booking = data.find((b) => b.bookingCode === code);
@@ -59,6 +114,11 @@ const BookingList = () => {
     setSelectedBooking(null);
   };
 
+  const handleDelete = (record) => {
+    console.log("Hủy đơn:", record);
+    // Xử lý hủy đơn
+  };
+
   const getBookingStatusTag = (status) => {
     const colorMap = {
       CANCELED: "red",
@@ -66,94 +126,24 @@ const BookingList = () => {
       PENDING: "orange",
       COMPLETED: "blue",
     };
-    return <Tag color={colorMap[status] || "gray"}>{status}</Tag>;
+    const labelMap = {
+      CANCELED: "Đã hủy",
+      CONFIRMED: "Đã xác nhận",
+      PENDING: "Chờ xử lý",
+      COMPLETED: "Hoàn thành",
+    };
+    return (
+      <Tag color={colorMap[status] || "gray"}>{labelMap[status] || status}</Tag>
+    );
   };
 
-  // 🔍 Lọc dữ liệu theo mã đơn
+  // Lọc dữ liệu theo mã đơn
   const filteredData = data.filter((b) =>
     b.bookingCode.toLowerCase().includes(search.toLowerCase())
   );
 
-  const columns = [
-    {
-      title: "Mã đơn",
-      dataIndex: "bookingCode",
-      key: "bookingCode",
-      sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
-      render: (text) => <span className={styles.codeCell}>{text}</span>,
-    },
-    {
-      title: "Tên phòng đặt",
-      key: "roomNames",
-      render: (_, record) => <div className={styles.roomCell}> {record.request.map(r => r.roomName).join(", ")}</div>,
-    },
-    {
-      title: "Tổng tiền",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price,
-      render: (price) => <div className={styles.priceCell}>{formatPrice(price)}</div>,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        { text: "PENDING", value: "PENDING" },
-        { text: "CONFIRMED", value: "CONFIRMED" },
-        { text: "CANCELED", value: "CANCELED" },
-        { text: "COMPLETED", value: "COMPLETED" },
-      ],
-      onFilter: (value, record) => record.status === value,
-      render: (_, record) => getBookingStatusTag(record.status),
-    },
-    {
-      title: "Ngày đặt",
-      dataIndex: "bookingDate",
-      key: "bookingDate",
-      sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
-      defaultSortOrder: "descend",
-      render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
-    },
-    {
-      title: "Hành động",
-      key: "action",
-      render: (_, record) => {
-        const menu = (
-          <Menu>
-            <Menu.Item
-              key="view"
-              icon={<EyeOutlined />}
-              onClick={() => handleView(record.bookingCode)}
-            >
-              Xem
-            </Menu.Item>
-
-            {!["COMPLETED", "CANCELED"].includes(record.status) && (
-              <Menu.Item
-                key="delete"
-                icon={<DeleteOutlined />}
-                onClick={() => handleDelete(record)}
-                danger
-              >
-                Hủy đơn
-              </Menu.Item>
-            )}
-          </Menu>
-        );
-
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button icon={<MoreOutlined />} />
-          </Dropdown>
-        );
-      },
-      align: "center",
-    },
-  ];
-
   return (
-    <div >
+    <div className={styles.container}>
       <div className={styles.header}>
         <h2>Danh sách đặt phòng</h2>
       </div>
@@ -165,18 +155,115 @@ const BookingList = () => {
             placeholder="Tìm theo mã đơn..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: 250, marginLeft: 8 }}
+            style={{ width: 300, marginLeft: 8 }}
           />
         </div>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        pagination={{ pageSize: 8 }}
-        scroll={{ y: 400 }}
-        style={{ tableLayout: "fixed" }}
-      />
+      {filteredData.length === 0 ? (
+        <Empty description="Không tìm thấy đơn đặt phòng" />
+      ) : (
+        <div className={styles.cardList}>
+          {filteredData.map((booking) => {
+            const menu = (
+              <Menu>
+                <Menu.Item
+                  key="view"
+                  icon={<EyeOutlined />}
+                  onClick={() => handleView(booking.bookingCode)}
+                >
+                  Xem chi tiết
+                </Menu.Item>
+                {!["COMPLETED", "CANCELED"].includes(booking.status) && (
+                  <Menu.Item
+                    key="delete"
+                    icon={<DeleteOutlined />}
+                    onClick={() => handleDelete(booking)}
+                    danger
+                  >
+                    Hủy đơn
+                  </Menu.Item>
+                )}
+              </Menu>
+            );
+
+            return (
+              <Card
+                key={booking.id}
+                hoverable
+                className={styles.horizontalCard}
+              >
+                <div className={styles.cardBody}>
+                  {/* Image Section */}
+                  <div className={styles.imageSection}>
+                    <img
+                      src={booking.image}
+                      alt={booking.roomType}
+                      className={styles.roomImage}
+                    />
+                  </div>
+
+                  {/* Left Section - Code & Status */}
+                  <div className={styles.leftSection}>
+                    <div className={styles.codeSection}>
+                      <span className={styles.bookingCode}>
+                        {booking.bookingCode}
+                      </span>
+                      {getBookingStatusTag(booking.status)}
+                    </div>
+                    <div className={styles.dateInfo}>
+                      <CalendarOutlined style={{ marginRight: 6 }} />
+                      <span style={{ fontSize: 13, color: "#666" }}>
+                        {formatDate(booking.bookingDate)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Middle Section - Room Info */}
+                  <div className={styles.middleSection}>
+                    <div className={styles.infoItem}>
+                      <HomeOutlined className={styles.icon} />
+                      <div>
+                        <div className={styles.label}>Loại phòng</div>
+                        <div className={styles.value}>{booking.roomType}</div>
+                        <div className={styles.roomNumbers}>
+                          {booking.request.map((r) => r.roomNumber).join(", ")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Section - Price & Actions */}
+                  <div className={styles.rightSection}>
+                    <div className={styles.priceSection}>
+                      <DollarOutlined className={styles.priceIcon} />
+                      <div>
+                        <div className={styles.label}>Tổng tiền</div>
+                        <div className={styles.priceValue}>
+                          {formatPrice(booking.price)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.actions}>
+                      <Button
+                        type="primary"
+                        icon={<EyeOutlined />}
+                        onClick={() => handleView(booking.bookingCode)}
+                      >
+                        Xem
+                      </Button>
+                      <Dropdown overlay={menu} trigger={["click"]}>
+                        <Button icon={<MoreOutlined />} />
+                      </Dropdown>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       <BookingDetailModal
         visible={isModalOpen}

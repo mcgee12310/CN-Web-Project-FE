@@ -7,16 +7,31 @@ export default function AccountSidebar({ active }) {
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: 1, label: "Thông tin tài khoản", icon: User, path: "/user/:id/setting" },
-    { id: 2, label: "Đơn của tôi", icon: CreditCard, path: "/user/:id/bookings" },
-    { id: 3, label: "Đánh giá", icon: Star, path: "/user/:id/reviews" },
-    { id: 4, label: "Thay đổi mật khẩu", icon: Lock, path: "/user/:id/password" },
-    { id: 5, label: "Đăng xuất", icon: LogOut, action: "logout" }, // ✅ không có path
+    {
+      id: 1,
+      label: "Thông tin tài khoản",
+      icon: User,
+      path: "/profile/setting",
+    },
+    {
+      id: 2,
+      label: "Đơn của tôi",
+      icon: CreditCard,
+      path: "/profile/bookings",
+    },
+    { id: 3, label: "Đánh giá", icon: Star, path: "/profile/reviews" },
+    {
+      id: 4,
+      label: "Thay đổi mật khẩu",
+      icon: Lock,
+      path: "/profile/password",
+    },
+    { id: 5, label: "Đăng xuất", icon: LogOut, action: "logout" },
   ];
 
   const handleLogout = () => {
-    localStorage.clear(); // giả lập đăng xuất
-    navigate("/login"); // điều hướng về trang login hoặc home
+    localStorage.clear();
+    navigate("/login");
   };
 
   const handleMenuClick = (item) => {
