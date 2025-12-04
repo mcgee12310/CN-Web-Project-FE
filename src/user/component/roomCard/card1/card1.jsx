@@ -53,6 +53,7 @@ function Card1() {
       <div className={styles.roomsGrid}>
         {rooms.map((room, i) => (
           <motion.div
+            key={room.id}
             ref={ref}
             initial={{ opacity: 0, y: 40 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}

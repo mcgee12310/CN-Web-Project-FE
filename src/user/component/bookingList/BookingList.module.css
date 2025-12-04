@@ -1,69 +1,249 @@
+.container {
+  padding: 24px;
+  background: white;
+  min-height: 100vh;
+}
+
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  margin-bottom: 24px;
 }
 
 .header h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
 }
 
 .controls {
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .searchBox {
-  width: 300px;
   display: flex;
-  align-items: space-between;
+  align-items: center;
 }
 
-.codeCell {
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.horizontalCard {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-left: 4px solid #ff6b6b;
+}
+
+.horizontalCard:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.cardBody {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 8px;
+}
+
+/* Image Section */
+.imageSection {
+  flex-shrink: 0;
+}
+
+.roomImage {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Left Section */
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.codeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bookingCode {
+  font-size: 18px;
   font-weight: 600;
-  color: #1677ff; /* Màu chủ đạo Ant Design */
-  cursor: pointer;
-  transition: color 0.2s ease;
+  color: #ff6b6b;
 }
 
-.codeCell:hover {
-  color: #0958d9;
+.dateInfo {
+  display: flex;
+  align-items: center;
+  color: #888;
 }
 
-.roomCell {
+/* Middle Section */
+.middleSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.icon {
+  font-size: 20px;
+  color: #1890ff;
+}
+
+.label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 14px;
   font-weight: 500;
   color: #262626;
-  background-color: #fafafa;
-  border-radius: 8px;
-  padding: 4px 8px;
-  display: inline-block;
-  min-width: 40px;
 }
 
-.priceCell {
-  font-weight: 600;
-  color: #35a000; /* xanh tiền */
+.roomNumbers {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
 }
 
-.dateCell {
-  color: #595959;
-  font-size: 14px;
-  font-style: italic;
-  font-weight: bold;
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 300px;
 }
 
-.viewBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.priceIcon {
+  font-size: 20px;
+  color: #ff6b6b;
+}
+
+.priceValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff6b6b;
 }
 
 .actions {
-  cursor: pointer;
-  color: #555;
-  align-items: center;
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cardBody {
+    flex-wrap: wrap;
+  }
+
+  .rightSection {
+    min-width: auto;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .searchBox {
+    width: 100%;
+  }
+
+  .searchBox input {
+    width: 100% !important;
+  }
+
+  .cardBody {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .imageSection {
+    width: 100%;
+  }
+
+  .roomImage {
+    width: 100%;
+    height: 180px;
+  }
+
+  .leftSection,
+  .middleSection,
+  .rightSection {
+    min-width: auto;
+    width: 100%;
+    padding: 0;
+    border: none;
+  }
+
+  .middleSection {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .rightSection {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .priceSection {
+    justify-content: space-between;
+  }
+
+  .actions {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .actions button {
+    flex: 1;
+  }
 }

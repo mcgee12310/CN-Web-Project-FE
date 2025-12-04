@@ -66,7 +66,7 @@ const Header = () => {
             <img
               src={user?.avatar || "/avatar-default.jpg"}
               alt="avatar"
-              onClick={() => navigate("/user")}
+              onClick={() => navigate(`/profile`)}
               style={{ cursor: "pointer" }}
             />
           </>

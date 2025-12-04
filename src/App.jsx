@@ -56,7 +56,7 @@ function App() {
       </Route>
 
       {/* User Routes */}
-      <Route path="/user/profile" element={<UserProfile />}>
+      <Route path="/profile" element={<UserProfile />}>
         <Route index element={<AccountSettings />} />
         <Route path="setting" element={<AccountSettings />} />
         <Route path="bookings" element={<UserBookings />} />

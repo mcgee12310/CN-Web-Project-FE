@@ -1,161 +1,244 @@
 .accountPage {
+  max-width: 100%;
+  background-color: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.header {
+  margin-bottom: 24px;
+  padding: 24px 0 0 24px;
+}
+
+.header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+/* Nội dung bên dưới chia 2 cột */
+.content {
+  display: flex;
+}
+/* --- CỘT TRÁI: PROFILE & STATS --- */
+.avatarSection {
+  flex: 1;
+  background: linear-gradient(to bottom, white, #ffffff);
+  padding: 20px 30px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin: 0;
-  margin-bottom: 1rem;
-}
-
-.avatarSection {
-  display: flex;
   align-items: center;
-  gap: 1rem;
+  border-right: 1px solid #f0f0f0;
+  min-width: 280px;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ddd;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
 }
 
 .name {
-  font-weight: 600;
-  font-size: 2rem;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
-/* Rank Styles */
+/* Badge Rank */
 .badge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 12px;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
   font-weight: 600;
-  margin: 10px;
-  transition: all 0.3s ease;
-}
-
-.badge::before {
-  content: '★';
-  font-size: 18px;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 2.5rem;
 }
 
 .silver {
-  background: #e8e8e8;
-  color: #555;
-  border: 2px solid #c0c0c0;
+  background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+  color: #757575;
+  border: 1px solid #bdbdbd;
 }
 
 .gold {
-  background: #fff9e6;
-  color: #d4a017;
-  border: 2px solid #f1c40f;
+  background: linear-gradient(135deg, #fff8e1, #ffecb3);
+  color: #f57f17;
+  border: 1px solid #ffca28;
 }
-
 .gold::before {
-  color: #f1c40f;
+  content: "★";
 }
 
 .diamond {
-  background: #e6f7ff;
-  color: #0066cc;
-  border: 2px solid #00bfff;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #0277bd;
+  border: 1px solid #4fc3f7;
 }
-
 .diamond::before {
-  color: #00bfff;
-  content: '◆';
+  content: "◆";
 }
 
-/* Thống kê */
+/* Stats: Đóng khung lại cho đỡ trống */
 .stats {
   display: flex;
-  margin: auto;
-  gap: 20px;
+  flex-direction: column; /* Xếp dọc trong cột trái */
+  gap: 15px;
+  width: 100%;
 }
 
 .statItem {
+  background-color: white;
+  padding: 15px;
+  border-radius: 12px;
+  border: 2px solid #eaecf0;
   text-align: center;
+  transition: transform 0.2s;
+}
+
+.statItem:hover {
+  transform: translateY(-2px);
+  border-color: #dbeafe;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .statValue {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
 }
 
 .statLabel {
-  font-size: 1rem;
-  color: #777;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 2px;
 }
 
+/* --- CỘT PHẢI: FORM --- */
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+  flex: 2; /* Chiếm 2 phần (khoảng 65%) */
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Grid 2 cột cho input */
+  gap: 20px;
+  align-content: flex-start; /* Đẩy nội dung lên trên */
 }
 
+/* Các field chiếm trọn bề ngang (Email, Tên) */
+.field:nth-child(1), /* Email */
+.field:nth-child(2)  /* Họ tên */ {
+  grid-column: span 2;
+}
+
+/* Các field còn lại (Ngày sinh, SĐT) tự động chia đôi grid */
 .field {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
 .field label {
-  font-weight: 500;
-  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4b5563;
+  padding-bottom: 8px;
 }
 
-.field input,
-.field select {
-  border: 1px solid #e5e7eb;
+.field input {
+  padding: 12px;
   border-radius: 8px;
-  padding: 0.6rem 0.8rem;
   font-size: 0.95rem;
-  background-color: #f9fafb;
+  transition: all 0.2s;
 }
 
-.field input:focus,
-.field select:focus {
+/* Input Editable */
+.field input:not(:read-only) {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+}
+.field input:not(:read-only):focus {
   outline: none;
-  border-color: #6366f1;
-  background-color: white;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
+/* Input Read-only (Email) */
+.field input:read-only {
+  background-color: #f3f4f6;
+  border: 1px solid transparent;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* Buttons */
 .submit {
-  margin-top: 1rem;
-  background-color: #6366f1;
+  grid-column: span 2; /* Nút full width */
+  margin-top: 10px;
+  background-color: #ff6b6b;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.8rem;
-  font-size: 1rem;
+  padding: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.2s;
 }
-
 .submit:hover {
-  background-color: #4f46e5;
+  background-color: #fca5a5;
 }
 
 .delete {
-  margin-top: -0.5rem;
-  background-color: #ff4d4f;
-  color: white;
-  border: none;
+  grid-column: span 2;
+  background: none;
+  color: #dc2626;
+  border: 1px dashed #fca5a5;
+  padding: 10px;
   border-radius: 8px;
-  padding: 0.8rem;
-  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.delete:hover {
+  background-color: #fef2f2;
+  border-color: #dc2626;
 }
 
-.delete:hover {
-  background-color: #d9363e;
+/* --- RESPONSIVE: Mobile quay về 1 cột --- */
+@media (max-width: 768px) {
+  .accountPage {
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  .avatarSection {
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .stats {
+    flex-direction: row; /* Mobile thì stats nằm ngang lại */
+    justify-content: center;
+  }
+
+  .form {
+    grid-template-columns: 1fr; /* Form về 1 cột */
+    padding: 30px 20px;
+  }
+
+  .field:nth-child(1),
+  .field:nth-child(2),
+  .submit,
+  .delete {
+    grid-column: span 1;
+  }
 }
