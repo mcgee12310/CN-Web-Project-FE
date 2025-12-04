@@ -12,12 +12,16 @@ import { useAuth } from "./auth/auth-context";
 
 // Admin imports would go here
 import AdminLayout from "./admin/AdminLayout";
-import Dashboard from "./admin/pages/Dashboard";
-import UserList from "./admin/pages/UserList";
-import UserDetail from "./admin/pages/UserDetail";
-import BookingList from "./admin/pages/BookingList";
-import BookingDetail from "./admin/pages/BookingDetail";
-import Reviews from "./admin/pages/Reviews";
+import Dashboard from "./admin/pages/DashboardPage/Dashboard";
+import UserList from "./admin/pages/UserListPage/UserList";
+import UserDetail from "./admin/pages/UserDetailPage/UserDetail";
+import BookingList from "./admin/pages/BookingListPage/BookingList";
+import BookingDetail from "./admin/pages/BookingDetailPage/BookingDetail";
+import RoomTypes from "./admin/pages/RoomTypesPage/roomTypes"; 
+import RoomTypeDetail from "./admin/pages/RoomTypesDetailPage/roomTypeDetail";
+import RoomList from "./admin/pages/RoomListPage/RoomList";
+import AdminRoomDetail from "./admin/pages/RoomDetailPage/RoomDetailPage";
+import Reviews from "./admin/pages/ReviewsPage/Reviews";
 
 // User imports would go here
 import UserProfile from "./user/pages/UserProfile/UserProfile";
@@ -44,6 +48,10 @@ function App() {
         <Route path="users/:id" element={<UserDetail />} />
         <Route path="bookings" element={<BookingList />} />
         <Route path="bookings/:id" element={<BookingDetail />} />
+        <Route path="room-types" element={<RoomTypes />} />
+        <Route path="room-types/:id" element={<RoomTypeDetail />} />
+        <Route path="rooms" element={<RoomList />} />
+        <Route path="rooms/:id" element={<AdminRoomDetail />} />
         <Route path="reviews" element={<Reviews />} />
       </Route>
 

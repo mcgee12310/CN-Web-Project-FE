@@ -1,0 +1,153 @@
+.container {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  min-width: inherit;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 24px 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.dateFormGroup {
+  align-items: center;
+  display: flex;
+  justify-content: space-between; /* This will put space between the two items */
+  margin-bottom: 16px;
+}
+
+.roomSelect {
+  width: 150%;
+}
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  height: fit-content;
+}
+
+label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+input, select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.actions {
+  display: flex;
+  justify-content: right;
+  gap: 12px;
+}
+
+.addBtn {
+  background-color: #10835c;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: 8px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.deleteBtn {
+  background-color: #bc3838;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 16px;
+  width: auto;
+  height: fit-content;
+}
+
+.saveBtn {
+  background-color: #4f46e5;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.saveBtn:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.cancelBtn {
+  background-color: #ddd;
+  color: #333;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.available {
+  background-color: #5ac372 !important;
+}
+
+.unavailable {
+  background-color: #eb717b !important;
+}
+
+:global(.react-calendar) {
+  width: 100%;
+  border: none;
+  background: white;
+}
+
+:global(.react-calendar__tile) {
+  height: 80px;
+  border-radius: 10px;
+}
+
+:global(.react-calendar__tile--active) {
+  background-color: #4f46e5 !important;
+  color: white !important;
+}
+
+:global(.react-calendar__tile) {
+  font-size: large !important;
+}
+
+:global(.react-calendar__tile--now) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+:global(.react-calendar__tile--now:hover) {
+  background: #e7e6e6 !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+:global(.react-calendar__tile--now.react-calendar__tile--active) {
+  background-color: #4f46e5 !important;
+  box-shadow: none !important;
+  color: #e7e6e6 !important;
+}

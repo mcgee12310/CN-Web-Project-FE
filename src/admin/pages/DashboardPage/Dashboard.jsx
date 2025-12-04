@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css';
 import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Table, Tag } from "antd";
-import { formatDate, formatPrice } from '../../utils/format';
+import { formatDate, formatPrice } from '../../../utils/format';
 
 const dashboardData = {
   stats: {

@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className={styles.logoBox}>
           <Hotel className={styles.logoIcon} />
         </div>
-        Hotel Management
+        HIKARI HOTEL
       </div>
 
       {/* Avatar admin bên phải */}
@@ -20,7 +20,7 @@ const Navbar = () => {
           alt="avatar"
           className={styles.avatar}
         />
-        <span className={styles.username}>Admin</span>
+        <span className={styles.username}>HIKARI HOTEL</span>
       </div>
     </div>
   );

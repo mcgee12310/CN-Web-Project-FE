@@ -8,9 +8,9 @@ const Sidebar = () => {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
     { id: 'users', label: 'Users', icon: Users, path: '/admin/users' },
     { id: 'bookings', label: 'Bookings', icon: DollarSign, path: '/admin/bookings' },
-    { id: 'rooms', label: 'Rooms', icon: Bed, path: '/admin/rooms' },
     { id: 'room-types', label: 'Room Types', icon: Home, path: '/admin/room-types' },
-    { id: 'review', label: 'Review', icon: Star, path: '/admin/review' }
+    { id: 'rooms', label: 'Rooms', icon: Bed, path: '/admin/rooms' },
+    { id: 'review', label: 'Review', icon: Star, path: '/admin/reviews' }
   ];
 
   return (
