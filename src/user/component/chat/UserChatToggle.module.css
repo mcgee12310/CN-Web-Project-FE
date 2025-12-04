@@ -1,0 +1,76 @@
+.chatButton {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  transition: all 0.3s ease;
+}
+
+.chatButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
+  background-color: #ff5252;
+}
+
+.chatButton:active {
+  transform: scale(1.05);
+}
+
+.chatButton svg {
+  width: 64px;   /* chiều ngang icon */
+  height: 64px;  /* chiều cao icon */
+}
+
+.chatWindow {
+  position: fixed;
+  bottom: 160px;
+  right: 40px;
+  width: 400px;
+  height: 600px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+  .chatButton {
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .chatWindow {
+    bottom: 90px;
+    right: 20px;
+    left: 20px;
+    width: auto;
+    height: 500px;
+  }
+}

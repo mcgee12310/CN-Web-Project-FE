@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.input {
+  resize: none;
+}
+
+.sendBtn {
+  height: 40px;
+}
