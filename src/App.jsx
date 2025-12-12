@@ -22,6 +22,7 @@ import RoomTypeDetail from "./admin/pages/RoomTypesDetailPage/roomTypeDetail";
 import RoomList from "./admin/pages/RoomListPage/RoomList";
 import AdminRoomDetail from "./admin/pages/RoomDetailPage/RoomDetailPage";
 import Reviews from "./admin/pages/ReviewsPage/Reviews";
+import AdminChats from "./admin/pages/ChatPage/AdminChatPage";
 
 // User imports would go here
 import UserProfile from "./user/pages/UserProfile/UserProfile";
@@ -53,6 +54,7 @@ function App() {
         <Route path="rooms" element={<RoomList />} />
         <Route path="rooms/:id" element={<AdminRoomDetail />} />
         <Route path="reviews" element={<Reviews />} />
+        <Route path="chats" element={<AdminChats />} />
       </Route>
 
       {/* User Routes */}

@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  height: 80vh;
+  overflow: hidden;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 12px;
+}
