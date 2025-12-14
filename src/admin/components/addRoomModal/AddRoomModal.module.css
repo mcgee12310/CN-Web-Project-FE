@@ -35,10 +35,18 @@
   background: #e74c3c !important;
   color: #fff !important;
   border: none;
+  font-weight: 600;
 }
 
 .saveBtn {
-  background: #4f46e5 !important;
+
   color: #fff !important;
+  border-radius: 6px;
+  background-color: #6366f1;
   border: none;
+  font-weight: 600;
+}
+
+.saveBtn:hover {
+  background-color: #4f46e5 !important;
 }

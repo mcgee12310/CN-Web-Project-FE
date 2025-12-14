@@ -1,63 +1,94 @@
-import React, { useState } from "react";
-import { Table, Input, Tag, Button, Menu, Dropdown } from "antd";
-import { SearchOutlined, EyeOutlined, DeleteOutlined, MoreOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Table, Input, Tag, Button, Menu, Dropdown, Modal } from "antd";
+import {
+  SearchOutlined,
+  EyeOutlined,
+  DeleteOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
 import styles from "./BookingList.module.css";
 import { useNavigate } from "react-router-dom";
-import { formatPrice, formatDate } from "../../../utils/format";
-
-const generateMockBookings = (count = 8) => {
-  const statuses = ["PENDING", "CONFIRMED", "CANCELED"];
-  const names = ["Nguyễn Văn A", "Trần Thị B", "Lê Minh C", "Phạm Hoàng D", "Võ Thị E"];
-
-  return Array.from({ length: count }, (_, i) => {
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-    const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomRooms = Math.floor(Math.random() * 3) + 1; // 1–3 phòng
-    const randomPrice = randomRooms * (Math.floor(Math.random() * 800000) + 500000); // 500k–1.3M/phòng
-    const randomDate = new Date(Date.now());
-
-    return {
-      id: i + 1,
-      bookingCode: `BK${1000 + i}`,
-      userName: randomName,
-      totalRoom: randomRooms,
-      totalPrice: randomPrice,
-      status: randomStatus,
-      bookingDate: randomDate,
-    };
-  });
-};
+import { formatPrice, formatDate, formatStatus } from "../../../utils/format";
+import { toast } from "react-toastify";
+import bookingService from "../../../services/admin/booking";
 
 const BookingList = () => {
-  const data = generateMockBookings();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [bookingToCancel, setBookingToCancel] = useState(null);
   const navigate = useNavigate();
 
-  const handleView = (code) => {
-    navigate(`/admin/bookings/${code.id}`);
-  };
+  // 📡 fetch bookings
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const res = await bookingService.getAllBookings();
 
-  const getBookingStatusTag = (status) => {
-    switch (status) {
-      case "CANCELED":
-        return <Tag color="red">{status}</Tag>;
-      case "CONFIRMED":
-        return <Tag color="green">{status}</Tag>;
-      case "PENDING":
-        return <Tag color="orange">{status}</Tag>;
-      case "COMPLETED":
-        return <Tag color="blue">{status}</Tag>;
-      default:
-        return <Tag color="gray">{status}</Tag>;
+      // 👉 map dữ liệu API → table
+      const mappedData = res.data.map((b) => ({
+        id: b.id,
+        bookingCode: b.bookingCode,
+        roomType: b.roomType,
+        userName: b.user?.name || b.userName,
+        totalRoom: b.totalRoom,
+        totalPrice: b.price,
+        status: b.status,
+        bookingDate: b.bookingDate,
+      }));
+
+      setData(mappedData);
+    } catch (err) {
+      console.error("Fetch bookings failed", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // 🔍 lọc booking theo code
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const handleView = (record) => {
+    navigate(`/admin/bookings/${record.id}`);
+  };
+
+  const openCancelModal = (record) => {
+    setBookingToCancel(record);
+    setShowCancelModal(true);
+  };
+
+  const closeCancelModal = () => {
+    setBookingToCancel(null);
+    setShowCancelModal(false);
+  };
+
+  const confirmCancel = async () => {
+    if (!bookingToCancel) return;
+
+    try {
+      await bookingService.cancelBooking(bookingToCancel.id);
+      toast.success(`Hủy đơn ${bookingToCancel.bookingCode} thành công`);
+      closeCancelModal();
+      fetchBookings();
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error?.response?.data?.error ||
+        error?.response?.data?.message ||
+        "Hủy đơn thất bại";
+      toast.error(errorMessage);
+      closeCancelModal();
+    }
+  };
+
+  // 🔍 search theo mã đơn
   const filteredData = data.filter((b) =>
-    b.bookingCode.toLowerCase().includes(search.toLowerCase())
+    b.bookingCode?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🧩 cột bảng
+  // 🧩 columns (GIỮ NGUYÊN STYLE)
   const columns = [
     {
       title: "Mã đơn",
@@ -67,50 +98,50 @@ const BookingList = () => {
       render: (text) => <span className={styles.codeCell}>{text}</span>,
     },
     {
-      title: "Tên khách đặt",
-      key: "userName",
-      sorter: (a, b) => a.userName.localeCompare(b.userName),
-      render: (_, record) => <div className={styles.nameCell}>{record.userName}</div>,
-    },
-    {
-      title: "Số phòng",
-      key: "totalRoom",
-      sorter: (a, b) => a.totalRoom - b.totalRoom,
+      title: "Tên phòng",
+      dataIndex: "roomType",
+      key: "roomType",
+      sorter: (a, b) => a.roomType.localeCompare(b.roomType),
       render: (_, record) => (
-        <div className={styles.totalRoomCell}>{record.totalRoom}</div>
+        <div className={styles.nameCell}>{record.roomType}</div>
       ),
     },
     {
       title: "Tổng tiền",
       dataIndex: "totalPrice",
       key: "price",
-      sorter: (a, b) => a.totalPrice - b.totalPrice,
-      render: (price) => <div className={styles.priceCell}>{formatPrice(price)}</div>,
+      sorter: (a, b) => a.price - b.price,
+      render: (price) => (
+        <div className={styles.priceCell}>{formatPrice(price)}</div>
+      ),
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       filters: [
-        { text: 'PENDING', value: 'PENDING' },
-        { text: 'CONFIRMED', value: 'CONFIRMED' },
-        { text: 'CANCELED', value: 'CANCELED' },
-        { text: 'COMPLETED', value: 'COMPLETED' },
+        { text: "Chờ thanh toán", value: "PAYMENT_PENDING" },
+        { text: "Đã thanh toán", value: "PAYMENT_COMPLETED" },
+        { text: "Đã hủy", value: "CANCELLED" },
+        { text: "Hoàn thành", value: "COMPLETED" },
       ],
       onFilter: (value, record) => record.status === value,
-      render: (_, record) => getBookingStatusTag(record.status),
+      render: (_, record) => formatStatus(record.status),
     },
     {
       title: "Ngày đặt",
       dataIndex: "bookingDate",
       key: "date",
-      defaultSortOrder: 'descend',
+      defaultSortOrder: "descend",
       sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
-      render: (date) => <div className={styles.dateCell}>{formatDate(date)}</div>,
+      render: (date) => (
+        <div className={styles.dateCell}>{formatDate(date)}</div>
+      ),
     },
     {
       title: "Hành động",
       key: "action",
+      fixed: 'right',
       render: (_, record) => {
         const menu = (
           <Menu>
@@ -122,11 +153,11 @@ const BookingList = () => {
               Xem
             </Menu.Item>
 
-            {!["COMPLETED", "CANCELED"].includes(record.status) && (
+            {!["COMPLETED", "CANCELLED"].includes(record.status) && (
               <Menu.Item
                 key="delete"
                 icon={<DeleteOutlined />}
-                onClick={() => handleDelete(record)}
+                onClick={() => openCancelModal(record)}
                 danger
               >
                 Hủy đơn
@@ -134,7 +165,6 @@ const BookingList = () => {
             )}
           </Menu>
         );
-
         return (
           <Dropdown overlay={menu} trigger={["click"]}>
             <Button icon={<MoreOutlined />} />
@@ -147,31 +177,52 @@ const BookingList = () => {
   ];
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h2>Danh sách đơn đặt phòng</h2>
-      </div>
+    <>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div>
+            <h1 className={styles.title}>Danh sách đơn đặt phòng</h1>
+            <p className={styles.subtitle}>Quản lý danh sách đơn đặt phòng hiện tại</p>
+          </div>
 
-      <div className={styles.controls}>
-        <div className={styles.searchBox}>
-          <SearchOutlined />
-          <Input
-            placeholder="Tìm kiếm theo mã đơn..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{ width: 250, marginLeft: 8 }}
-          />
+          <div className={styles.controls}>
+            <div className={styles.searchBox}>
+              <SearchOutlined />
+              <Input
+                placeholder="Tìm kiếm theo mã đơn..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{ width: 250, height: 40, marginLeft: 8 }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        rowKey="id"
-        pagination={{ pageSize: 5 }}
-        scroll={{ y: 400 }}
-      />
-    </div>
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          loading={loading}
+          pagination={{
+            showSizeChanger: true,
+            showTotal: (total) => `Tổng ${total} đơn`
+          }}
+          scroll={{ x: 1200, y: 500 }}
+        />
+      </div>
+      <Modal
+        title="Xác nhận hủy đơn"
+        open={showCancelModal}
+        onOk={confirmCancel}
+        onCancel={closeCancelModal}
+        okText="Hủy đơn"
+        cancelText="Đóng"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Bạn có chắc chắn muốn hủy đơn <strong>{bookingToCancel?.bookingCode}</strong> không?</p>
+      </Modal>
+    </>
+
   );
 };
 

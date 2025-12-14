@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { IoPerson, IoPricetag } from "react-icons/io5";
-import styles from "./RoomInfo.module.css";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import roomTypeService from "../../../../services/admin/roomType"; // <== chỉnh lại đường dẫn nếu khác
+import roomTypeService from "../../../../services/admin/roomType";
+import styles from "./RoomInfo.module.css";
 
-function RoomInfo({ roomData = {}, onSave = () => { } }) {
+function RoomInfo({ roomData = {}, amenities = [], allAmenities = [], onSave = () => {} }) {
   const { id: roomTypeId } = useParams();
 
+  // State cho thông tin phòng
   const [formData, setFormData] = useState({
     name: "",
     capacity: "",
@@ -16,9 +17,15 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
     description: ""
   });
 
+  // State cho tiện nghi
+  const safeAmenities = Array.isArray(amenities) ? amenities : [];
+  const [selectedAmenities, setSelectedAmenities] = useState(
+    safeAmenities.map((a) => (typeof a === "string" ? a : a.name))
+  );
+
   const [isDirty, setIsDirty] = useState(false);
 
-  // Khi có data từ API -> fill vào form
+  // Khởi tạo dữ liệu ban đầu
   useEffect(() => {
     if (roomData) {
       setFormData({
@@ -28,11 +35,16 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
         roomClass: roomData.roomClass || "",
         description: roomData.description || ""
       });
-
-      setIsDirty(false);
     }
-  }, [roomData]);
 
+    setSelectedAmenities(
+      safeAmenities.map((a) => (typeof a === "string" ? a : a.name))
+    );
+
+    setIsDirty(false);
+  }, [roomData, amenities]);
+
+  // Xử lý thay đổi thông tin phòng
   const handleChange = (field, value) => {
     const updated = {
       ...formData,
@@ -40,20 +52,24 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
     };
 
     setFormData(updated);
-
-    // so sánh với dữ liệu gốc để bật nút Lưu
-    const changed = JSON.stringify(updated) !==
-      JSON.stringify({
-        name: roomData.name || "",
-        capacity: roomData.capacity || 0,
-        price: roomData.price || 0,
-        roomClass: roomData.roomClass || "",
-        description: roomData.description || ""
-      });
-
-    setIsDirty(changed);
+    setIsDirty(true);
   };
 
+  // Xử lý toggle tiện nghi
+  const handleToggleAmenity = (amenityName) => {
+    let updated;
+
+    if (selectedAmenities.includes(amenityName)) {
+      updated = selectedAmenities.filter((a) => a !== amenityName);
+    } else {
+      updated = [...selectedAmenities, amenityName];
+    }
+
+    setSelectedAmenities(updated);
+    setIsDirty(true);
+  };
+
+  // Reset về trạng thái ban đầu
   const handleCancel = () => {
     setFormData({
       name: roomData.name || "",
@@ -63,38 +79,47 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
       description: roomData.description || ""
     });
 
+    setSelectedAmenities(
+      safeAmenities.map((a) => (typeof a === "string" ? a : a.name))
+    );
+
     setIsDirty(false);
   };
 
-  // ✅ Call API UPDATE
+  // Gửi cả 2 request cùng lúc
   const handleSubmit = async () => {
     if (!isDirty) return;
 
+    // Lấy amenityIds từ selectedAmenities (dựa vào name)
+    const amenityIds = allAmenities
+      .filter(am => selectedAmenities.includes(am.name))
+      .map(am => am.id);
+
+    // Payload gộp chung
     const payload = {
       name: formData.name,
       roomClass: formData.roomClass,
       description: formData.description,
       capacity: Number(formData.capacity),
-      price: Number(formData.price)
+      price: Number(formData.price),
+      amenityIds: amenityIds
     };
 
     try {
       await roomTypeService.updateRoomTypeInfo(roomTypeId, payload);
-
       onSave(payload);
       setIsDirty(false);
 
       console.log("✅ Updated:", payload);
-      toast.success("Cập nhật thông tin phòng thành công!");
+      toast.success("Cập nhật thông tin phòng và tiện nghi thành công!");
     } catch (err) {
       console.error("❌ Update failed:", err);
-      toast.error("Cập nhật thông tin phòng thất bại!");
+      toast.error("Cập nhật thất bại!");
     }
   };
 
   return (
     <section className={styles.roomInfo}>
-
       {/* ----- TITLE ----- */}
       <div className={styles.header}>
         <div className={styles.headerTop}>
@@ -104,18 +129,16 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
 
       {/* ----- FORM ----- */}
       <div className={styles.form}>
-
         {/* Tên phòng */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Tên phòng</label>
           <div className={styles.priceInputWrapper}>
-          <input
-            type="text"
-            className={styles.input}
-            value={formData.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-          />
-
+            <input
+              type="text"
+              className={styles.input}
+              value={formData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
           </div>
         </div>
 
@@ -125,9 +148,7 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
           <select
             className={styles.input}
             value={formData.roomClass}
-            onChange={(e) =>
-              handleChange("roomClass", e.target.value)
-            }
+            onChange={(e) => handleChange("roomClass", e.target.value)}
           >
             <option value="">-- Chọn hạng phòng --</option>
             <option value="STANDARD">STANDARD</option>
@@ -136,7 +157,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
             <option value="SUITE">SUITE</option>
           </select>
         </div>
-
         {/* Sức chứa */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Sức chứa</label>
@@ -150,7 +170,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
             />
           </div>
         </div>
-
         {/* Giá phòng */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Giá phòng</label>
@@ -164,7 +183,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
             />
           </div>
         </div>
-
         {/* Mô tả */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Mô tả</label>
@@ -175,11 +193,27 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
             />
+          </div>
+        </div>
 
+        {/* ========== TIỆN NGHI - STYLED AS FORM FIELD ========== */}
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Tiện nghi</label>
+          <div className={styles.amenitiesWrapper}>
+            {allAmenities.map((am) => (
+              <label key={am.id} className={styles.amenityItem}>
+                <input
+                  type="checkbox"
+                  checked={selectedAmenities.includes(am.name)}
+                  onChange={() => handleToggleAmenity(am.name)}
+                  className={styles.amenityCheckbox}
+                />
+                <span className={styles.amenityText}>{am.name}</span>
+              </label>
+            ))}
           </div>
         </div>
       </div>
-
       {/* ----- ACTION BUTTONS ----- */}
       <div className={styles.actions}>
         <button
@@ -191,11 +225,14 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
           Lưu
         </button>
 
-        <button className={styles.cancelBtn} onClick={handleCancel} type="button">
+        <button
+          className={styles.cancelBtn}
+          onClick={handleCancel}
+          type="button"
+        >
           Hủy
         </button>
       </div>
-
     </section>
   );
 }

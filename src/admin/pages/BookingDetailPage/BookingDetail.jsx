@@ -1,83 +1,61 @@
-import React, { useState } from "react";
-import { Input, Tabs } from "antd";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Tabs } from "antd";
 import styles from "./BookingDetail.module.css";
 import RequestCard from "../../components/requestCard/RequestCard";
-
-const booking = {
-  id: "BK-2025-001",
-  customerName: "Nguyễn Văn A",
-  customerEmail: "nguyenvana@example.com",
-  customerPhone: "0987654321",
-
-  // Danh sách request
-  requests: [
-    {
-      id: 1,
-      roomNumber: "A101",
-      roomType: "Garden Superior",
-      totalPeople: 2,
-      status: "CHECKIN",
-      price: 1200000,
-      note: "Khách muốn phòng gần hồ bơi.",
-      checkIn: "2025-11-10",
-      checkOut: "2025-11-12",
-
-      guests: [
-        {
-          id: 1,
-          guestName: "Trần Thị B",
-          identityType: "CCCD",
-          identityNumber: "012345678999",
-          identityIssueDate: "2020-01-20",
-          identityIssuePlace: "Hà Nội",
-        },
-        {
-          id: 2,
-          guestName: "Lê Văn C",
-          identityType: "Passport",
-          identityNumber: "P1234567",
-          identityIssueDate: "2022-05-11",
-          identityIssuePlace: "TP.HCM",
-        },
-      ],
-    },
-
-    {
-      id: 2,
-      roomNumber: "B202",
-      roomType: "Superior",
-      totalPeople: 3,
-      status: "Check out",
-      price: 1800000,
-      note: "Yêu cầu thêm chăn.",
-      checkIn: "2025-11-08",
-      checkOut: "2025-11-10",
-
-      guests: [
-        {
-          id: 1,
-          guestName: "Phạm Văn D",
-          identityType: "CCCD",
-          identityNumber: "036987456321",
-          identityIssueDate: "2019-09-12",
-          identityIssuePlace: "Đà Nẵng",
-        },
-      ],
-    },
-  ],
-};
-
-const { TextArea } = Input;
+import userService from "../../../services/admin/user";
+import bookingService from "../../../services/admin/booking";
+import { formatDate, formatStatus, formatPrice } from "../../../utils/format";
 
 export default function BookingDetail({ }) {
-  const [requests, setRequests] = useState(booking.requests || []);
+  const { id } = useParams();
+  const [booking, setBooking] = useState(null);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(false);
+
+  const fetchBookingDetail = async (id) => {
+    try {
+      setLoading(true);
+      const res = await bookingService.getBookingDetail(id);
+
+      setBooking(res.data);
+      setRequests(res.data.requests || []);
+    } catch (err) {
+      console.error("Fetch booking detail failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserDetail = async (userId) => {
+    try {
+      setUserLoading(true);
+      const res = await userService.getUserDetail(userId);
+      setUser(res.data);
+    } catch (err) {
+      console.error("Fetch user detail failed", err);
+    } finally {
+      setUserLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) fetchBookingDetail(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (booking?.userId) {
+      fetchUserDetail(booking.userId);
+    }
+  }, [booking]);
 
   const handleUpdate = (updatedRequest) => {
     setRequests((prev) =>
       prev.map((r) => (r.id === updatedRequest.id ? updatedRequest : r))
     );
   };
-
   const tabItems = requests.map((req) => ({
     key: String(req.id),
     label: `Request ${req.id}`,
@@ -86,10 +64,12 @@ export default function BookingDetail({ }) {
     ),
   }));
 
+  if (loading) return <div>Loading...</div>;
+  if (!booking) return null;
+
   return (
     <div className={styles.container}>
       <h2 className={styles.header}>Thông tin chi tiết - {booking.id}</h2>
-
       <div className={styles.cardRow}>
         {/* --- CUSTOMER INFORMATION --- */}
         <div className={styles.customerCard}>
@@ -97,20 +77,33 @@ export default function BookingDetail({ }) {
             <span>Thông tin khách hàng</span>
           </div>
 
-          <div className={styles.infoRow}>
-            <span className={styles.label}>Họ tên:</span>
-            <span>{booking.customerName}</span>
-          </div>
+          {userLoading ? (
+            <div>Loading user...</div>
+          ) : user ? (
+            <>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Họ tên:</span>
+                <span>{user.name}</span>
+              </div>
 
-          <div className={styles.infoRow}>
-            <span className={styles.label}>Email:</span>
-            <span>{booking.customerEmail}</span>
-          </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Email:</span>
+                <span>{user.email}</span>
+              </div>
 
-          <div className={styles.infoRow}>
-            <span className={styles.label}>Số điện thoại:</span>
-            <span>{booking.customerPhone}</span>
-          </div>
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Số điện thoại:</span>
+                <span>{user.phone}</span>
+              </div>
+
+              <div className={styles.infoRow}>
+                <span className={styles.label}>Hạng:</span>
+                <span className={styles.badge}>{user.customerTier}</span>
+              </div>
+            </>
+          ) : (
+            <div>Không tìm thấy thông tin người dùng</div>
+          )}
         </div>
 
         {/* --- BOOKING INFORMATION --- */}
@@ -121,31 +114,25 @@ export default function BookingDetail({ }) {
 
           <div className={styles.infoRow}>
             <span className={styles.label}>Mã đơn:</span>
-            <span>{booking.customerName}</span>
+            <span>{booking.bookingCode}</span>
           </div>
 
           <div className={styles.infoRow}>
             <span className={styles.label}>Tổng tiền:</span>
-            <span>{booking.customerEmail}</span>
-          </div>
-
-          <div className={styles.infoRow}>
-            <span className={styles.label}>Phương thức thanh toán:</span>
-            <span>{booking.customerPhone}</span>
+            <span>{formatPrice(booking.price)}</span>
           </div>
 
           <div className={styles.infoRow}>
             <span className={styles.label}>Trạng thái:</span>
-            <span>{booking.customerPhone}</span>
+            <span>{formatStatus(booking.status)}</span>
           </div>
 
           <div className={styles.infoRow}>
             <span className={styles.label}>Ngày đặt:</span>
-            <span>{booking.customerPhone}</span>
+            <span>{formatDate(booking.bookingDate)}</span>
           </div>
         </div>
       </div>
-
       {/* --- REQUEST CARDS --- */}
       <Tabs
         defaultActiveKey="1"

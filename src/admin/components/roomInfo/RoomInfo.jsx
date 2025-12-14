@@ -11,22 +11,17 @@ import {
 import roomService from "../../../services/admin/room";
 import roomTypeService from "../../../services/admin/roomType";
 import { Select } from "antd";
-
 const { Option } = Select;
-
 function RoomInfo({ roomData = {}, onSave = () => { } }) {
   const { id: roomId } = useParams();
-
   const [formData, setFormData] = useState({
     roomNumber: "",
     roomTypeId: null,
     description: "",
     status: "",
   });
-
   const [roomTypes, setRoomTypes] = useState([]);
   const [isDirty, setIsDirty] = useState(false);
-
   useEffect(() => {
     if (roomData) {
       setFormData({
@@ -35,13 +30,10 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
         description: roomData.description || "",
         status: roomData.status || "",
       });
-
       setIsDirty(false);
     }
-
     fetchRoomTypes();
   }, [roomData]);
-
   const fetchRoomTypes = async () => {
     try {
       const res = await roomTypeService.getAllRoomType();
@@ -50,55 +42,44 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
       toast.error("Không lấy được danh sách room type");
     }
   };
-
   const getInitialData = () => ({
     roomNumber: roomData.roomNumber || "",
     roomTypeId: roomData.roomTypeId || null,
     description: roomData.description || "",
     status: roomData.status || "",
   });
-
   const handleChange = (field, value) => {
     const updated = {
       ...formData,
       [field]: value,
     };
-
     setFormData(updated);
-
     const changed = JSON.stringify(updated) !== JSON.stringify(getInitialData());
     setIsDirty(changed);
   };
-
   const handleCancel = () => {
     setFormData(getInitialData());
     setIsDirty(false);
   };
-
   // ✅ Call API UPDATE ROOM
   const handleSubmit = async () => {
     if (!isDirty) return;
-
     const payload = {
       roomNumber: formData.roomNumber,
       description: formData.description,
       status: formData.status,
       roomTypeId: formData.roomTypeId,
     };
-
     try {
       await roomService.updateRoom(roomId, payload);
-
       onSave(payload);
       setIsDirty(false);
-
       toast.success("Cập nhật thông tin phòng thành công!");
     } catch (err) {
       console.error("❌ Update failed:", err);
       toast.error("Cập nhật thông tin phòng thất bại!");
     }
   };
-
   return (
     <section className={styles.roomInfo}>
       <div className={styles.form}>
@@ -115,7 +96,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
             />
           </div>
         </div>
-
         {/* ✅ Loại phòng (Select + API) */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Loại phòng</label>
@@ -135,25 +115,22 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
             </Select>
           </div>
         </div>
-
         {/* ✅ Trạng thái (Select giống RoomType) */}
         <div className={styles.formGroup}>
-  <label className={styles.label}>Trạng thái</label>
-  <div className={styles.inputWrapper}>
-    <SyncOutlined className={styles.priceIcon} />
-    <Select
-      style={{ flex: 1 }}
-      value={formData.status}
-      placeholder="Chọn trạng thái"
-      onChange={(value) => handleChange("status", value)}
-    >
-      <Option value="AVAILABLE">AVAILABLE</Option>
-      <Option value="OCCUPIED">OCCUPIED</Option>
-      <Option value="MAINTENANCE">MAINTENANCE</Option>
-    </Select>
-  </div>
-</div>
-
+          <label className={styles.label}>Trạng thái</label>
+          <div className={styles.inputWrapper}>
+            <SyncOutlined className={styles.priceIcon} />
+            <Select
+              style={{ flex: 1 }}
+              value={formData.status}
+              placeholder="Chọn trạng thái"
+              onChange={(value) => handleChange("status", value)}
+            >
+              <Option value="AVAILABLE">Khả dụng</Option>
+              <Option value="MAINTENANCE">Bảo trì</Option>
+            </Select>
+          </div>
+        </div>
         {/* Mô tả */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Mô tả</label>
@@ -168,7 +145,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
           </div>
         </div>
       </div>
-
       {/* ----- ACTION BUTTONS ----- */}
       <div className={styles.actions}>
         <button
@@ -179,7 +155,6 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
         >
           Lưu
         </button>
-
         <button
           className={styles.cancelBtn}
           onClick={handleCancel}
@@ -191,5 +166,4 @@ function RoomInfo({ roomData = {}, onSave = () => { } }) {
     </section>
   );
 }
-
 export default RoomInfo;
