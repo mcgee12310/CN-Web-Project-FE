@@ -3,90 +3,54 @@
   background-color: #fff;
   border-radius: 12px;
 }
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 48px;
 }
-
 .header h2 {
   margin: 0;
   font-size: 2rem;
   font-weight: 600;
 }
-
 .content {
   display: flex;
   gap: 40px;
   align-items: flex-start;
 }
-
 /* USER INFO */
 .userInfo {
   width: 280px;
   border-right: 1px solid #e5e5e5;
   padding-right: 24px;
 }
-
 .avatarSection {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
-
 .avatar {
   width: 60px;
   height: 60px;
   border-radius: 50%;
 }
 
-/* Rank Styles */
 .badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(78, 133, 196, 0.15) 0%, rgba(78, 133, 196, 0.08) 100%);
+  border: 1px solid rgba(78, 133, 196, 0.3);
+  color: #3b6fb3;
   font-weight: 600;
-  margin: 0px;
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.badge::before {
-  content: '★';
-  font-size: 18px;
-}
-
-.silver {
-  background: #e8e8e8;
-  color: #555;
-  border: 2px solid #c0c0c0;
-}
-
-.gold {
-  background: #fff9e6;
-  color: #d4a017;
-  border: 2px solid #f1c40f;
-}
-
-.gold::before {
-  color: #f1c40f;
-}
-
-.diamond {
-  background: #e6f7ff;
-  color: #0066cc;
-  border: 2px solid #00bfff;
-}
-
-.diamond::before {
-  color: #00bfff;
-  content: '◆';
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  max-width: max-content;
+  box-shadow: 0 2px 4px rgba(78, 133, 196, 0.1);
 }
 
 .active {
@@ -96,14 +60,12 @@
   font-weight: 600;
   padding: 8px;
 }
-
 .inactive {
   border-radius: 9999px;
   padding: 8px;
   background-color: #555;
   color: #ffffff;
 }
-
 .roleUser {
   background-color: #ecfdf5; /* xanh nhạt */
   color: #047857; /* xanh ngọc đậm */
@@ -113,7 +75,6 @@
   display: inline-block;
   font-size: 0.85rem;
 }
-
 .roleAdmin {
   background-color: #eef2ff; /* tím nhạt */
   color: #4338ca; /* tím đậm */
@@ -123,30 +84,25 @@
   display: inline-block;
   font-size: 0.85rem;
 }
-
 .name {
   font-size: 18px;
   font-weight: 500;
 }
-
 .infoItem {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
   border-top: 1px dashed #eee;
 }
-
 .infoItem span:first-child {
   color: #666;
 }
-
 .infoItem.button-center {
   display: flex;           /* biến div thành flex container */
   justify-content: center; /* canh ngang giữa */
   align-items: center;     /* canh dọc giữa */
   margin: 10px 0;
 }
-
 .buttonContainer {
   display: flex;
   justify-content: center;
@@ -155,7 +111,6 @@
   padding-top: 10px;
   border-top: 1px dashed #eee;
 }
-
 .deleteBtn {
   background-color: #bc3838;
   color: white;
@@ -166,12 +121,10 @@
   font-weight: 500;
   transition: all 0.3s ease;
 }
-
 .deleteBtn:hover {
   background-color: #a02e2e;
   transform: translateY(-2px);
 }
-
 .restoreBtn {
   background-color: #10835c;
   color: white;
@@ -182,41 +135,33 @@
   font-weight: 500;
   transition: all 0.3s ease;
 }
-
 .restoreBtn:hover {
   background-color: #0a5a42;
   transform: translateY(-2px);
 }
-
-
 /* BOOKING SECTION */
 .bookingSection {
   flex: 1;
 }
-
 .bookingHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
-
 .bookingTitle {
   font-size: 1.2rem;
   font-weight: 600;
 }
-
 .search {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
 }
-
 .search:focus {
   border-color: #6b5bff;
 }
-
 /* TABLE */
 .codeCell {
   font-weight: 600;
@@ -224,42 +169,31 @@
   cursor: pointer;
   transition: color 0.2s ease;
 }
-
 .codeCell:hover {
   color: #0958d9;
 }
 
-.roomList {
+.roomCell {
   display: flex;
   flex-direction: column;
   gap: 2px;
-}
-
-.roomItem {
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 600;
 }
 
 .priceCell {
   font-weight: 600;
   color: #52c41a; /* xanh tiền */
 }
-
 .priceCell::after {
   content: " VNĐ";
   font-size: 12px;
   color: #999;
 }
-
 .dateCell {
   color: #595959;
   font-size: 14px;
   font-style: italic;
   font-weight: bold;
 }
-
 .viewBtn {
   background: none;
   border: none;

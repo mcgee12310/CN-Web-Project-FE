@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import styles from "./card2.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { formatPrice } from "../../../utils/format.js";
+import { formatPrice } from "../../../utils/format";
 
 function Card2({ rooms }) {
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 5;
   const navigate = useNavigate();
-
   // Hàm tạo icon sao theo số review
   const renderStars = (rating) => {
     const stars = [];
@@ -21,36 +20,30 @@ function Card2({ rooms }) {
     }
     return stars;
   };
-
   // Tính toán phân trang
   const totalPages = Math.ceil(rooms.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
   const endIndex = startIndex + cardsPerPage;
   const currentRooms = rooms.slice(startIndex, endIndex);
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
-
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -80,7 +73,6 @@ function Card2({ rooms }) {
     }
     return pages;
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.roomsGrid}>
@@ -92,7 +84,7 @@ function Card2({ rooms }) {
           >
             <div className={styles.roomImageWrapper}>
               <img
-                src={"/background1.jpg"}
+                src={room.primaryImageUrl}
                 alt={room.name}
                 className={styles.roomImage}
               />
@@ -119,7 +111,6 @@ function Card2({ rooms }) {
           </div>
         ))}
       </div>
-
       {totalPages > 1 && (
         <div className={styles.pagination}>
           <button
@@ -130,7 +121,6 @@ function Card2({ rooms }) {
             <IoChevronBack />
             <span>Trước</span>
           </button>
-
           <div className={styles.pageNumbers}>
             {getPageNumbers().map((page, index) => {
               if (page === "...") {
@@ -153,7 +143,6 @@ function Card2({ rooms }) {
               );
             })}
           </div>
-
           <button
             className={`${styles.paginationButton} ${styles.nextButton}`}
             onClick={handleNextPage}
@@ -167,5 +156,4 @@ function Card2({ rooms }) {
     </div>
   );
 }
-
 export default Card2;

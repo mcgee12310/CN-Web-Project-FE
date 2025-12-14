@@ -10,35 +10,69 @@
   margin-bottom: 24px;
 }
 
+.guestCard {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.guestHeader{
+  display: flex;
+  font-size: 1rem;
+}
+
+.deleteIcon{
+  color: #e74c3c;
+  margin-left: auto;
+}
+
+.formContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 field = giãn đều */
+  gap: 16px;
+  width: 100%;
+}
+
 .formRow {
   display: flex;
   flex-direction: column;
-  margin: 0;
-  margin-bottom: 18px;
+  width: 100%;
 }
 
 .formRow label {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 6px;
   text-transform: capitalize;
 }
 
+.formRow :global(.ant-input),
+.formRow :global(.ant-select),
+.formRow :global(.ant-picker) {
+  width: 100%;
+}
+
 .footer {
-  margin-top: 24px;
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: flex-end; /* căn nút về phía bên phải */
+  gap: 10px; /* khoảng cách giữa 2 nút */
+  margin-top: 20px;
 }
 
-.cancelBtn {
-  background: #e74c3c !important;
-  color: #fff !important;
-  border: none;
+@media (max-width: 1200px) {
+  .formContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-.saveBtn {
-  background: #4f46e5 !important;
-  color: #fff !important;
-  border: none;
+@media (max-width: 768px) {
+  .formContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    grid-template-columns: 1fr;
+  }
 }

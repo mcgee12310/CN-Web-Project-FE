@@ -1,133 +1,122 @@
-import React, { useState } from "react";
-import { Modal, Input, InputNumber, Select, Button } from "antd";
-import styles from "./AddRoomTypeModal.module.css";
+import React, { useState, useEffect } from "react";
+import { Modal, Input, InputNumber, Select } from "antd";
 import { toast } from "react-toastify";
+import styles from "./AddRoomTypeModal.module.css";
 import roomTypeService from "../../../services/admin/roomType";
+
+const { TextArea } = Input;
 
 const AddRoomTypeModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
     name: "",
     roomClass: "",
     description: "",
-    capacity: 0,
-    price: 0
+    capacity: 1,
+    price: 0,
   });
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    if (open) {
+      // reset form khi mở modal
+      setForm({
+        name: "",
+        roomClass: "",
+        description: "",
+        capacity: 1,
+        price: 0,
+      });
+    }
+  }, [open]);
+
+  const handleChange = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = async () => {
     try {
-      if (
-        !form.name ||
-        !form.roomClass ||
-        !form.description ||
-        !form.capacity ||
-        !form.price
-      ) {
+      if (!form.name || !form.roomClass || !form.description) {
         toast.warning("Vui lòng điền đầy đủ thông tin!");
         return;
       }
 
       await roomTypeService.addNewRoomType(form);
       toast.success("Thêm loại phòng thành công!");
-
       onSave && onSave();
       onClose();
-
-      setForm({
-        name: "",
-        roomClass: "",
-        description: "",
-        capacity: 0,
-        price: 0
-      });
-
     } catch (error) {
-      toast.error("Thêm loại phòng thất bại!");
       console.error(error);
+      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
     }
   };
 
   return (
     <Modal
+      title="Thêm loại phòng mới"
       open={open}
+      onOk={handleSave}
       onCancel={onClose}
-      footer={null}
-      centered
-      width={500}
-      className={styles.modal}
+      okText="Tạo mới"
+      cancelText="Hủy"
+      width={600}
     >
-      <div className={styles.container}>
-        <h2 className={styles.title}>Thêm loại phòng mới</h2>
-
-        <div className={styles.section}>
-          <p className={styles.label}>Tên phòng</p>
+      <div className={styles.modalForm}>
+        <div className={styles.formGroup}>
+          <label>Tên phòng *</label>
           <Input
-            className={styles.input}
-            placeholder="Nhập tên phòng ..."
             value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            onChange={(e) => handleChange("name", e.target.value)}
+            placeholder="Nhập tên phòng"
           />
         </div>
 
-        <div className={styles.section}>
-          <p className={styles.label}>Hạng phòng</p>
-          <select
-            className={styles.input}
+        <div className={styles.formGroup}>
+          <label>Hạng phòng *</label>
+          <Select
             value={form.roomClass}
-            onChange={(e) =>
-              setForm({ ...form, roomClass: e.target.value })
-            }
+            onChange={(value) => handleChange("roomClass", value)}
+            placeholder="Chọn hạng phòng"
+            style={{ width: "100%" }}
           >
-            <option value="">-- Chọn hạng phòng --</option>
-            <option value="STANDARD">STANDARD</option>
-            <option value="SUPERIOR">SUPERIOR</option>
-            <option value="BUSINESS">BUSINESS</option>
-            <option value="SUITE">SUITE</option>
-          </select>
-
+            <Select.Option value="STANDARD">STANDARD</Select.Option>
+            <Select.Option value="SUPERIOR">SUPERIOR</Select.Option>
+            <Select.Option value="BUSINESS">BUSINESS</Select.Option>
+            <Select.Option value="SUITE">SUITE</Select.Option>
+          </Select>
         </div>
 
-        <div className={styles.section}>
-          <p className={styles.label}>Sức chứa</p>
-          <InputNumber
-            className={styles.input}
-            placeholder="Nhập sức chứa..."
-            min={1}
-            onChange={(value) => setForm({ ...form, capacity: value })}
-          />
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Sức chứa *</label>
+            <InputNumber
+              value={form.capacity}
+              onChange={(value) => handleChange("capacity", value)}
+              min={1}
+              style={{ width: "100%" }}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Giá mặc định *</label>
+            <InputNumber
+              value={form.price}
+              onChange={(value) => handleChange("price", value)}
+              min={0}
+              style={{ width: "100%" }}
+            />
+          </div>
         </div>
 
-        <div className={styles.section}>
-          <p className={styles.label}>Mô tả</p>
-          <Input.TextArea
-            className={styles.input}
-            placeholder="Nhập mô tả ..."
+        <div className={styles.formGroup}>
+          <label>Mô tả *</label>
+          <TextArea
             value={form.description}
+            onChange={(e) => handleChange("description", e.target.value)}
             rows={3}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            placeholder="Nhập mô tả phòng"
           />
         </div>
-
-        <div className={styles.section}>
-          <p className={styles.label}>Giá mặc định</p>
-          <InputNumber
-            className={styles.input}
-            placeholder="Nhập giá mặc định ..."
-            min={0}
-            onChange={(value) => setForm({ ...form, price: value })}
-          />
-        </div>
-
-        <Button
-          type="primary"
-          className={styles.saveButton}
-          onClick={handleSubmit}
-          block
-        >
-          Lưu
-        </Button>
       </div>
     </Modal>
   );
 };
-
 export default AddRoomTypeModal;

@@ -2,103 +2,85 @@ import React, { useState, useEffect, } from "react";
 import { Table, Input, Tag, Button, Modal } from "antd";
 import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
 import styles from "./UserDetail.module.css";
-import { formatDate } from "../../../utils/format";
+import { formatDate, formatPrice, formatStatus } from "../../../utils/format";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import userService from "../../../services/admin/user";
-
-// seed bookings
-const bookingsSeed = [
-  {
-    id: 0,
-    bookingCode: "string",
-    bookingDate: "2025-11-15T07:56:54.831Z",
-    status: "PENDING",
-    declineReason: "string",
-    requests: [
-      { id: 0, roomNumber: "1" },
-      { id: 1, roomNumber: "2" },
-    ],
-    createdAt: "2025-11-02T07:56:54.831Z",
-    updatedAt: "2025-11-02T07:56:54.831Z"
-  },
-  {
-    id: 1,
-    bookingCode: "string",
-    bookingDate: "2025-11-01T07:56:54.831Z",
-    status: "CONFIRMED",
-    requests: [],
-    createdAt: "2025-11-02T07:56:54.831Z",
-    updatedAt: "2025-11-02T07:56:54.831Z"
-  },
-  // ... các booking khác
-];
 
 const UserDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [search, setSearch] = useState("");
   const [user, setUser] = useState(null);
-  const [bookings, setBookings] = useState(bookingsSeed);
-  const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([]);
+  const [userLoading, setUserLoading] = useState(true);
+  const [bookingLoading, setBookingLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalAction, setModalAction] = useState(""); // "delete" | "restore"
-
   // fetch user info từ API
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setLoading(true);
-
+        setUserLoading(true);
         const response = await userService.getUserDetail(id);
-
-        // Nếu API trả về: { data: [...] }
-        const data = response.data;
-
-        setUser(data);
-        console.log("User:", data);
+        setUser(response.data);
       } catch (error) {
-        console.error("Lỗi khi lấy thông tin người dùng", error);
+        console.error("Lỗi khi lấy user", error);
+        toast.error("Không tải được thông tin người dùng");
       } finally {
-        setLoading(false);
+        setUserLoading(false);
+      }
+    };
+
+    const fetchUserBooking = async () => {
+      try {
+        setBookingLoading(true);
+        const response = await userService.getUserBooking(id);
+        setBookings(response.data || []);
+      } catch (error) {
+        console.error("Lỗi khi lấy booking", error);
+        toast.error("Không tải được lịch sử đặt phòng");
+      } finally {
+        setBookingLoading(false);
       }
     };
 
     fetchUserData();
-  }, []);
+    fetchUserBooking();
+  }, [id]);
 
-  if (loading) return <div>Đang tải...</div>;
+  if (userLoading) {
+    return <div className={styles.loading}>Đang tải dữ liệu...</div>;
+  }
+
+  if (!user) {
+    return <div className={styles.loading}>Không tìm thấy người dùng.</div>;
+  }
 
   const handleView = (record) => {
     navigate(`/admin/bookings/${record.id}`);
   };
-
   const handleDelete = () => {
     setModalAction("delete");
     setModalVisible(true);
   };
-
   const handleRestore = () => {
     setModalAction("restore");
     setModalVisible(true);
   };
-
   const handleModalOk = async () => {
     try {
       setModalLoading(true);
       const newStatus = modalAction === "delete" ? false : true;
-
       // Gọi API update user
       if (modalAction === "delete") {
         await userService.deleteUser(user.id);
       } else {
         await userService.resoreUser(user.id);
       }
-
       // Cập nhật state
       setUser(prev => ({ ...prev, status: newStatus }));
-
       toast.success(
         modalAction === "delete"
           ? "Người dùng đã bị vô hiệu hóa."
@@ -116,12 +98,12 @@ const UserDetail = () => {
       setModalVisible(false);
     }
   };
-
   const getAvatarUrl = (name) =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
   const getRankClass = (rank) => {
     switch (rank) {
+      case "BRONZE": return styles.silver;
       case "SILVER": return styles.silver;
       case "GOLD": return styles.gold;
       case "DIAMOND": return styles.diamond;
@@ -131,17 +113,11 @@ const UserDetail = () => {
 
   const getRoleClass = (role) => role === "ADMIN" ? styles.roleAdmin : styles.roleUser;
   const getUserStatusClass = (status) => status ? styles.active : styles.inactive;
-  const getBookingStatusTag = (status) => {
-    switch (status) {
-      case "CANCELED": return <Tag color="red">{status}</Tag>;
-      case "CONFIRMED": return <Tag color="green">{status}</Tag>;
-      case "PENDING": return <Tag color="orange">{status}</Tag>;
-      case "COMPLETED": return <Tag color="blue">{status}</Tag>;
-      default: return <Tag color="red">{status}</Tag>;
-    }
-  };
 
-  const filtered = bookings.filter(b => b.bookingCode?.toString().includes(search));
+  const filtered = bookings.filter(
+    b => b.bookingCode?.toString().includes(search)
+  );
+
   const columns = [
     {
       title: "Mã đơn",
@@ -152,24 +128,17 @@ const UserDetail = () => {
     },
     {
       title: "Tên phòng",
-      key: "rooms",
-      render: (_, record) => {
-        if (!record.requests || record.requests.length === 0) return <span>—</span>;
-        return <div className={styles.roomList}>
-          {record.requests.map((r, i) => <div key={i} className={styles.roomItem}>{r.roomNumber}</div>)}
-        </div>;
-      }
+      dataIndex: "roomType",
+      key: "roomType",
+      sorter: (a, b) => a.roomType.localeCompare(b.roomType),
+      render: text => <span className={styles.roomCell}>{text}</span>
     },
     {
       title: "Tổng giá trị",
-      dataIndex: "amount",
-      key: "amount",
-      sorter: (a, b) => a.amount - b.amount,
-    },
-    {
-      title: "Phương thức thanh toán",
-      dataIndex: "payment_method",
-      key: "payment_method",
+      dataIndex: "price",
+      key: "price",
+      sorter: (a, b) => a.price - b.price,
+      render: (_, record) => formatPrice(record.price)
     },
     {
       title: "Trạng thái",
@@ -182,13 +151,12 @@ const UserDetail = () => {
         { text: 'COMPLETED', value: 'COMPLETED' },
       ],
       onFilter: (value, record) => record.status === value,
-      render: (_, record) => getBookingStatusTag(record.status)
+      render: (_, record) => formatStatus(record.status)
     },
     {
       title: "Ngày tạo",
       dataIndex: "bookingDate",
       key: "date",
-      defaultSortOrder: 'descend',
       sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
       render: date => <div className={styles.dateCell}>{formatDate(date)}</div>
     },
@@ -201,15 +169,17 @@ const UserDetail = () => {
       align: "center",
     },
   ];
-
   return (
     <div className={styles.container}>
       <div className={styles.header}><h2>Chi tiết người dùng</h2></div>
-
       <div className={styles.content}>
         <div className={styles.userInfo}>
           <div className={styles.avatarSection}>
-            <img src={getAvatarUrl(user.name)} alt="avatar" className={styles.avatar} />
+            <img
+              src={getAvatarUrl(user.name || "User")}
+              alt="avatar"
+              className={styles.avatar}
+            />
             <div>
               <div className={`${styles.role} ${getRoleClass(user.role)}`}>{user.role}</div>
               <div className={styles.name}>{user.name}</div>
@@ -218,7 +188,9 @@ const UserDetail = () => {
           <div className={styles.infoItem}><span>Email</span><span>{user.email}</span></div>
           <div className={styles.infoItem}><span>Số điện thoại</span><span>{user.phone}</span></div>
           <div className={styles.infoItem}><span>Ngày sinh</span><span>{user.birthDate ? formatDate(user.birthDate) : "—"}</span></div>
-          <div className={styles.infoItem}><span>Hạng</span><span className={`${styles.badge} ${getRankClass(user.rank)}`}>{user.rank || "—"}</span></div>
+          <div className={styles.infoItem}><span>Tổng số đơn</span><span>{user.totalBookings ? user.totalBookings : "-"}</span></div>
+          <div className={styles.infoItem}><span>Tổng chi tiêu</span><span>{user.totalSpent ? formatPrice(user.totalSpent) : "-"}</span></div>
+          <div className={styles.infoItem}><span>Hạng</span><span className={`${styles.badge}`}>{user.customerTier || "Vô hạng"}</span></div>
           <div className={styles.infoItem}><span>Trạng thái</span><span className={getUserStatusClass(user.status)}>{user.status ? "Hoạt động" : "Ngừng hoạt động"}</span></div>
           <div className={styles.infoItem}><span>Ngày tạo tài khoản</span><span>{formatDate(user.createdAt)}</span></div>
           <div className={styles.buttonContainer}>
@@ -233,7 +205,6 @@ const UserDetail = () => {
             )}
           </div>
         </div>
-
         <div className={styles.bookingSection}>
           <div className={styles.bookingHeader}>
             <div className={styles.bookingTitle}>Lịch sử đặt phòng ({filtered.length})</div>
@@ -247,16 +218,18 @@ const UserDetail = () => {
               />
             </div>
           </div>
-
           <Table
             columns={columns}
             dataSource={filtered}
             rowKey="code"
-            pagination={{ pageSize: 10 }}
+            loading={bookingLoading}
+            pagination={{
+              showSizeChanger: true,
+              showTotal: (total) => `Tổng ${total} đơn`
+            }}
           />
         </div>
       </div>
-
       <Modal
         title={modalAction === "delete" ? "Vô hiệu hóa người dùng" : "Khôi phục người dùng"}
         open={modalVisible}

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Table, Input, Button } from "antd";
-import { SearchOutlined, EyeOutlined } from "@ant-design/icons";
+import { SearchOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import styles from "./RoomList.module.css";
 import AddRoomModal from "../../components/addRoomModal/AddRoomModal";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import roomService from "../../../services/admin/room"; // <-- tạo file này
-
 const RoomList = () => {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [openModal, setOpenModal] = useState(false);
-
   const fetchRooms = async () => {
     try {
       setLoading(true);
-
       const res = await roomService.getAllRooms();
       const data = res.data.map((r) => ({
         key: r.id,
@@ -27,7 +24,6 @@ const RoomList = () => {
         description: r.description,
         status: r.status,
       }));
-
       setRooms(data);
     } catch (error) {
       console.error(error);
@@ -36,20 +32,16 @@ const RoomList = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchRooms();
   }, []);
-
   const handleView = (record) => {
     navigate(`/admin/rooms/${record.id}`);
   };
-
   const filteredData = rooms.filter((room) =>
     room.roomNumber.toLowerCase().includes(searchText.toLowerCase()) ||
     room.roomTypeName.toLowerCase().includes(searchText.toLowerCase())
   );
-
   const columns = [
     {
       title: "Tên phòng",
@@ -103,6 +95,8 @@ const RoomList = () => {
       title: "Hành động",
       key: "action",
       align: "center",
+            fixed: 'right',
+
       width: 100,
       render: (_, record) => (
         <Button
@@ -112,14 +106,15 @@ const RoomList = () => {
       ),
     },
   ];
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Danh sách phòng</h2>
-      </div>
+        <div>
+          <h1 className={styles.title}>Danh sách phòng</h1>
+          <p className={styles.subtitle}>Quản lý tất cả phòng hiện có</p>
+        </div>
 
-      <div className={styles.controls}>
+        <div className={styles.controls}>
         <div className={styles.searchBox}>
           <SearchOutlined />
           <Input
@@ -129,20 +124,26 @@ const RoomList = () => {
             style={{ width: 300, marginLeft: 8 }}
           />
         </div>
-        <button
-          className={styles.addBtn}
-          onClick={() => setOpenModal(true)}
-        >
-          Thêm phòng
-        </button>
+        <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            size="large"
+            onClick={() => setOpenModal(true)}
+          >
+            Thêm loại phòng
+          </Button>
+      </div>
       </div>
 
       <Table
         columns={columns}
         dataSource={filteredData}
         loading={loading}
-        pagination={{ pageSize: 10 }}
-        scroll={{ y: 500 }}
+        pagination={{
+          showSizeChanger: true,
+          showTotal: (total) => `Tổng ${total} phòng`
+        }}
+        scroll={{ x: 1200, y: 500 }}
       />
 
       <AddRoomModal
@@ -153,5 +154,4 @@ const RoomList = () => {
     </div>
   );
 };
-
 export default RoomList;

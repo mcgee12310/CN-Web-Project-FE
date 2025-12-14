@@ -3,18 +3,28 @@
   background-color: #fff;
   border-radius: 12px;
 }
-
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.header h2 {
-  margin: 0;
+.title {
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 .controls {
@@ -22,11 +32,11 @@
   justify-content: flex-end;
   margin-bottom: 16px;
 }
-
 .searchBox {
   width: 300px;
   display: flex;
   align-items: space-between;
+  margin-right: 12px;
 }
 
 .addBtn {
@@ -41,7 +51,6 @@
   height: fit-content;
   margin-left: 8px;
 }
-
 .available {
   background-color: #10b981;
   border-radius: 9999px;
@@ -49,22 +58,18 @@
   font-weight: 600;
   padding: 8px;
 }
-
 .booked {
   border-radius: 9999px;
   padding: 8px;
   background-color: #555;
   color: #ffffff;
-
 }
-
 .maintenance {
   border-radius: 9999px;
   padding: 8px;
   background-color: #a02e2e;
   color: #ffffff;
 }
-
 .desc {
   max-width: 300px;
   white-space: nowrap;

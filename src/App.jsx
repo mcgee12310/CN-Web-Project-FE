@@ -23,6 +23,7 @@ import RoomTypeDetail from "./admin/pages/RoomTypesDetailPage/roomTypeDetail";
 import RoomList from "./admin/pages/RoomListPage/RoomList";
 import AdminRoomDetail from "./admin/pages/RoomDetailPage/RoomDetailPage";
 import Reviews from "./admin/pages/ReviewsPage/Reviews";
+import TierManagement from "./admin/pages/TierManagementPage/TierManagement";
 import AdminChats from "./admin/pages/ChatPage/AdminChatPage";
 
 // User imports would go here
@@ -55,6 +56,7 @@ function App() {
         <Route path="rooms" element={<RoomList />} />
         <Route path="rooms/:id" element={<AdminRoomDetail />} />
         <Route path="reviews" element={<Reviews />} />
+        <Route path="tiers" element={<TierManagement />} />
         <Route path="chats" element={<AdminChats />} />
       </Route>
 

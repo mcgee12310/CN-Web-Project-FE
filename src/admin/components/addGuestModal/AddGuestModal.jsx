@@ -1,96 +1,212 @@
 import React, { useState } from "react";
-import { Modal, Input, DatePicker, Button, Select } from "antd";
+import {
+  Modal,
+  Input,
+  DatePicker,
+  Button,
+  Select,
+  message,
+} from "antd";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import styles from "./AddGuestModal.module.css";
 import { toast } from "react-toastify";
+import bookingService from "../../../services/admin/booking";
 
-const AddGuestModal = ({ open, onClose, onSave }) => {
-  const [form, setForm] = useState({
-    guestName: "",
-    identityType: "",
-    identityNumber: "",
-    identityIssueDate: "",
-    identityIssuePlace: "",
-  });
 
-  const handleChange = (key, value) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
+const emptyGuest = {
+  fullName: "",
+  identityType: "",
+  identityNumber: "",
+  identityIssuedDate: "",
+  identityIssuedPlace: "",
+};
+
+
+const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
+  const [guests, setGuests] = useState([{ ...emptyGuest }]);
+
+
+  const handleChange = (index, key, value) => {
+    const newGuests = [...guests];
+    newGuests[index][key] = value;
+    setGuests(newGuests);
   };
 
-  const handleSubmit = () => {
-    if (!form.guestName || !form.identityType || !form.identityNumber || !form.identityIssueDate || !form.identityIssuePlace) {
-      toast.warning("Vui lòng điền đầy đủ thông tin!");
-      return;
+
+  const addGuest = () => {
+    setGuests([...guests, { ...emptyGuest }]);
+  };
+
+
+  const removeGuest = (index) => {
+    if (guests.length === 1) return;
+    setGuests(guests.filter((_, i) => i !== index));
+  };
+
+
+  const handleSubmit = async () => {
+    // validate all guests
+    for (let i = 0; i < guests.length; i++) {
+      const g = guests[i];
+      if (
+        !g.fullName ||
+        !g.identityType ||
+        !g.identityNumber ||
+        !g.identityIssuedDate ||
+        !g.identityIssuedPlace
+      ) {
+        toast.warning(`Vui lòng điền đầy đủ thông tin khách #${i + 1}`);
+        return;
+      }
     }
-    onSave(form);
+
+
+    const payload = {
+      requestId,
+      guests,
+    };
+
+
+    console.log(payload);
+
+
+    try {
+      await bookingService.checkInRequest(payload);
+      toast.success("Check-in thành công");
+      onClose();
+      onSuccess?.(guests); // Pass guests array to parent
+      setGuests([{ ...emptyGuest }]); // Reset form
+    } catch (error) {
+      console.error(error);
+      const msg =
+        error?.response?.data?.message || "Check-in thất bại";
+
+
+      toast.error(msg);
+    }
+  };
+
+
+  const handleClose = () => {
+    setGuests([{ ...emptyGuest }]); // Reset form on close
     onClose();
   };
+
 
   return (
     <Modal
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
       footer={null}
       centered
-      width={600}
+      width={1000}
       className={styles.modal}
     >
-      <h2 className={styles.title}>Khách nhận phòng</h2>
+      <h2 className={styles.title}>Danh sách khách nhận phòng</h2>
 
-      <div className={styles.formRow}>
-        <label>Họ tên</label>
-        <Input
-          value={form.guestName}
-          onChange={(e) => handleChange("guestName", e.target.value)}
-        />
-      </div>
 
-      <div className={styles.formRow}>
-        <label>Loại giấy tờ</label>
-        <Select
-          options={[
-            { value: 'CCCD', label: <span>CCCD</span> },
-            { value: 'PASSPORT', label: <span>Hộ chiếu</span> },
-          ]}
-          value={form.identityType}
-          onChange={(value) => handleChange("identityType", value)}
-        />
-      </div>
+      {guests.map((guest, index) => (
+        <div key={index} className={styles.guestCard}>
+          <div className={styles.guestHeader}>
+            <span>Khách #{index + 1}</span>
+            {guests.length > 1 && (
+              <DeleteOutlined
+                className={styles.deleteIcon}
+                onClick={() => removeGuest(index)}
+              />
+            )}
+          </div>
 
-      <div className={styles.formRow}>
-        <label>Số định danh</label>
-        <Input
-          value={form.identityNumber}
-          onChange={(e) => handleChange("identityNumber", e.target.value)}
-        />
-      </div>
 
-      <div className={styles.formRow}>
-        <label>Ngày cấp</label>
-        <DatePicker
-          style={{ width: "100%" }}
-          format="DD/MM/YYYY"
-          onChange={(date, str) => handleChange("identityIssueDate", str)}
-        />
-      </div>
+          <div className={styles.formContainer}>
+            <div className={styles.formRow}>
+              <label>Họ tên</label>
+              <Input
+                value={guest.fullName}
+                onChange={(e) =>
+                  handleChange(index, "fullName", e.target.value)
+                }
+              />
+            </div>
 
-      <div className={styles.formRow}>
-        <label>Nơi cấp</label>
-        <Input
-          value={form.identityIssuePlace}
-          onChange={(e) =>
-            handleChange("identityIssuePlace", e.target.value)
-          }
-        />
-      </div>
+
+            <div className={styles.formRow}>
+              <label>Loại giấy tờ</label>
+              <Select
+                value={guest.identityType}
+                onChange={(value) =>
+                  handleChange(index, "identityType", value)
+                }
+                options={[
+                  { value: "CCCD", label: "CCCD" },
+                  { value: "PASSPORT", label: "Hộ chiếu" },
+                ]}
+              />
+            </div>
+
+
+            <div className={styles.formRow}>
+              <label>Số định danh</label>
+              <Input
+                value={guest.identityNumber}
+                onChange={(e) =>
+                  handleChange(index, "identityNumber", e.target.value)
+                }
+              />
+            </div>
+
+
+
+
+            <div className={styles.formRow}>
+              <label>Ngày cấp</label>
+              <DatePicker
+                style={{ width: "100%" }}
+                format="DD/MM/YYYY"
+                onChange={(date) =>
+                  handleChange(
+                    index,
+                    "identityIssuedDate",
+                    date ? date.format("YYYY-MM-DD") : ""
+                  )
+                }
+              />
+            </div>
+
+
+            <div className={styles.formRow}>
+              <label>Nơi cấp</label>
+              <Input
+                value={guest.identityIssuedPlace}
+                onChange={(e) =>
+                  handleChange(
+                    index,
+                    "identityIssuedPlace",
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+
+
+      <Button
+        type="dashed"
+        block
+        icon={<PlusOutlined />}
+        onClick={addGuest}
+        style={{ marginBottom: 16 }}
+      >
+        Thêm khách
+      </Button>
 
       <div className={styles.footer}>
-        <Button type="primary" className={styles.saveBtn} onClick={handleSubmit}>
-          Thêm
+        <Button type="primary" onClick={handleSubmit}>
+          Check-in
         </Button>
-
-        <Button className={styles.cancelBtn} onClick={onClose}>
-          Hủy
-        </Button>
+        <Button onClick={handleClose}>Hủy</Button>
       </div>
     </Modal>
   );

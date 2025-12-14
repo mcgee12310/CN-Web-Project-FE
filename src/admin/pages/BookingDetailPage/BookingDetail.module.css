@@ -26,6 +26,22 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(78, 133, 196, 0.15) 0%, rgba(78, 133, 196, 0.08) 100%);
+  border: 1px solid rgba(78, 133, 196, 0.3);
+  color: #3b6fb3;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  max-width: max-content;
+  box-shadow: 0 2px 4px rgba(78, 133, 196, 0.1);
+}
+
 .cardHeader {
   font-weight: 600;
   margin-bottom: 12px;

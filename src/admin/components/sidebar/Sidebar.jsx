@@ -5,12 +5,13 @@ import { Hotel, LayoutDashboard, Users, DollarSign, Bed, Home, Star } from 'luci
 
 const Sidebar = () => {
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
-    { id: 'users', label: 'Users', icon: Users, path: '/admin/users' },
-    { id: 'bookings', label: 'Bookings', icon: DollarSign, path: '/admin/bookings' },
-    { id: 'room-types', label: 'Room Types', icon: Home, path: '/admin/room-types' },
-    { id: 'rooms', label: 'Rooms', icon: Bed, path: '/admin/rooms' },
-    { id: 'review', label: 'Review', icon: Star, path: '/admin/reviews' }
+    { id: 'dashboard', label: 'Tổng quan', icon: LayoutDashboard, path: '/admin/dashboard' },
+    { id: 'users', label: 'Người dùng', icon: Users, path: '/admin/users' },
+    { id: 'bookings', label: 'Đơn đặt phòng', icon: DollarSign, path: '/admin/bookings' },
+    { id: 'room-types', label: 'Loại phòng', icon: Home, path: '/admin/room-types' },
+    { id: 'rooms', label: 'Phòng', icon: Bed, path: '/admin/rooms' },
+    { id: 'tiers', label: 'Hạng', icon: Star, path: '/admin/tiers' },
+    { id: 'review', label: 'Đánh giá', icon: Star, path: '/admin/reviews' },
   ];
 
   return (

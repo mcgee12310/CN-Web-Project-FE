@@ -1,5 +1,4 @@
 import apiClient from "../apiClient";
-
 const userService = {
   getAllUsers: async () => {
     try {
@@ -11,11 +10,21 @@ const userService = {
       throw error;
     }
   },
-
   getUserDetail: async (id) => {
     try {
       const response = await apiClient.get(
         `/api/admin/users/${id}`
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  getUserBooking: async (id) => {
+    try {
+      const response = await apiClient.get(
+        `/api/admin/bookings/user/${id}`
       );
       return response;
     } catch (error) {
@@ -33,7 +42,6 @@ const userService = {
       throw error;
     }
   },
-
   resoreUser: async (id) => {
     try {
       const response = await apiClient.put(
@@ -45,5 +53,4 @@ const userService = {
     }
   },
 };
-
 export default userService;
