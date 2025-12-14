@@ -1,29 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Rate, Input, Button } from "antd";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
-import styles from "./FeedbackModal.module.css";
+import { toast } from "react-toastify";
 
-const FeedbackModal = ({ visible, onClose, request }) => {
+import styles from "./FeedbackModal.module.css";
+import profileService from "../../../services/user/profile";
+
+const FeedbackModal = ({ visible, onClose, booking }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (request) {
-      setRating(request.rating || 0);
-      setComment(request.comment || "");
+    if (booking) {
+      setRating(booking.rating || 0);
+      setComment(booking.comment || "");
     }
-  }, [request]);
+  }, [booking]);
 
-  if (!request) return null;
+  if (!booking) return null;
 
-  const handleSubmit = () => {
-    console.log("Feedback submitted:", {
-      requestId: request.id,
-      room: request.roomName,
-      rating,
-      comment,
-    });
-    onClose();
+  const handleSubmit = async () => {
+    if (rating === 0) {
+      toast.warning("Vui lòng chọn số sao đánh giá");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await profileService.postReview({
+        bookingId: booking.id,
+        rating,
+        comment,
+      });
+
+      toast.success("Đánh giá thành công!");
+      onClose();
+    } catch (error) {
+      console.error("Post review failed:", error);
+      toast.error("Gửi đánh giá thất bại. Vui lòng thử lại!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,13 +54,21 @@ const FeedbackModal = ({ visible, onClose, request }) => {
       className={styles.modal}
     >
       <div className={styles.container}>
-        <h2 className={styles.roomName}>{request.roomName}</h2>
-
-        {/* Ảnh phòng placeholder */}
-        <div className={styles.imagePlaceholder}>
-          <div className={styles.imageIcon} />
+        <h2 className={styles.roomName}>{booking.roomType}</h2>
+        {/* Ảnh phòng placeholder */}{" "}
+        <div className={styles.imageWrapper}>
+          {booking.image ? (
+            <img
+              src={booking.image}
+              alt={booking.roomType}
+              className={styles.roomImage}
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              <div className={styles.imageIcon} />
+            </div>
+          )}
         </div>
-
         {/* Rating */}
         <div className={styles.section}>
           <p className={styles.label}>Điểm đánh giá</p>
@@ -59,7 +85,6 @@ const FeedbackModal = ({ visible, onClose, request }) => {
             count={5}
           />
         </div>
-
         {/* Comment */}
         <div className={styles.section}>
           <p className={styles.label}>Bình luận</p>
@@ -69,15 +94,15 @@ const FeedbackModal = ({ visible, onClose, request }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className={styles.commentBox}
+            maxLength={500}
+            showCount
           />
         </div>
-
-        {/* Nút lưu */}
         <Button
           type="primary"
           className={styles.saveButton}
           onClick={handleSubmit}
-          // loading={loading}
+          loading={loading}
           block
         >
           Lưu đánh giá

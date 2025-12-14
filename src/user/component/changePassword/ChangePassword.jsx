@@ -1,17 +1,40 @@
 import React, { useState } from "react";
 import { Input, Button, Form } from "antd";
 import { LockOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
+
 import styles from "./ChangePassword.module.css";
+import profileService from "../../../services/user/profile";
 
 const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
 
-  const handleChangePassword = (values) => {
+  const handleChangePassword = async (values) => {
+    const { currentPassword, newPassword, confirmPassword } = values;
+
     setLoading(true);
-    console.log("Password changed:", values);
-    setTimeout(() => {
+    try {
+      await profileService.changePassword(
+        currentPassword,
+        newPassword,
+        confirmPassword
+      );
+
+      toast.success("Đổi mật khẩu thành công!");
+      form.resetFields();
+    } catch (error) {
+      console.error("Change password failed:", error);
+
+      toast.error(
+        typeof error?.response?.data?.error === "string"
+          ? error.response.data.error
+          : Object.values(error?.response?.data?.error || {})[0] ||
+              "Đổi mật khẩu thất bại!"
+      );
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -21,6 +44,7 @@ const ChangePassword = () => {
       </div>
 
       <Form
+        form={form}
         layout="vertical"
         onFinish={handleChangePassword}
         className={styles.form}
@@ -40,7 +64,10 @@ const ChangePassword = () => {
         <Form.Item
           label="Mật khẩu mới"
           name="newPassword"
-          rules={[{ required: true, message: "Nhập mật khẩu mới" }]}
+          rules={[
+            { required: true, message: "Nhập mật khẩu mới" },
+            { min: 6, message: "Mật khẩu tối thiểu 6 ký tự" },
+          ]}
         >
           <Input.Password
             prefix={<LockOutlined />}
@@ -60,7 +87,9 @@ const ChangePassword = () => {
                 if (!value || getFieldValue("newPassword") === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error("Passwords do not match!"));
+                return Promise.reject(
+                  new Error("Mật khẩu xác nhận không khớp")
+                );
               },
             }),
           ]}

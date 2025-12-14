@@ -49,11 +49,6 @@ const BookingList = () => {
     setSelectedBooking(null);
   };
 
-  const handleDelete = (record) => {
-    console.log("Hủy đơn:", record);
-    // Xử lý hủy đơn
-  };
-
   const getBookingStatusTag = (status) => {
     const colorMap = {
       CANCELLED: "red",
@@ -100,24 +95,6 @@ const BookingList = () => {
       ) : (
         <div className={styles.cardList}>
           {filteredData.map((booking) => {
-            const menuItems = [
-              {
-                key: "view",
-                icon: <EyeOutlined />,
-                label: "Xem chi tiết",
-                onClick: () => handleView(booking.bookingCode),
-              },
-              !["COMPLETED", "CANCELED", "CANCELLED"].includes(
-                booking.status?.toUpperCase()
-              ) && {
-                key: "delete",
-                icon: <DeleteOutlined />,
-                label: "Hủy đơn",
-                danger: true,
-                onClick: () => handleDelete(booking),
-              },
-            ].filter(Boolean);
-
             return (
               <Card
                 key={booking.id}
@@ -184,9 +161,6 @@ const BookingList = () => {
                       >
                         Xem
                       </Button>
-                      <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
-                        <Button icon={<MoreOutlined />} />
-                      </Dropdown>
                     </div>
                   </div>
                 </div>

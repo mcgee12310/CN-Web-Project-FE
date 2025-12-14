@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Rate, Card, Empty, Button, Popconfirm, Avatar } from "antd";
 import {
   SearchOutlined,
@@ -11,70 +11,57 @@ import {
 import { formatDate } from "../../../utils/format";
 import styles from "./MyReviews.module.css";
 import FeedbackModal from "../feedbackModal/FeedbackModal";
+import profileService from "../../../services/user/profile";
 
 const MyReviews = () => {
-  // Dữ liệu mẫu - trong thực tế sẽ fetch từ API
-  const reviews = [
-    {
-      id: "12345",
-      bookingCode: "BK1111",
-      roomName: "Superior Family Room",
-      roomType: "Phòng Standard",
-      roomImage: "/background.jpg",
-      rating: 4,
-      comment:
-        "Phòng rất đẹp và sạch sẽ. Nhân viên thân thiện. Tôi sẽ quay lại!",
-      created_at: "2023-08-20",
-      checkIn: "2023-08-15",
-      checkOut: "2023-08-18",
-    },
-    {
-      id: "12344",
-      bookingCode: "BK1121",
-      roomName: "Superior Room",
-      roomType: "Phòng Deluxe",
-      roomImage: "/background.jpg",
-      rating: 3.5,
-      comment:
-        "Phòng khá tốt nhưng có một số điểm cần cải thiện. View đẹp nhưng cách âm chưa tốt lắm. Nhìn chung vẫn hài lòng với dịch vụ.",
-      created_at: "2023-08-21",
-      checkIn: "2023-08-10",
-      checkOut: "2023-08-12",
-    },
-    {
-      id: "12343",
-      bookingCode: "BK1131",
-      roomName: "Deluxe King Room",
-      roomType: "Phòng VIP",
-      roomImage: "/background1.jpg",
-      rating: 5,
-      comment:
-        "Tuyệt vời! Không có gì để chê. Phòng sang trọng, tiện nghi đầy đủ.",
-      created_at: "2023-07-15",
-      checkIn: "2023-07-10",
-      checkOut: "2023-07-13",
-    },
-  ];
-
   const [search, setSearch] = useState("");
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+
+        const reviewsRes = await profileService.getMyReviews();
+
+        const mergedReviews = await Promise.all(
+          reviewsRes.map(async (review) => {
+            const bookingRes = await profileService.getBookingId(
+              review.bookingId
+            );
+
+            return {
+              id: review.id,
+              bookingId: review.bookingId,
+              bookingCode: review.bookingCode,
+              roomType: bookingRes.roomType,
+              roomImage: bookingRes.image,
+              rating: review.rating,
+              comment: review.comment,
+              created_at: review.createdAt,
+            };
+          })
+        );
+
+        setReviews(mergedReviews);
+      } catch (error) {
+        console.error("Lỗi lấy danh sách reviews", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const filteredData = reviews.filter(
     (review) =>
       review.bookingCode.toLowerCase().includes(search.toLowerCase()) ||
       review.roomName.toLowerCase().includes(search.toLowerCase())
   );
-
-  const handleEdit = (review) => {
-    setSelectedReview(review);
-    setIsFeedbackOpen(true);
-  };
-
-  const handleDelete = (review) => {
-    console.log("Xóa đánh giá:", review);
-    // Xử lý xóa đánh giá
-  };
 
   const getRatingText = (rating) => {
     if (rating >= 4.5) return "Tuyệt vời";
@@ -134,8 +121,7 @@ const MyReviews = () => {
                   {/* Header */}
                   <div className={styles.reviewHeader}>
                     <div className={styles.roomInfo}>
-                      <h3 className={styles.roomName}>{review.roomName}</h3>
-                      <span className={styles.roomType}>{review.roomType}</span>
+                      <h3 className={styles.roomName}>{review.roomType}</h3>
                     </div>
                     <div className={styles.bookingCode}>
                       Mã: {review.bookingCode}
@@ -169,40 +155,8 @@ const MyReviews = () => {
                     <div className={styles.dateInfo}>
                       <CalendarOutlined className={styles.icon} />
                       <span className={styles.dateText}>
-                        Lưu trú: {formatDate(review.checkIn)} -{" "}
-                        {formatDate(review.checkOut)}
-                      </span>
-                      <span className={styles.divider}>•</span>
-                      <span className={styles.dateText}>
                         Đánh giá: {formatDate(review.created_at)}
                       </span>
-                    </div>
-
-                    <div className={styles.actions}>
-                      <Button
-                        type="default"
-                        icon={<EditOutlined />}
-                        onClick={() => handleEdit(review)}
-                        className={styles.editBtn}
-                      >
-                        Sửa
-                      </Button>
-                      <Popconfirm
-                        title="Xóa đánh giá này?"
-                        description="Bạn có chắc chắn muốn xóa đánh giá này không?"
-                        okText="Xóa"
-                        cancelText="Hủy"
-                        onConfirm={() => handleDelete(review)}
-                        okButtonProps={{ danger: true }}
-                      >
-                        <Button
-                          danger
-                          icon={<DeleteOutlined />}
-                          className={styles.deleteBtn}
-                        >
-                          Xóa
-                        </Button>
-                      </Popconfirm>
                     </div>
                   </div>
                 </div>

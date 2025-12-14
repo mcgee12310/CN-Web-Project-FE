@@ -205,7 +205,7 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
       <FeedbackModal
         visible={isFeedbackOpen}
         onClose={() => setIsFeedbackOpen(false)}
-        request={selectedRequest}
+        booking={booking}
       />
     </>
   );

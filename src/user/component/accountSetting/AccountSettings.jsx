@@ -22,9 +22,7 @@ export default function AccountSettings() {
         email: res.email,
         fullName: res.name,
         phone: res.phone || "",
-        birthday: res.birthDate
-          ? new Date(res.birthDate).toISOString().split("T")[0]
-          : "",
+        birthday: res.birthDate ? res.birthDate.split("T")[0] : "",
       });
     } catch (error) {
       console.error("Failed to fetch profile", error);
