@@ -19,8 +19,6 @@ export default function VNPayCallback() {
         setError("Không thể kết nối đến server. Đang thử lại...");
       }
     };
-
-    processPayment();
   }, []);
 
   return (
