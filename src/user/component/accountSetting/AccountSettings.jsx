@@ -1,34 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AccountSettings.module.css";
-
-const user = {
-  id: 1,
-  name: "Nguyễn Văn A",
-  email: "a@gmail.com",
-  phone: "0123456789",
-  birthDate: "2025-11-02T07:10:17.429Z",
-  rank: "DIAMOND",
-  totalBookings: 8,
-  totalSpent: 12500000,
-};
+import profileService from "../../../services/user/profile";
+import { toast } from "react-toastify";
+import { Skeleton, Card } from "antd";
 
 export default function AccountSettings() {
+  const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
-    email: user.email,
-    fullName: user.name,
-    phone: user.phone,
-    birthday: new Date(user.birthDate).toISOString().split("T")[0],
-    gender: user.gender,
+    email: "",
+    fullName: "",
+    phone: "",
+    birthday: "",
   });
 
-  // Hàm sinh avatar ngẫu nhiên
+  const fetchProfile = async () => {
+    try {
+      const res = await profileService.myInfo();
+
+      setUser(res);
+      setFormData({
+        email: res.email,
+        fullName: res.name,
+        phone: res.phone || "",
+        birthday: res.birthDate
+          ? new Date(res.birthDate).toISOString().split("T")[0]
+          : "",
+      });
+    } catch (error) {
+      console.error("Failed to fetch profile", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  // Avatar
   const getAvatarUrl = (name) =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(
       name
     )}&background=random`;
 
-  const getRankClass = (rank) => {
-    switch (rank) {
+  // Rank badge
+  const getRankClass = (tier) => {
+    switch (tier) {
       case "SILVER":
         return styles.silver;
       case "GOLD":
@@ -45,30 +60,52 @@ export default function AccountSettings() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Information updated!");
+    try {
+      const res = await profileService.updateInfo({
+        name: formData.fullName,
+        phone: formData.phone,
+        birthDate: formData.birthday,
+      });
+      toast.success("Cập nhật thông tin thành công!");
+      fetchProfile();
+    } catch (error) {
+      toast.error("Cập nhật thất bại!");
+    }
   };
 
   const handleDelete = () => {
-    alert("Account deleted!");
+    alert("Vô hiệu hóa tài khoản (chưa implement)");
   };
+
+  if (!user) {
+    return (
+      <Card>
+        <Skeleton avatar active paragraph={{ rows: 4 }} />
+      </Card>
+    );
+  }
 
   return (
     <div className={styles.accountPage}>
       <div className={styles.header}>
         <h2>Thông tin tài khoản</h2>
       </div>
+
       <div className={styles.content}>
+        {/* LEFT */}
         <div className={styles.avatarSection}>
           <img
             src={getAvatarUrl(user.name)}
             alt="avatar"
             className={styles.avatar}
           />
+
           <div className={styles.name}>{user.name}</div>
-          <div className={`${styles.badge} ${getRankClass(user.rank)}`}>
-            {user.rank}
+
+          <div className={`${styles.badge} ${getRankClass(user.customerTier)}`}>
+            {user.customerTier}
           </div>
 
           <div className={styles.stats}>
@@ -76,6 +113,7 @@ export default function AccountSettings() {
               <div className={styles.statValue}>{user.totalBookings}</div>
               <div className={styles.statLabel}>Đơn đã đặt</div>
             </div>
+
             <div className={styles.statItem}>
               <div className={styles.statValue}>
                 {user.totalSpent.toLocaleString("vi-VN")}₫
@@ -85,10 +123,11 @@ export default function AccountSettings() {
           </div>
         </div>
 
+        {/* RIGHT */}
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
             <label>Email</label>
-            <input type="email" name="email" value={formData.email} readOnly />
+            <input type="email" value={formData.email} readOnly />
           </div>
 
           <div className={styles.field}>
@@ -106,7 +145,6 @@ export default function AccountSettings() {
             <input
               type="date"
               name="birthday"
-              defaultValue={formData.birthday}
               value={formData.birthday}
               onChange={handleChange}
             />
@@ -124,14 +162,6 @@ export default function AccountSettings() {
 
           <button type="submit" className={styles.submit}>
             Lưu thông tin
-          </button>
-
-          <button
-            type="delete"
-            className={styles.delete}
-            onClick={handleDelete}
-          >
-            Vô hiệu hóa tài khoản
           </button>
         </form>
       </div>

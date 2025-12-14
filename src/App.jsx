@@ -8,6 +8,7 @@ import Home from "./user/pages/HomePage/home";
 import ExploreRoom from "./user/pages/ExplorePage/exploreRoom";
 import RoomDetail from "./user/pages/RoomDetailPage/roomDetail";
 import BookingPage from "./user/pages/BookingPage/booking";
+import VNPayCallback from "./user/pages/CallbackPage/callbackPage";
 import { useAuth } from "./auth/auth-context";
 
 // Admin imports would go here
@@ -70,6 +71,7 @@ function App() {
       <Route path="/rooms" element={<ExploreRoom />} />
       <Route path="/room/:id" element={<RoomDetail />} />
       <Route path="/booking" element={<BookingPage />} />
+      <Route path="/api/payment/vnpay/callback" element={<VNPayCallback />} />
     </Routes>
   );
 }

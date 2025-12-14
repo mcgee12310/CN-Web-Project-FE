@@ -18,8 +18,8 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
 
   // Tính số đêm
   const numberOfNights = useMemo(() => {
-    if (!booking.request || booking.request.length === 0) return 0;
-    const firstRequest = booking.request[0];
+    if (!booking.requests || booking.requests.length === 0) return 0;
+    const firstRequest = booking.requests[0];
     const start = new Date(firstRequest.checkIn);
     const end = new Date(firstRequest.checkOut);
     const diff = end.getTime() - start.getTime();
@@ -28,7 +28,7 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
 
   // Tính tổng số khách
   const totalGuests = useMemo(() => {
-    return booking.request.reduce((sum, r) => sum + (r.guests || 0), 0);
+    return booking?.requests.reduce((sum, r) => sum + (r.guests || 0), 0);
   }, [booking]);
 
   const handleFeedback = (request) => {
@@ -38,16 +38,23 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
 
   const getStatusTag = (status) => {
     const config = {
-      CANCELED: { color: "red", label: "Đã hủy" },
-      CONFIRMED: { color: "green", label: "Đã xác nhận" },
+      CANCELLED: { color: "red", label: "Đã hủy" },
+      PAYMENT_COMPLETED: { color: "green", label: "Đã xác nhận" },
       PENDING: { color: "orange", label: "Chờ xử lý" },
       COMPLETED: { color: "blue", label: "Hoàn thành" },
-      CHECKOUT: { color: "geekblue", label: "Đã trả phòng" },
-      CHECKIN: { color: "cyan", label: "Đã nhận phòng" },
+      CHECKED_OUT: { color: "geekblue", label: "Đã trả phòng" },
+      CHECKED_IN: { color: "cyan", label: "Đã nhận phòng" },
     };
     const { color, label } = config[status] || { color: "gray", label: status };
     return <Tag color={color}>{label}</Tag>;
   };
+
+  const allCheckedOut = useMemo(() => {
+    return (
+      booking?.requests?.length > 0 &&
+      booking.requests.every((r) => r.status?.toUpperCase() === "CHECKED_OUT")
+    );
+  }, [booking]);
 
   return (
     <>
@@ -119,7 +126,7 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
               <div>
                 <div className={styles.itemLabel}>Số phòng</div>
                 <div className={styles.itemValue}>
-                  {booking.request.length} phòng
+                  {booking.requests.length} phòng
                 </div>
               </div>
             </div>
@@ -130,9 +137,21 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
 
         {/* Danh sách phòng */}
         <div className={styles.roomListSection}>
-          <h3 className={styles.sectionTitle}>Phòng đã chọn</h3>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.sectionTitle}>Phòng đã chọn</h3>
+
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => handleFeedback(booking)}
+              disabled={!allCheckedOut}
+              className={styles.feedbackBtn}
+            >
+              Đánh giá
+            </Button>
+          </div>
           <div className={styles.roomList}>
-            {booking.request.map((request, index) => (
+            {booking.requests.map((request, index) => (
               <div key={request.id} className={styles.roomCard}>
                 <div className={styles.roomCardHeader}>
                   <div className={styles.roomInfo}>
@@ -143,17 +162,6 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
                       {request.roomNumber}
                     </span>
                     {getStatusTag(request.status)}
-                  </div>
-                  <div className={styles.roomActions}>
-                    <Button
-                      type="primary"
-                      size="small"
-                      disabled={request.status !== "CHECKOUT"}
-                      onClick={() => handleFeedback(request)}
-                      className={styles.feedbackBtn}
-                    >
-                      Đánh giá
-                    </Button>
                   </div>
                 </div>
 
@@ -192,19 +200,6 @@ const BookingDetailModal = ({ visible, onClose, booking }) => {
         </div>
 
         <Divider />
-
-        {/* Footer với tổng tiền */}
-        <div className={styles.modalFooter}>
-          <div className={styles.totalSection}>
-            <span className={styles.totalLabel}>Tổng tiền tạm tính:</span>
-            <span className={styles.totalAmount}>
-              {formatPrice(booking.price)}
-            </span>
-          </div>
-          <p className={styles.footerNote}>
-            Lưu ý: Giá có thể thay đổi nếu phát sinh phụ phí hoặc khuyến mãi.
-          </p>
-        </div>
       </Modal>
 
       <FeedbackModal

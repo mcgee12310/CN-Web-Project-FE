@@ -1,0 +1,97 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eff6ff, #e0e7ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  color: #4f46e5;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+.errorBox {
+  margin-top: 16px;
+  padding: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.errorText {
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.dots {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4f46e5;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.dot1 {
+  animation-delay: 0ms;
+}
+
+.dot2 {
+  animation-delay: 150ms;
+}
+
+.dot3 {
+  animation-delay: 300ms;
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}

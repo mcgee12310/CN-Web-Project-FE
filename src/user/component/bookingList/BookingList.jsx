@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Input, Tag, Button, Dropdown, Menu, Card, Empty, Space } from "antd";
 import {
   SearchOutlined,
@@ -13,95 +13,30 @@ import { formatDate, formatPrice } from "../../../utils/format";
 import styles from "./BookingList.module.css";
 
 import BookingDetailModal from "../../component/bookingDetailModal/BookingDetailModal";
-
-const data = [
-  {
-    id: 1,
-    bookingCode: "BK1001",
-    roomType: "Phòng Standard",
-    image: "/background.jpg",
-    request: [
-      {
-        id: 1,
-        roomNumber: "Phòng 601",
-        guests: 3,
-        checkIn: "2023-09-01",
-        checkOut: "2023-09-03",
-        status: "CHECKOUT",
-      },
-      {
-        id: 2,
-        roomNumber: "Phòng 602",
-        guests: 2,
-        checkIn: "2023-09-01",
-        checkOut: "2023-09-03",
-        status: "CONFIRMED",
-      },
-      {
-        id: 3,
-        roomNumber: "Phòng 603",
-        guests: 1,
-        checkIn: "2023-09-01",
-        checkOut: "2023-09-03",
-        status: "CONFIRMED",
-      },
-    ],
-    price: 5000000000,
-    status: "CONFIRMED",
-    bookingDate: "2023-08-20",
-  },
-  {
-    id: 2,
-    bookingCode: "BK1002",
-    roomType: "Phòng Standard",
-    image: "/background.jpg",
-    request: [
-      {
-        id: 4,
-        roomNumber: "Phòng 501",
-        guests: 2,
-        checkIn: "2023-10-05",
-        checkOut: "2023-10-07",
-        status: "PENDING",
-      },
-      {
-        id: 5,
-        roomNumber: "Phòng 504",
-        guests: 1,
-        checkIn: "2023-10-05",
-        checkOut: "2023-10-07",
-        status: "PENDING",
-      },
-    ],
-    price: 2700000,
-    status: "PENDING",
-    bookingDate: "2023-09-15",
-  },
-  {
-    id: 3,
-    bookingCode: "BK1003",
-    roomType: "Phòng Suite đôi",
-    image: "/background.jpg",
-    request: [
-      {
-        id: 6,
-        roomNumber: "Phòng 404",
-        guests: 4,
-        checkIn: "2023-11-10",
-        checkOut: "2023-11-12",
-        status: "CANCELED",
-      },
-    ],
-    price: 3000000,
-    status: "CANCELED",
-    bookingDate: "2023-10-01",
-  },
-];
+import profileService from "../../../services/user/profile";
 
 const BookingList = () => {
   const [search, setSearch] = useState("");
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        setLoading(true);
+        const res = await profileService.getMyBookings();
+        setData(res); // res phải là array
+      } catch (error) {
+        console.error("Lỗi lấy danh sách booking", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   const handleView = (code) => {
     const booking = data.find((b) => b.bookingCode === code);
@@ -121,14 +56,14 @@ const BookingList = () => {
 
   const getBookingStatusTag = (status) => {
     const colorMap = {
-      CANCELED: "red",
-      CONFIRMED: "green",
+      CANCELLED: "red",
+      PAYMENT_COMPLETED: "green",
       PENDING: "orange",
       COMPLETED: "blue",
     };
     const labelMap = {
-      CANCELED: "Đã hủy",
-      CONFIRMED: "Đã xác nhận",
+      CANCELLED: "Đã hủy",
+      PAYMENT_COMPLETED: "Đã thanh toán",
       PENDING: "Chờ xử lý",
       COMPLETED: "Hoàn thành",
     };
@@ -139,7 +74,7 @@ const BookingList = () => {
 
   // Lọc dữ liệu theo mã đơn
   const filteredData = data.filter((b) =>
-    b.bookingCode.toLowerCase().includes(search.toLowerCase())
+    b.bookingCode?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -165,27 +100,23 @@ const BookingList = () => {
       ) : (
         <div className={styles.cardList}>
           {filteredData.map((booking) => {
-            const menu = (
-              <Menu>
-                <Menu.Item
-                  key="view"
-                  icon={<EyeOutlined />}
-                  onClick={() => handleView(booking.bookingCode)}
-                >
-                  Xem chi tiết
-                </Menu.Item>
-                {!["COMPLETED", "CANCELED"].includes(booking.status) && (
-                  <Menu.Item
-                    key="delete"
-                    icon={<DeleteOutlined />}
-                    onClick={() => handleDelete(booking)}
-                    danger
-                  >
-                    Hủy đơn
-                  </Menu.Item>
-                )}
-              </Menu>
-            );
+            const menuItems = [
+              {
+                key: "view",
+                icon: <EyeOutlined />,
+                label: "Xem chi tiết",
+                onClick: () => handleView(booking.bookingCode),
+              },
+              !["COMPLETED", "CANCELED", "CANCELLED"].includes(
+                booking.status?.toUpperCase()
+              ) && {
+                key: "delete",
+                icon: <DeleteOutlined />,
+                label: "Hủy đơn",
+                danger: true,
+                onClick: () => handleDelete(booking),
+              },
+            ].filter(Boolean);
 
             return (
               <Card
@@ -227,7 +158,7 @@ const BookingList = () => {
                         <div className={styles.label}>Loại phòng</div>
                         <div className={styles.value}>{booking.roomType}</div>
                         <div className={styles.roomNumbers}>
-                          {booking.request.map((r) => r.roomNumber).join(", ")}
+                          {booking.requests.map((r) => r.roomNumber).join(", ")}
                         </div>
                       </div>
                     </div>
@@ -253,7 +184,7 @@ const BookingList = () => {
                       >
                         Xem
                       </Button>
-                      <Dropdown overlay={menu} trigger={["click"]}>
+                      <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
                         <Button icon={<MoreOutlined />} />
                       </Dropdown>
                     </div>

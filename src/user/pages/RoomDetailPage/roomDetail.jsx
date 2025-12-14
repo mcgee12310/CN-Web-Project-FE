@@ -49,6 +49,10 @@ function RoomDetail() {
     }
   };
 
+  const fetchTierUser = async () => {
+    const res = await profileService.myInfo();
+  };
+
   useEffect(() => {
     fetchRoomDetail(checkInDate, checkOutDate);
   }, [id, checkInDate, checkOutDate]);
