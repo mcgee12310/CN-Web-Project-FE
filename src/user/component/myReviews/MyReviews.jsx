@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Input, Rate, Card, Empty, Button, Popconfirm, Avatar } from "antd";
-import {
-  SearchOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  CalendarOutlined,
-  HomeOutlined,
-  StarFilled,
-} from "@ant-design/icons";
+import { Input, Rate, Card, Empty } from "antd";
+import { SearchOutlined, CalendarOutlined } from "@ant-design/icons";
 import { formatDate } from "../../../utils/format";
 import styles from "./MyReviews.module.css";
 import FeedbackModal from "../feedbackModal/FeedbackModal";

@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import styles from "./RoomReviews.module.css";
+import roomService from "../../../../services/user/room";
+import { Empty } from "antd";
 
-function RoomReviews({ rating, reviewCount }) {
+function RoomReviews({ roomTypeId }) {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const data = await roomService.getRoomReviews(roomTypeId);
+        setReviews(data || []);
+      } catch (error) {
+        console.error("Lỗi tải reviews:", error);
+        setReviews([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (roomTypeId) fetchReviews();
+  }, [roomTypeId]);
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -14,65 +35,52 @@ function RoomReviews({ rating, reviewCount }) {
     return stars;
   };
 
-  const reviews = [
-    {
-      id: 1,
-      name: "Nguyễn Văn A",
-      rating: 5,
-      date: "15 tháng 3, 2024",
-      comment:
-        "Phòng rất đẹp và sạch sẽ. Nhân viên phục vụ nhiệt tình. Sẽ quay lại lần sau!",
-    },
-    {
-      id: 2,
-      name: "Trần Thị B",
-      rating: 4,
-      date: "10 tháng 3, 2024",
-      comment:
-        "Phòng rộng rãi, view đẹp. Chỉ có điều wifi hơi chậm một chút nhưng không ảnh hưởng nhiều.",
-    },
-    {
-      id: 3,
-      name: "Lê Văn C",
-      rating: 5,
-      date: "5 tháng 3, 2024",
-      comment:
-        "Tuyệt vời! Phòng đúng như mô tả, rất thích hợp cho gia đình có trẻ em.",
-    },
-  ];
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  if (loading) return null;
 
   return (
     <section className={styles.reviews}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Đánh giá</h2>
-        <div className={styles.ratingSummary}>
-          <div className={styles.ratingNumber}>{rating}</div>
-          <div className={styles.ratingDetails}>
-            <div className={styles.stars}>{renderStars(rating)}</div>
-            <div className={styles.reviewCount}>{reviewCount} đánh giá</div>
-          </div>
-        </div>
-      </div>
+      <h2 className={styles.title}>Đánh giá</h2>
 
-      <div className={styles.reviewsList}>
-        {reviews.map((review) => (
-          <div key={review.id} className={styles.reviewItem}>
-            <div className={styles.reviewHeader}>
-              <div className={styles.reviewerInfo}>
-                <div className={styles.avatar}>{review.name.charAt(0)}</div>
-                <div>
-                  <div className={styles.reviewerName}>{review.name}</div>
-                  <div className={styles.reviewDate}>{review.date}</div>
+      {reviews.length === 0 ? (
+        <Empty
+          description="Không tìm thấy đánh giá nào"
+          className={styles.empty}
+        />
+      ) : (
+        <div className={styles.reviewsList}>
+          {reviews.map((review) => (
+            <div key={review.id} className={styles.reviewItem}>
+              <div className={styles.reviewHeader}>
+                <div className={styles.reviewerInfo}>
+                  <div className={styles.avatar}>
+                    {review.userName?.charAt(0)}
+                  </div>
+                  <div>
+                    <div className={styles.reviewerName}>{review.userName}</div>
+                    <div className={styles.reviewDate}>
+                      {formatDate(review.createdAt)}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.reviewStars}>
+                  {renderStars(review.rating)}
                 </div>
               </div>
-              <div className={styles.reviewStars}>
-                {renderStars(review.rating)}
-              </div>
+
+              <p className={styles.reviewComment}>{review.comment}</p>
             </div>
-            <p className={styles.reviewComment}>{review.comment}</p>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -14,8 +14,8 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-    console.log("🔍 FE gửi URL:", config.url);
-    console.log("Token", token);
+    // console.log("🔍 FE gửi URL:", config.url);
+    // console.log("Token", token);
     return config;
   },
   (error) => {

@@ -5,6 +5,7 @@ import Footer from "../../component/footer/footer";
 import ImageGallery from "../../component/roomDetail/ImageGallery/ImageGallery";
 import RoomInfo from "../../component/roomDetail/RoomInfo/RoomInfo";
 import RoomAmenities from "../../component/roomDetail/RoomAmenities/RoomAmenities";
+import RoomReviews from "../../component/roomDetail/RoomReviews/RoomReviews";
 import BookingSection from "../../component/roomDetail/BookingSection/BookingSection";
 import styles from "./roomDetail.module.css";
 import roomService from "../../../services/user/room";
@@ -99,6 +100,7 @@ function RoomDetail() {
             <div className={styles.leftColumn}>
               <RoomInfo roomData={roomData} />
               <RoomAmenities amenities={roomData.amenities} />
+              <RoomReviews roomTypeId={roomData.id} />
             </div>
 
             <div className={styles.rightColumn}>

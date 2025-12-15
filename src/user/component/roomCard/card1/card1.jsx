@@ -6,32 +6,6 @@ import { motion, useInView } from "framer-motion";
 import roomService from "../../../../services/user/room";
 
 function Card1() {
-  // const rooms = [
-  //   {
-  //     id: 1,
-  //     name: "Phòng Deluxe",
-  //     desc: "Phòng rộng rãi với view thành phố",
-  //     price: "1,500,000 VNĐ/đêm",
-  //     image: "/background.jpg",
-  //     review: 4,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Phòng Suite",
-  //     desc: "Phòng cao cấp với đầy đủ tiện nghi",
-  //     price: "2,500,000 VNĐ/đêm",
-  //     image: "/background.jpg",
-  //     review: 4.5,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Phòng Family",
-  //     desc: "Phòng gia đình với 2 giường đôi",
-  //     price: "2,000,000 VNĐ/đêm",
-  //     image: "/background.jpg",
-  //     review: 5,
-  //   },
-  // ];
   const navigate = useNavigate();
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.2 });
@@ -39,7 +13,7 @@ function Card1() {
 
   const fetchRooms = async () => {
     const data = await roomService.getAllRoomType();
-    console.log("Data", data);
+    // console.log("Data", data);
     setRooms(data.sort((a, b) => b.price - a.price).slice(0, 3));
   };
   useEffect(() => {

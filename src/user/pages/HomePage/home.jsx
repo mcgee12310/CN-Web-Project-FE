@@ -11,7 +11,7 @@ import {
   FaConciergeBell,
   FaUtensils,
 } from "react-icons/fa";
-import UserChatToggle from "../../component/chat/UserChatToggle";
+// import UserChatToggle from "../../component/chat/UserChatToggle";
 
 function Highlights() {
   const highlights = [
@@ -120,8 +120,6 @@ function Home() {
         <section className={styles.featuredRooms}>
           <Card1 />
         </section>
-        {/* Chat popup */}
-        <UserChatToggle />
       </main>
       <Footer />
     </>

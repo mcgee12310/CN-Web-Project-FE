@@ -20,6 +20,16 @@ const roomService = {
       throw error;
     }
   },
+  getRoomReviews: async (roomTypeId) => {
+    try {
+      const response = await apiClient.get(
+        `api/reviews/room-type/${roomTypeId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
   getRoomTypeDetail: async (id, checkInDate, checkOutDate) => {
     try {
       const response = await apiClient.get(
