@@ -20,12 +20,11 @@
   align-items: start;
 }
 
-/* Wrapper cho cột bên phải để chứa Note và Payment */
+/* Wrapper cho cột bên phải để chứa Payment */
 .rightColumn {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* Khoảng cách giữa Note và Payment */
-  /* Đảm bảo cột phải không bị giãn chiều cao theo cột trái */
+  gap: 24px;
   align-self: start;
 }
 
@@ -62,10 +61,9 @@
   color: #1f2937;
 }
 
-/* Style chung cho các thẻ Card (Summary, Note, Payment) */
+/* Style chung cho các thẻ Card */
 .summaryCard,
-.paymentSection,
-.noteSection {
+.paymentSection {
   background: #fff;
   border-radius: 20px;
   padding: 32px;
@@ -73,9 +71,7 @@
   border: 1px solid rgba(255, 107, 107, 0.12);
 }
 
-/* Riêng noteSection và paymentSection ở cột phải thì padding nhỏ hơn chút cho gọn */
-.paymentSection,
-.noteSection {
+.paymentSection {
   padding: 24px;
 }
 
@@ -182,16 +178,28 @@
   letter-spacing: 0.06em;
 }
 
-.totalPriceValue {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 4px;
+.priceWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.totalPriceNote {
-  font-size: 0.95rem;
-  color: #6b7280;
+.oldPrice {
+  color: #9ca3af;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+
+.totalPriceValue {
+  color: #ff5a5f;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.newPrice {
+  color: #ff5a5f;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .roomList {
@@ -206,12 +214,26 @@
 }
 
 .roomList ul {
-  list-style: disc inside;
+  list-style: none;
   display: grid;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   color: #1f2937;
+}
+
+.roomListItem {
+  padding: 12px 16px;
+  background: rgba(255, 107, 107, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #ff6b6b;
+}
+
+.roomNote {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-style: italic;
 }
 
 .emptyRooms {
@@ -227,26 +249,6 @@
   border-radius: 12px;
   padding: 12px 16px;
   line-height: 1.5;
-}
-
-.noteInput {
-  width: 100%;
-  /* top right bottom left */
-  margin-top: 12px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-family: inherit;
-  resize: vertical;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-sizing: border-box;
-}
-
-.noteInput:focus {
-  border-color: #ff6b6b;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }
 
 /* --- Payment Styles --- */
@@ -359,12 +361,10 @@
 /* --- Responsive --- */
 @media (max-width: 1100px) {
   .container {
-    /* Khi màn hình nhỏ hơn 1100px, gom về 1 cột */
     grid-template-columns: 1fr;
   }
 
   .rightColumn {
-    /* Khi về 1 cột, cột phải sẽ nằm dưới, bỏ align-self để nó full width */
     align-self: stretch;
   }
 
@@ -379,8 +379,7 @@
   }
 
   .summaryCard,
-  .paymentSection,
-  .noteSection {
+  .paymentSection {
     padding: 24px;
   }
 

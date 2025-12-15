@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styles from "./card2.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import roomService from "../../../../services/user/room";
 
 function Card2({ rooms }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -96,7 +95,7 @@ function Card2({ rooms }) {
           >
             <div className={styles.roomImageWrapper}>
               <img
-                src={"/background1.jpg"}
+                src={room.primaryImageUrl}
                 alt={room.name}
                 className={styles.roomImage}
               />

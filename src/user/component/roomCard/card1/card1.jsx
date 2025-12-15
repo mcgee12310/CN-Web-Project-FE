@@ -1,39 +1,50 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./card1.module.css";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import { motion, useInView } from "framer-motion";
+import roomService from "../../../../services/user/room";
 
 function Card1() {
-  const rooms = [
-    {
-      id: 1,
-      name: "Phòng Deluxe",
-      desc: "Phòng rộng rãi với view thành phố",
-      price: "1,500,000 VNĐ/đêm",
-      image: "/background.jpg",
-      review: 4,
-    },
-    {
-      id: 2,
-      name: "Phòng Suite",
-      desc: "Phòng cao cấp với đầy đủ tiện nghi",
-      price: "2,500,000 VNĐ/đêm",
-      image: "/background.jpg",
-      review: 4.5,
-    },
-    {
-      id: 3,
-      name: "Phòng Family",
-      desc: "Phòng gia đình với 2 giường đôi",
-      price: "2,000,000 VNĐ/đêm",
-      image: "/background.jpg",
-      review: 5,
-    },
-  ];
+  // const rooms = [
+  //   {
+  //     id: 1,
+  //     name: "Phòng Deluxe",
+  //     desc: "Phòng rộng rãi với view thành phố",
+  //     price: "1,500,000 VNĐ/đêm",
+  //     image: "/background.jpg",
+  //     review: 4,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Phòng Suite",
+  //     desc: "Phòng cao cấp với đầy đủ tiện nghi",
+  //     price: "2,500,000 VNĐ/đêm",
+  //     image: "/background.jpg",
+  //     review: 4.5,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Phòng Family",
+  //     desc: "Phòng gia đình với 2 giường đôi",
+  //     price: "2,000,000 VNĐ/đêm",
+  //     image: "/background.jpg",
+  //     review: 5,
+  //   },
+  // ];
   const navigate = useNavigate();
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.2 });
+  const [rooms, setRooms] = useState([]);
+
+  const fetchRooms = async () => {
+    const data = await roomService.getAllRoomType();
+    console.log("Data", data);
+    setRooms(data.sort((a, b) => b.price - a.price).slice(0, 3));
+  };
+  useEffect(() => {
+    fetchRooms();
+  }, []);
 
   // Hàm tạo icon sao theo số review
   const renderStars = (rating) => {
@@ -54,39 +65,33 @@ function Card1() {
         {rooms.map((room, i) => (
           <motion.div
             key={room.id}
-            ref={ref}
             initial={{ opacity: 0, y: 40 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 1, delay: i * 0.5 }}
-            viewport={{ amount: 0.2 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: i * 0.15 }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             <motion.div
               className={styles.roomCard}
-              whileHover={{
-                y: -5,
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              }}
+              whileHover={{ y: -5 }}
               onClick={() => navigate(`/room/${room.id}`)}
             >
               <div className={styles.roomImageWrapper}>
                 <img
-                  src={room.image}
+                  src={room.primaryImageUrl || "/background.jpg"}
                   alt={room.name}
                   className={styles.roomImage}
                 />
               </div>
+
               <div className={styles.roomInfo}>
                 <h3>{room.name}</h3>
-                <p>{room.desc}</p>
+                <p>{room.description}</p>
               </div>
+
               <div className={styles.roomFooter}>
-                <div className={styles.review}>
-                  <span className={styles.stars}>
-                    {renderStars(room.review)}
-                  </span>
-                  <span className={styles.ratingValue}>{room.review}</span>
+                <div className={styles.roomPrice}>
+                  {room.price.toLocaleString("vi-VN")} VNĐ / đêm
                 </div>
-                <div className={styles.roomPrice}>{room.price}</div>
               </div>
             </motion.div>
           </motion.div>

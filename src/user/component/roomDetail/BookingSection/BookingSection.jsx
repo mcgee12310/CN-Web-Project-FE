@@ -4,6 +4,7 @@ import { IoPeople, IoCalendar } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../auth/auth-context";
+import roomService from "../../../../services/user/room";
 
 function BookingSection({
   roomData,
@@ -19,6 +20,8 @@ function BookingSection({
   const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
   const [checkOutDate, setCheckOutDate] = useState(initialCheckOutDate);
   const [roomOccupancy, setRoomOccupancy] = useState({});
+  const [bookingNote, setBookingNote] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigate = useNavigate();
   const today = new Date().toISOString().split("T")[0];
@@ -67,6 +70,7 @@ function BookingSection({
   useEffect(() => {
     setSelectedRooms([]);
     setRoomOccupancy({});
+    setBookingNote("");
   }, [checkInDate, checkOutDate]);
 
   const handleCheckInChange = (value) => {
@@ -112,9 +116,8 @@ function BookingSection({
   };
 
   const getRoomStatus = (room) => {
-    if (room.status === "booked") return "booked"; // Nếu có logic booked riêng
+    if (room.status === "booked") return "booked";
     if (selectedRooms.includes(room.id)) return "selected";
-    // Status bây giờ sẽ là 'available' hoặc 'unavailable' từ logic useEffect trên
     return room.status;
   };
 
@@ -128,14 +131,21 @@ function BookingSection({
     }));
   };
 
-  const handleBooking = () => {
-    // 1. Kiểm tra ngày
+  const handleBooking = async () => {
+    // 1. Kiểm tra đăng nhập
+    if (!user) {
+      toast.warn("Bạn cần đăng nhập để có thể đặt phòng");
+      navigate("/login");
+      return;
+    }
+
+    // 2. Kiểm tra ngày
     if (!checkInDate || !checkOutDate) {
       toast.warn("Vui lòng chọn ngày nhận phòng và trả phòng");
       return;
     }
 
-    // 2. Kiểm tra đã chọn phòng chưa
+    // 3. Kiểm tra đã chọn phòng chưa
     if (selectedRooms.length === 0) {
       toast.warn("Vui lòng chọn ít nhất một phòng");
       return;
@@ -144,27 +154,23 @@ function BookingSection({
     // Lấy giới hạn người tối đa từ roomData
     const maxCapacity = roomData?.capacity;
 
-    // 3. Kiểm tra hợp lệ cho từng phòng đã chọn
+    // 4. Kiểm tra hợp lệ cho từng phòng đã chọn
     for (const roomId of selectedRooms) {
       const raw = roomOccupancy[roomId];
       const occ = parseInt(raw, 10);
 
-      // 3.1 Kiểm tra nhập số dương
+      // 4.1 Kiểm tra nhập số dương
       if (!occ || occ < 1) {
-        // Lấy tên/số phòng để hiển thị thông báo rõ ràng hơn
         const roomInfo = rooms.find((r) => r.id === roomId);
         const roomName = roomInfo?.number || roomInfo?.roomNumber || roomId;
-
         toast.warn(`Vui lòng nhập số lượng người (>= 1) cho phòng ${roomName}`);
         return;
       }
 
-      // 3.2 (MỚI) Kiểm tra vượt quá sức chứa (Capacity)
+      // 4.2 Kiểm tra vượt quá sức chứa
       if (maxCapacity && occ > maxCapacity) {
-        // Lấy tên/số phòng để hiển thị thông báo
         const roomInfo = rooms.find((r) => r.id === roomId);
         const roomName = roomInfo?.number || roomInfo?.roomNumber || roomId;
-
         toast.warn(
           `Phòng ${roomName} vượt quá số người cho phép (${maxCapacity} người)`
         );
@@ -172,20 +178,44 @@ function BookingSection({
       }
     }
 
-    // 4. Chuẩn bị dữ liệu để chuyển trang
-    const selectedRoomDetails = rooms
-      .filter((room) => selectedRooms.includes(room.id))
-      .map((room) => ({
-        ...room,
-        occupancy: parseInt(roomOccupancy[room.id], 10) || 1,
-      }));
+    // 5. Gọi API đặt phòng
+    try {
+      setIsProcessing(true);
 
-    const totalPeople = selectedRooms.reduce((sum, id) => {
-      const occ = parseInt(roomOccupancy[id], 10) || 0;
-      return sum + occ;
-    }, 0);
+      const payload = {
+        rooms: selectedRooms.map((roomId) => {
+          return {
+            roomId: roomId,
+            checkInDate: checkInDate,
+            checkOutDate: checkOutDate,
+            numberOfGuests: parseInt(roomOccupancy[roomId], 10) || 1,
+          };
+        }),
+        paymentMethod: "VNPAY",
+        bookingNote: bookingNote,
+      };
 
-    if (user) {
+      console.log("Sending Payload:", payload);
+
+      const response = await roomService.bookingRooms(payload);
+
+      // 6. Chuẩn bị dữ liệu để chuyển sang trang booking
+      const selectedRoomDetails = rooms
+        .filter((room) => selectedRooms.includes(room.id))
+        .map((room) => ({
+          ...room,
+          occupancy: parseInt(roomOccupancy[room.id], 10) || 1,
+        }));
+
+      const totalPeople = selectedRooms.reduce((sum, id) => {
+        const occ = parseInt(roomOccupancy[id], 10) || 0;
+        return sum + occ;
+      }, 0);
+
+      // 7. Navigate sang trang booking với paymentUrl
+      toast.info(
+        "Chúng tôi đang giữ phòng cho bạn. Vui lòng thanh toán để hoàn tất!"
+      );
       navigate("/booking", {
         state: {
           checkInDate,
@@ -194,12 +224,17 @@ function BookingSection({
           selectedRooms: selectedRoomDetails,
           roomType: roomData?.name ?? "Phòng",
           price: roomData?.price ?? "",
+          new_price: response?.amount ?? "",
           heroImage: Array.isArray(roomData?.images) ? roomData.images[0] : "",
+          paymentUrl: response?.paymentUrl || "",
+          bookingNote: bookingNote,
         },
       });
-    } else {
-      toast.warn("Bạn cần đăng nhập để có thể đặt phòng");
-      navigate("/login");
+    } catch (error) {
+      console.error("Booking Error:", error);
+      toast.error("Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại!");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -250,7 +285,6 @@ function BookingSection({
                   return (
                     <button
                       key={room.id}
-                      // Style sẽ tự động xử lý 'unavailable' nếu CSS đã định nghĩa
                       className={`${styles.roomButton} ${
                         styles[
                           `roomButton${
@@ -259,7 +293,6 @@ function BookingSection({
                         ]
                       }`}
                       onClick={() => handleRoomClick(room.id)}
-                      // Disabled nếu status là unavailable
                       disabled={status === "unavailable"}
                       title={
                         status === "unavailable" ? "Phòng đã được đặt" : ""
@@ -305,6 +338,22 @@ function BookingSection({
                       </div>
                     );
                   })}
+
+                  {/* Ghi chú chung cho đơn đặt phòng */}
+                  <div className={styles.bookingNoteCard}>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>
+                        Ghi chú đơn đặt phòng
+                      </label>
+                      <textarea
+                        className={styles.noteInput}
+                        placeholder="Ví dụ: Check-in muộn, cần phòng yên tĩnh..."
+                        rows={3}
+                        value={bookingNote}
+                        onChange={(e) => setBookingNote(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </>
@@ -315,8 +364,12 @@ function BookingSection({
           )}
         </div>
 
-        <button className={styles.bookButton} onClick={handleBooking}>
-          Đặt phòng ngay
+        <button
+          className={styles.bookButton}
+          onClick={handleBooking}
+          disabled={isProcessing}
+        >
+          {isProcessing ? "Đang xử lý..." : "Đặt phòng ngay"}
         </button>
       </div>
     </section>

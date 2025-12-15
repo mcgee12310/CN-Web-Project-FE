@@ -1,21 +1,42 @@
+/* ===============================
+   GRID
+================================ */
 .roomsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
+  align-items: stretch; /* QUAN TRỌNG */
 }
 
+/* ===============================
+   CARD
+================================ */
 .roomCard {
-  background: white;
-  border-radius: 15px;
+  background: #fff;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.roomCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* ===============================
+   IMAGE
+================================ */
 .roomImageWrapper {
   width: 100%;
   height: 220px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .roomImage {
@@ -24,47 +45,71 @@
   object-fit: cover;
 }
 
+/* ===============================
+   INFO
+================================ */
 .roomInfo {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 8px;
   padding: 16px;
+  flex-grow: 1; /* QUAN TRỌNG */
 }
 
 .roomInfo h3 {
-  margin: 0 0 6px;
+  margin: 0;
   font-size: 1.2rem;
+  font-weight: 600;
   color: #222;
 }
 
+/* ===============================
+   DESCRIPTION (CLAMP)
+================================ */
 .roomInfo p {
   color: #666;
   font-size: 0.95rem;
-  line-height: 1.4;
-  flex-grow: 1;
-  margin-bottom: 10px;
+  line-height: 1.45;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* SỐ DÒNG */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
+/* ===============================
+   FOOTER
+================================ */
 .roomFooter {
+  padding: 0 16px 16px;
+  margin-top: auto; /* ĐẨY XUỐNG ĐÁY */
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: auto;
-  padding: 0px 16px 16px 16px;
+  gap: 6px;
 }
 
+/* ===============================
+   PRICE
+================================ */
+.roomPrice {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ff5a5f;
+}
+
+/* ===============================
+   REVIEW (OPTIONAL)
+================================ */
 .review {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 8px 0;
 }
 
 .stars {
   display: flex;
-  align-items: center;
-  gap: 3px;
-  color: #fbbf24; /* vàng nhạt */
+  gap: 2px;
+  color: #fbbf24;
 }
 
 .star {
@@ -72,17 +117,14 @@
 }
 
 .ratingValue {
-  color: #555;
-  font-weight: 600;
   font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
 }
 
-.roomPrice {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #ff6b6b;
-}
-
+/* ===============================
+   RESPONSIVE
+================================ */
 @media (max-width: 1024px) {
   .roomsGrid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -96,12 +138,26 @@
     gap: 20px;
   }
 
+  .roomImageWrapper {
+    height: 200px;
+  }
+
   .roomInfo {
     padding: 14px;
   }
 
+  .roomPrice {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .roomImageWrapper {
+    height: 180px;
+  }
+
   .roomInfo h3 {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .roomInfo p {
@@ -109,28 +165,6 @@
   }
 
   .roomPrice {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .roomsGrid {
-    gap: 16px;
-  }
-
-  .roomImageWrapper {
-    height: 200px;
-  }
-
-  .roomInfo {
-    padding: 12px;
-  }
-
-  .roomInfo h3 {
-    font-size: 1rem;
-  }
-
-  .roomPrice {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 }

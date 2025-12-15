@@ -1,19 +1,15 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../component/header/header";
 import Footer from "../../component/footer/footer";
 import styles from "./booking.module.css";
 import { IoChevronBack, IoPricetag } from "react-icons/io5";
 import { toast } from "react-toastify";
-import roomService from "../../../services/user/room";
 
 function BookingPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const bookingData = location.state;
-  const [paymentMethod, setPaymentMethod] = useState("VNPAY");
-  const [bookingNote, setBookingNote] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
 
   const {
     checkInDate,
@@ -22,7 +18,9 @@ function BookingPage() {
     selectedRooms = [],
     roomType = "Phòng",
     price = "",
+    new_price = "",
     heroImage = "",
+    paymentUrl = "",
   } = bookingData || {};
 
   // 🔹 Tính số đêm
@@ -54,41 +52,15 @@ function BookingPage() {
     return selectedRooms.reduce((sum, room) => sum + (room.occupancy || 0), 0);
   }, [totalPeople, selectedRooms]);
 
-  // --- XỬ LÝ GỌI API ĐẶT PHÒNG ---
-  const handleConfirmBooking = async () => {
-    if (selectedRooms.length === 0) {
-      toast.warn("Không có phòng nào được chọn!");
+  // --- XỬ LÝ THANH TOÁN (Navigate sang VNPAY) ---
+  const handleConfirmPayment = () => {
+    if (!paymentUrl) {
+      toast.error("Không tìm thấy đường dẫn thanh toán!");
       return;
     }
 
-    try {
-      setIsProcessing(true);
-
-      const payload = {
-        rooms: selectedRooms.map((room) => ({
-          roomId: room.id,
-          checkInDate: checkInDate,
-          checkOutDate: checkOutDate,
-          numberOfGuests: room.occupancy || 1,
-          note: "",
-        })),
-        paymentMethod: paymentMethod,
-        bookingNote: bookingNote,
-      };
-
-      console.log("Sending Payload:", payload);
-
-      const response = await roomService.bookingRooms(payload);
-
-      if (response?.paymentUrl) {
-        window.location.href = response.paymentUrl;
-      }
-    } catch (error) {
-      console.error("Booking Error:", error);
-      toast.error("Có lỗi xảy ra khi đặt phòng. Vui lòng thử lại!");
-    } finally {
-      setIsProcessing(false);
-    }
+    // Chuyển hướng sang VNPAY
+    window.location.href = paymentUrl;
   };
 
   if (!bookingData) {
@@ -137,7 +109,7 @@ function BookingPage() {
                 <div className={styles.roomPriceRow}>
                   <IoPricetag className={styles.roomPriceIcon} />
                   <span className={styles.roomPrice}>
-                    {price ? `${formatPrice(price)}` : "Giá đang cập nhật"}
+                    {price ? `${formatPrice(unitPrice)}` : "Giá đang cập nhật"}
                   </span>
                 </div>
                 <p className={styles.roomMeta}>
@@ -176,9 +148,17 @@ function BookingPage() {
                 <ul>
                   {selectedRooms.map((room) => (
                     <li key={room.id}>
-                      Phòng số {room.roomNumber} •{" "}
-                      <strong>{room.occupancy || 0} khách</strong>{" "}
-                      {room.status === "booked" ? "(Đã đặt)" : ""}
+                      <div className={styles.roomListItem}>
+                        <div>
+                          Phòng số {room.roomNumber} •{" "}
+                          <strong>{room.occupancy || 0} khách</strong>
+                        </div>
+                        {room.note && (
+                          <div className={styles.roomNote}>
+                            Ghi chú: {room.note}
+                          </div>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -186,14 +166,26 @@ function BookingPage() {
             </div>
 
             <div className={styles.totalPriceBox}>
-              <h3 className={styles.totalPriceLabel}>Tổng tiền tạm tính</h3>
-              <p className={styles.totalPriceValue}>
-                {totalPrice > 0 ? formatPrice(totalPrice) : "Đang cập nhật"}
-              </p>
-              <p className={styles.totalPriceNote}>
-                Công thức: đơn giá × số phòng ({roomCount}) × số đêm (
-                {nightsUsed})
-              </p>
+              <h3 className={styles.totalPriceLabel}>Tổng tiền</h3>
+
+              {totalPrice > 0 ? (
+                new_price && new_price !== totalPrice ? (
+                  <div className={styles.priceWrapper}>
+                    <span className={styles.oldPrice}>
+                      {formatPrice(totalPrice)}
+                    </span>
+                    <span className={styles.newPrice}>
+                      {formatPrice(new_price)}
+                    </span>
+                  </div>
+                ) : (
+                  <p className={styles.totalPriceValue}>
+                    {formatPrice(totalPrice)}
+                  </p>
+                )
+              ) : (
+                <p className={styles.totalPriceValue}>Đang cập nhật</p>
+              )}
             </div>
 
             <p className={styles.priceDisclaimer}>
@@ -201,21 +193,8 @@ function BookingPage() {
             </p>
           </section>
 
-          {/* --- Cột Phải: Ghi chú & Thanh toán --- */}
+          {/* --- Cột Phải: Thanh toán --- */}
           <div className={styles.rightColumn}>
-            {/* 1. Ghi chú */}
-            <section className={styles.noteSection}>
-              <h2 className={styles.sectionTitle}>Ghi chú / Yêu cầu</h2>
-              <textarea
-                className={styles.noteInput}
-                placeholder="Ví dụ: Check-in muộn, cần phòng yên tĩnh..."
-                rows={4}
-                value={bookingNote}
-                onChange={(e) => setBookingNote(e.target.value)}
-              />
-            </section>
-
-            {/* 2. Thanh toán */}
             <section className={styles.paymentSection}>
               <h2 className={styles.sectionTitle}>Thanh toán</h2>
               <div className={styles.paymentOptions}>
@@ -224,8 +203,8 @@ function BookingPage() {
                     type="radio"
                     name="paymentMethod"
                     value="VNPAY"
-                    checked={paymentMethod === "VNPAY"}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    checked={true}
+                    readOnly
                   />
                   <span className={styles.paymentLabel}>Thanh toán VNPAY</span>
                 </label>
@@ -233,10 +212,9 @@ function BookingPage() {
 
               <button
                 className={styles.confirmButton}
-                onClick={handleConfirmBooking}
-                disabled={isProcessing}
+                onClick={handleConfirmPayment}
               >
-                {isProcessing ? "Đang xử lý..." : "Xác nhận và tiếp tục"}
+                Xác nhận và thanh toán
               </button>
               <p className={styles.paymentNote}>
                 Chúng tôi sẽ giữ chỗ trong vòng 30 phút.

@@ -64,10 +64,7 @@ function Home() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const handleBookNow = () => {
-    if (!user) {
-      console.log("Đi đến trang đặt phòng");
-      navigate("/rooms");
-    }
+    navigate("/rooms");
   };
   return (
     <>
@@ -124,7 +121,7 @@ function Home() {
           <Card1 />
         </section>
         {/* Chat popup */}
-      <UserChatToggle />
+        <UserChatToggle />
       </main>
       <Footer />
     </>

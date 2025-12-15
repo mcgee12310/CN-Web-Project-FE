@@ -91,6 +91,24 @@
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
 }
 
+.noteInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.noteInput:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
 .roomSelector {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -174,13 +192,18 @@
   margin-top: 8px;
 }
 
-.bookButton:hover {
+.bookButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
 .bookButton:active {
   transform: translateY(0);
+}
+
+.bookButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .bookingNote {

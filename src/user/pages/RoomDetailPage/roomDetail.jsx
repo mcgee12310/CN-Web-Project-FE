@@ -8,6 +8,7 @@ import RoomAmenities from "../../component/roomDetail/RoomAmenities/RoomAmenitie
 import BookingSection from "../../component/roomDetail/BookingSection/BookingSection";
 import styles from "./roomDetail.module.css";
 import roomService from "../../../services/user/room";
+import roomTypeService from "../../../services/admin/roomType";
 
 function RoomDetail() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ function RoomDetail() {
   const initialCheckOutDate = queryParams.get("checkOutDate") || "";
 
   const [roomData, setRoomData] = useState(null);
+  const [images, setImages] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const [checkInDate, setCheckInDate] = useState(initialCheckInDate);
@@ -27,6 +29,24 @@ function RoomDetail() {
     window.scrollTo(0, 0);
   }, []);
 
+  const DEFAULT_IMAGES = [
+    "/background.jpg",
+    "/background1.jpg",
+    "/background2.jpg",
+    "/background.jpg",
+  ];
+  const normalizeImages = (apiImages) => {
+    const result = apiImages.map((img) => img.imageUrl);
+    let i = 0;
+
+    while (result.length < 4) {
+      result.push(DEFAULT_IMAGES[i % DEFAULT_IMAGES.length]);
+      i++;
+    }
+
+    return result.slice(0, 4);
+  };
+
   // Hàm gọi lại API để lấy chi tiết phòng
   const fetchRoomDetail = async (checkInDate, checkOutDate) => {
     try {
@@ -35,22 +55,25 @@ function RoomDetail() {
       } else {
         setIsInitialLoading(true);
       }
+
       const data = await roomService.getRoomTypeDetail(
         id,
         checkInDate,
         checkOutDate
       );
       setRoomData(data);
+
+      const imageRes = await roomTypeService.getRoomTypeImages(id);
+      const roomImages = imageRes.data || [];
+
+      setImages(normalizeImages(roomImages));
     } catch (error) {
       console.error("Lỗi tải room detail:", error);
+      setImages(DEFAULT_IMAGES);
     } finally {
       setIsInitialLoading(false);
       setIsUpdating(false);
     }
-  };
-
-  const fetchTierUser = async () => {
-    const res = await profileService.myInfo();
   };
 
   useEffect(() => {
@@ -59,13 +82,6 @@ function RoomDetail() {
 
   if (isInitialLoading) return <p>Loading...</p>;
   if (!roomData) return <p>Không tìm thấy phòng!</p>;
-
-  const images = [
-    "/background.jpg",
-    "/background1.jpg",
-    "/background2.jpg",
-    "/background.jpg",
-  ];
 
   const handleDateChange = (newCheckInDate, newCheckOutDate) => {
     setCheckInDate(newCheckInDate);
