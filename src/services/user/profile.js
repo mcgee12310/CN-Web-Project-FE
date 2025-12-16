@@ -23,6 +23,15 @@ const profileService = {
     }
   },
 
+  getTierInfo: async () => {
+    try {
+      const response = await apiClient.get("api/user/tier/all");
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   changePassword: async (currentPassword, newPassword, confirmPassword) => {
     try {
       const response = await apiClient.put("api/user/change-password", {

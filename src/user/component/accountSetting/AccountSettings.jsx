@@ -3,9 +3,12 @@ import styles from "./AccountSettings.module.css";
 import profileService from "../../../services/user/profile";
 import { toast } from "react-toastify";
 import { Skeleton, Card } from "antd";
+import MemberInfoModal from "../memberInfoModal/memberInfoModal";
+import { FiAward } from "react-icons/fi";
 
 export default function AccountSettings() {
   const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
@@ -48,6 +51,10 @@ export default function AccountSettings() {
         return styles.gold;
       case "DIAMOND":
         return styles.diamond;
+      case "PLATINUM":
+        return styles.platinum;
+      case "BRONZE":
+        return styles.bronze;
       default:
         return "";
     }
@@ -86,83 +93,104 @@ export default function AccountSettings() {
   }
 
   return (
-    <div className={styles.accountPage}>
-      <div className={styles.header}>
-        <h2>Thông tin tài khoản</h2>
-      </div>
-
-      <div className={styles.content}>
-        {/* LEFT */}
-        <div className={styles.avatarSection}>
-          <img
-            src={getAvatarUrl(user.name)}
-            alt="avatar"
-            className={styles.avatar}
-          />
-
-          <div className={styles.name}>{user.name}</div>
-
-          <div className={`${styles.badge} ${getRankClass(user.customerTier)}`}>
-            {user.customerTier}
-          </div>
-
-          <div className={styles.stats}>
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>{user.totalBookings}</div>
-              <div className={styles.statLabel}>Đơn đã đặt</div>
-            </div>
-
-            <div className={styles.statItem}>
-              <div className={styles.statValue}>
-                {user.totalSpent.toLocaleString("vi-VN")}₫
-              </div>
-              <div className={styles.statLabel}>Tổng chi tiêu</div>
-            </div>
-          </div>
+    <>
+      <div className={styles.accountPage}>
+        <div className={styles.header}>
+          <h2>Thông tin tài khoản</h2>
         </div>
 
-        {/* RIGHT */}
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.field}>
-            <label>Email</label>
-            <input type="email" value={formData.email} readOnly />
-          </div>
-
-          <div className={styles.field}>
-            <label>Họ và tên</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
+        <div className={styles.content}>
+          {/* LEFT */}
+          <div className={styles.avatarSection}>
+            <img
+              src={getAvatarUrl(user.name)}
+              alt="avatar"
+              className={styles.avatar}
             />
+
+            <div className={styles.name}>{user.name}</div>
+
+            <div
+              className={`${styles.badge} ${getRankClass(user.customerTier)}`}
+            >
+              {user.customerTier}
+            </div>
+
+            {/* Nút Thông tin thành viên */}
+            <button
+              className={styles.memberInfoBtn}
+              onClick={() => setIsModalOpen(true)}
+            >
+              <FiAward size={18} />
+              Thông tin thành viên
+            </button>
+
+            <div className={styles.stats}>
+              <div className={styles.statItem}>
+                <div className={styles.statValue}>{user.totalBookings}</div>
+                <div className={styles.statLabel}>Đơn đã đặt</div>
+              </div>
+
+              <div className={styles.statItem}>
+                <div className={styles.statValue}>
+                  {user.totalSpent.toLocaleString("vi-VN")}₫
+                </div>
+                <div className={styles.statLabel}>Tổng chi tiêu</div>
+              </div>
+            </div>
           </div>
 
-          <div className={styles.field}>
-            <label>Ngày sinh</label>
-            <input
-              type="date"
-              name="birthday"
-              value={formData.birthday}
-              onChange={handleChange}
-            />
-          </div>
+          {/* RIGHT */}
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.field}>
+              <label>Email</label>
+              <input type="email" value={formData.email} readOnly />
+            </div>
 
-          <div className={styles.field}>
-            <label>Số điện thoại</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
+            <div className={styles.field}>
+              <label>Họ và tên</label>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+              />
+            </div>
 
-          <button type="submit" className={styles.submit}>
-            Lưu thông tin
-          </button>
-        </form>
+            <div className={styles.field}>
+              <label>Ngày sinh</label>
+              <input
+                type="date"
+                name="birthday"
+                value={formData.birthday}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Số điện thoại</label>
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button type="submit" className={styles.submit}>
+              Lưu thông tin
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+
+      {/* Modal */}
+      <MemberInfoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userName={user.name}
+        currentTier={user.customerTier}
+      />
+    </>
   );
 }

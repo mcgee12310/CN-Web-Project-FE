@@ -62,7 +62,6 @@
   font-weight: 600;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
-  margin-bottom: 2.5rem;
 }
 
 .silver {
@@ -87,6 +86,19 @@
 }
 .diamond::before {
   content: "◆";
+}
+
+.memberInfoBtn {
+  margin-top: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-bottom: 1.5rem;
 }
 
 /* Stats: Đóng khung lại cho đỡ trống */
