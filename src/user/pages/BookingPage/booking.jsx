@@ -153,11 +153,6 @@ function BookingPage() {
                           Phòng số {room.roomNumber} •{" "}
                           <strong>{room.occupancy || 0} khách</strong>
                         </div>
-                        {room.note && (
-                          <div className={styles.roomNote}>
-                            Ghi chú: {room.note}
-                          </div>
-                        )}
                       </div>
                     </li>
                   ))}
