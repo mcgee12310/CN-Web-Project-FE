@@ -85,3 +85,18 @@
 .saveButton:hover {
   background-color: #4f46e5 !important;
 }
+
+@media (max-width: 768px) {
+  .imageWrapper {
+    height: 150px;
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+
+  .saveButton {
+    height: 44px;
+    font-size: 0.95rem;
+  }
+}

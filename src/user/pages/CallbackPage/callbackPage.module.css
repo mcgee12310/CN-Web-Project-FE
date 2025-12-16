@@ -117,3 +117,21 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .spinner,
+  .successIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}

@@ -53,3 +53,25 @@
   font-size: 1rem;
   opacity: 0.8;
 }
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .container {
+    width: 95%;
+  }
+
+  .outletWrapper {
+    overflow-x: visible;
+    flex: 1;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    min-height: 400px;
+    width: 100%;
+  }
+}

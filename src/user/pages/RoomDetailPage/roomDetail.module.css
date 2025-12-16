@@ -42,6 +42,12 @@
     gap: 30px;
   }
 
+  .leftColumn {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
   .rightColumn {
     width: 100%;
   }
@@ -56,6 +62,16 @@
     margin-top: 30px;
     gap: 24px;
   }
+
+  .leftColumn {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .rightColumn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -66,5 +82,15 @@
   .content {
     margin-top: 20px;
     gap: 20px;
+  }
+
+  .leftColumn {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .rightColumn {
+    width: 100%;
   }
 }

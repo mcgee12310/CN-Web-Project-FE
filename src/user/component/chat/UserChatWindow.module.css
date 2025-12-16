@@ -105,3 +105,32 @@
   cursor: not-allowed;
   transform: none;
 }
+
+@media (max-width: 768px) {
+  .container {
+    height: 100%;
+  }
+
+  .chatList {
+    padding: 6px;
+    gap: 6px;
+  }
+
+  .message {
+    max-width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .userInput {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 16px;
+  }
+
+  .sendBtn {
+    min-width: 48px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

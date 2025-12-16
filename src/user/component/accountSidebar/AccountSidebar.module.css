@@ -50,3 +50,24 @@
 .icon {
   color: #ff6b6b;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 95%;
+    padding: 1rem;
+    position: static;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .menuItem {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+  }
+}

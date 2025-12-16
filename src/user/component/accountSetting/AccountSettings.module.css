@@ -216,23 +216,31 @@
 /* --- RESPONSIVE: Mobile quay về 1 cột --- */
 @media (max-width: 768px) {
   .accountPage {
-    flex-direction: column;
     margin: 20px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .avatarSection {
     border-right: none;
     border-bottom: 1px solid #f0f0f0;
+    min-width: auto;
+    width: 100%;
   }
 
   .stats {
-    flex-direction: row; /* Mobile thì stats nằm ngang lại */
+    flex-direction: row;
     justify-content: center;
   }
 
   .form {
-    grid-template-columns: 1fr; /* Form về 1 cột */
+    grid-template-columns: 1fr;
     padding: 30px 20px;
+    width: 100%;
   }
 
   .field:nth-child(1),
