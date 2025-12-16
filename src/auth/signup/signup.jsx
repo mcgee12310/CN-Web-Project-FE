@@ -3,6 +3,15 @@ import { useNavigate } from "react-router-dom";
 import styles from "./signup.module.css";
 import authService from "../../services/auth";
 import { toast } from "react-toastify";
+import {
+  FiEye,
+  FiEyeOff,
+  FiMail,
+  FiLock,
+  FiUser,
+  FiPhone,
+  FiCalendar,
+} from "react-icons/fi";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +23,8 @@ const Signup = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,6 +39,14 @@ const Signup = () => {
         [name]: "",
       }));
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const validateForm = () => {
@@ -73,6 +92,8 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       const response = await authService.signup(
         formData.email,
@@ -101,120 +122,162 @@ const Signup = () => {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.signupForm}>
+          {/* Full Name */}
           <div className={styles.formGroup}>
             <label htmlFor="fullName" className={styles.formLabel}>
               Họ và tên
             </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.fullName ? styles.inputError : ""
-              }`}
-              placeholder="Nhập họ và tên của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiUser className={styles.inputIcon} />
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.fullName ? styles.inputError : ""
+                }`}
+                placeholder="Nhập họ và tên của bạn"
+              />
+            </div>
             {errors.fullName && (
               <span className={styles.errorMessage}>{errors.fullName}</span>
             )}
           </div>
 
+          {/* Email */}
           <div className={styles.formGroup}>
             <label htmlFor="email" className={styles.formLabel}>
               Email
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.email ? styles.inputError : ""
-              }`}
-              placeholder="Nhập email của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiMail className={styles.inputIcon} />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.email ? styles.inputError : ""
+                }`}
+                placeholder="Nhập email của bạn"
+              />
+            </div>
             {errors.email && (
               <span className={styles.errorMessage}>{errors.email}</span>
             )}
           </div>
 
+          {/* Phone */}
           <div className={styles.formGroup}>
             <label htmlFor="phone" className={styles.formLabel}>
               Số điện thoại
             </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.phone ? styles.inputError : ""
-              }`}
-              placeholder="Nhập số điện thoại của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiPhone className={styles.inputIcon} />
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.phone ? styles.inputError : ""
+                }`}
+                placeholder="Nhập số điện thoại của bạn"
+              />
+            </div>
             {errors.phone && (
               <span className={styles.errorMessage}>{errors.phone}</span>
             )}
           </div>
 
+          {/* Date of Birth */}
           <div className={styles.formGroup}>
             <label htmlFor="dateOfBirth" className={styles.formLabel}>
               Ngày sinh
             </label>
-            <input
-              type="date"
-              id="dateOfBirth"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.dateOfBirth ? styles.inputError : ""
-              }`}
-            />
+            <div className={styles.inputWrapper}>
+              <FiCalendar className={styles.inputIcon} />
+              <input
+                type="date"
+                id="dateOfBirth"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  formData.dateOfBirth ? styles.hasValue : ""
+                } ${errors.dateOfBirth ? styles.inputError : ""}`}
+              />
+            </div>
             {errors.dateOfBirth && (
               <span className={styles.errorMessage}>{errors.dateOfBirth}</span>
             )}
           </div>
 
+          {/* Password */}
           <div className={styles.formGroup}>
             <label htmlFor="password" className={styles.formLabel}>
               Mật khẩu
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.password ? styles.inputError : ""
-              }`}
-              placeholder="Nhập mật khẩu của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiLock className={styles.inputIcon} />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.password ? styles.inputError : ""
+                }`}
+                placeholder="Nhập mật khẩu của bạn"
+              />
+              <button
+                type="button"
+                className={styles.togglePassword}
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
             {errors.password && (
               <span className={styles.errorMessage}>{errors.password}</span>
             )}
           </div>
 
+          {/* Confirm Password */}
           <div className={styles.formGroup}>
             <label htmlFor="confirmPassword" className={styles.formLabel}>
               Xác nhận mật khẩu
             </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.confirmPassword ? styles.inputError : ""
-              }`}
-              placeholder="Nhập lại mật khẩu"
-            />
+            <div className={styles.inputWrapper}>
+              <FiLock className={styles.inputIcon} />
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.confirmPassword ? styles.inputError : ""
+                }`}
+                placeholder="Nhập lại mật khẩu"
+              />
+              <button
+                type="button"
+                className={styles.togglePassword}
+                onClick={toggleConfirmPasswordVisibility}
+                aria-label={
+                  showConfirmPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+                }
+              >
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
             {errors.confirmPassword && (
               <span className={styles.errorMessage}>
                 {errors.confirmPassword}

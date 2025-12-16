@@ -216,7 +216,7 @@ function BookingSection({
       toast.info(
         "Chúng tôi đang giữ phòng cho bạn. Vui lòng thanh toán để hoàn tất!"
       );
-      navigate("/booking", {
+      navigate("/booking/payment", {
         state: {
           checkInDate,
           checkOutDate,

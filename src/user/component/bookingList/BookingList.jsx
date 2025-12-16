@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input, Tag, Button, Dropdown, Menu, Card, Empty, Space } from "antd";
 import {
   SearchOutlined,
@@ -14,6 +15,7 @@ import styles from "./BookingList.module.css";
 
 import BookingDetailModal from "../../component/bookingDetailModal/BookingDetailModal";
 import profileService from "../../../services/user/profile";
+import Booking1Page from "../../../user/pages/BookingPage/booking1";
 
 const BookingList = () => {
   const [search, setSearch] = useState("");
@@ -21,6 +23,7 @@ const BookingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -38,8 +41,14 @@ const BookingList = () => {
     fetchBookings();
   }, []);
 
-  const handleView = (code) => {
-    const booking = data.find((b) => b.bookingCode === code);
+  const handleView = (booking) => {
+    // 1. Nếu đang chờ thanh toán → quay lại trang thanh toán
+    if (booking.status === "PAYMENT_PENDING") {
+      navigate(`/booking/payment/${booking.id}`);
+      return;
+    }
+
+    // 2. Các trạng thái khác → mở modal
     setSelectedBooking(booking);
     setIsModalOpen(true);
   };
@@ -157,9 +166,11 @@ const BookingList = () => {
                       <Button
                         type="primary"
                         icon={<EyeOutlined />}
-                        onClick={() => handleView(booking.bookingCode)}
+                        onClick={() => handleView(booking)}
                       >
-                        Xem
+                        {booking.status === "PAYMENT_PENDING"
+                          ? "Thanh toán"
+                          : "Xem"}
                       </Button>
                     </div>
                   </div>

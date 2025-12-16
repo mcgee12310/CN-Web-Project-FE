@@ -8,6 +8,7 @@ import Home from "./user/pages/HomePage/home";
 import ExploreRoom from "./user/pages/ExplorePage/exploreRoom";
 import RoomDetail from "./user/pages/RoomDetailPage/roomDetail";
 import BookingPage from "./user/pages/BookingPage/booking";
+import Booking1Page from "./user/pages/BookingPage/booking1";
 import VNPayCallback from "./user/pages/CallbackPage/callbackPage";
 import { useAuth } from "./auth/auth-context";
 
@@ -18,7 +19,7 @@ import UserList from "./admin/pages/UserListPage/UserList";
 import UserDetail from "./admin/pages/UserDetailPage/UserDetail";
 import BookingList from "./admin/pages/BookingListPage/BookingList";
 import BookingDetail from "./admin/pages/BookingDetailPage/BookingDetail";
-import RoomTypes from "./admin/pages/RoomTypesPage/roomTypes"; 
+import RoomTypes from "./admin/pages/RoomTypesPage/roomTypes";
 import RoomTypeDetail from "./admin/pages/RoomTypesDetailPage/roomTypeDetail";
 import RoomList from "./admin/pages/RoomListPage/RoomList";
 import AdminRoomDetail from "./admin/pages/RoomDetailPage/RoomDetailPage";
@@ -72,7 +73,8 @@ function App() {
       <Route path="/otp" element={<OTP />} />
       <Route path="/rooms" element={<ExploreRoom />} />
       <Route path="/room/:id" element={<RoomDetail />} />
-      <Route path="/booking" element={<BookingPage />} />
+      <Route path="/booking/payment" element={<BookingPage />} />
+      <Route path="/booking/payment/:id" element={<Booking1Page />} />
       <Route path="/api/payment/vnpay/callback" element={<VNPayCallback />} />
     </Routes>
   );

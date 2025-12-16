@@ -257,6 +257,159 @@
   }
 }
 
+/* Tablet - Medium screens */
+@media (min-width: 481px) and (max-width: 768px) {
+  .otpCard {
+    max-width: 500px;
+    padding: 45px;
+  }
+
+  .otpTitle {
+    font-size: 2.2rem;
+  }
+
+  .otpInput {
+    width: 55px;
+    height: 65px;
+    font-size: 1.6rem;
+  }
+
+  .otpInputs {
+    gap: 14px;
+  }
+}
+
+/* Desktop - Large screens */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .otpContainer {
+    padding: 40px;
+  }
+
+  .otpCard {
+    max-width: 550px;
+    padding: 50px;
+  }
+
+  .otpTitle {
+    font-size: 2.4rem;
+    margin-bottom: 16px;
+  }
+
+  .otpSubtitle {
+    font-size: 1.05rem;
+  }
+
+  .otpInput {
+    width: 60px;
+    height: 70px;
+    font-size: 1.8rem;
+    border-radius: 14px;
+  }
+
+  .otpInputs {
+    gap: 16px;
+    margin: 30px 0;
+  }
+
+  .verifyButton {
+    padding: 16px 24px;
+    font-size: 1.05rem;
+  }
+
+  .timerText,
+  .resendText {
+    font-size: 1rem;
+  }
+
+  .footerText {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Large screens */
+@media (min-width: 1201px) {
+  .otpContainer {
+    padding: 60px;
+  }
+
+  .otpCard {
+    max-width: 600px;
+    padding: 60px;
+    border-radius: 24px;
+  }
+
+  .backButton {
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+  }
+
+  .backButton svg {
+    font-size: 1.4rem;
+  }
+
+  .otpHeader {
+    margin-bottom: 40px;
+  }
+
+  .otpTitle {
+    font-size: 2.6rem;
+    margin-bottom: 18px;
+  }
+
+  .otpSubtitle {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .otpForm {
+    gap: 25px;
+  }
+
+  .otpInput {
+    width: 65px;
+    height: 75px;
+    font-size: 2rem;
+    border-radius: 16px;
+    border-width: 2.5px;
+  }
+
+  .otpInputs {
+    gap: 18px;
+    margin: 35px 0;
+  }
+
+  .errorMessage {
+    font-size: 1rem;
+    padding: 12px;
+  }
+
+  .timerText,
+  .resendText {
+    font-size: 1.05rem;
+  }
+
+  .timer {
+    font-size: 1.1rem;
+  }
+
+  .verifyButton {
+    padding: 18px 28px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    margin-top: 15px;
+  }
+
+  .otpFooter {
+    margin-top: 35px;
+    padding-top: 25px;
+  }
+
+  .footerText {
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile - Small screens */
 @media (max-width: 480px) {
   .otpContainer {
     padding: 10px;
@@ -290,4 +443,3 @@
     font-size: 0.8rem;
   }
 }
-

@@ -4,6 +4,7 @@ import { useAuth } from "../auth-context";
 import authService from "../../services/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Login = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +26,10 @@ const Login = () => {
         [name]: "",
       }));
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const validateForm = () => {
@@ -47,8 +53,11 @@ const Login = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       const response = await authService.login(
         formData.email,
@@ -85,40 +94,56 @@ const Login = () => {
             <label htmlFor="email" className={styles.formLabel}>
               Email
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.email ? styles.inputError : ""
-              }`}
-              placeholder="Nhập email của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiMail className={styles.inputIcon} />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.email ? styles.inputError : ""
+                }`}
+                placeholder="Nhập email của bạn"
+              />
+            </div>
             {errors.email && (
               <span className={styles.errorMessage}>{errors.email}</span>
             )}
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="password" className={styles.formLabel}>
               Mật khẩu
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className={`${styles.formInput} ${
-                errors.password ? styles.inputError : ""
-              }`}
-              placeholder="Nhập mật khẩu của bạn"
-            />
+            <div className={styles.inputWrapper}>
+              <FiLock className={styles.inputIcon} />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={`${styles.formInput} ${
+                  errors.password ? styles.inputError : ""
+                }`}
+                placeholder="Nhập mật khẩu của bạn"
+              />
+              <button
+                type="button"
+                className={styles.togglePassword}
+                onClick={togglePasswordVisibility}
+                aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
             {errors.password && (
               <span className={styles.errorMessage}>{errors.password}</span>
             )}
           </div>
+
           <div className={styles.formOptions}>
             <label className={styles.checkboxContainer}>
               <input type="checkbox" className={styles.checkbox} />
@@ -128,6 +153,7 @@ const Login = () => {
               Quên mật khẩu?
             </a>
           </div>
+
           <button type="submit" className={styles.loginButton}>
             Đăng Nhập
           </button>

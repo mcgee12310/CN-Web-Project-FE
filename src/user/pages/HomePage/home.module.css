@@ -4,20 +4,21 @@
   padding: 0;
 }
 
+/* ===== BANNER SECTION - IMPROVED ===== */
 .bannerSection {
-  --count: 3; /* số ảnh */
-  --duration: 30s; /* thời gian 1 vòng */
-  background-image: url("/background2.jpg");
-  background-size: cover;
+  --count: 3;
+  --duration: 20s;
   position: relative;
-  height: 80vh;
+  height: 100vh;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-color: #000;
 }
 
-/* lớp ảnh nền động */
+/* Lớp ảnh nền động - Ken Burns Effect */
 .bgSlide {
   position: absolute;
   inset: 0;
@@ -28,65 +29,75 @@
   opacity: 0;
   z-index: 0;
 
-  /* crossfade có overlap + ổn định khung đầu/cuối */
-  /* animation: bgCycle var(--duration) ease-in-out infinite both; */
-  animation: bgCycle var(--duration) linear infinite both;
-
-  /* lệch pha giữa các ảnh */
-  animation-delay: calc(var(--i) * (var(--duration) / var(--count)));
+  animation: kenBurnsSlide var(--duration) ease-in-out infinite;
+  animation-delay: calc((var(--i) - 1) * (var(--duration) / var(--count)));
 
   will-change: opacity, transform;
   backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
-/* keyframes có overlap để luôn có ít nhất 1 ảnh đang hiển thị */
-@keyframes bgCycle {
+@keyframes kenBurnsSlide {
   0% {
     opacity: 0;
-    transform: scale(1.05);
-  } /* chuẩn bị vào */
-  3% {
+    transform: scale(1) translateX(0);
+  }
+  5% {
     opacity: 1;
-    transform: scale(1.02);
-  } /* vào sớm */
-  50% {
+  }
+  33.33% {
     opacity: 1;
-    transform: scale(1);
-  } /* giữ lâu ở trạng thái hiển thị */
-  58% {
+    transform: scale(1.15) translateX(-20px);
+  }
+  38.33% {
     opacity: 0;
-    transform: scale(1.05);
-  } /* bắt đầu mờ đi (ra muộn) */
+  }
   100% {
     opacity: 0;
-    transform: scale(1.05);
+    transform: scale(1.15) translateX(-20px);
   }
 }
 
-/* gradient overlay bạn đã có */
+/* Overlay gradient đẹp hơn */
 .bannerSection::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
-  animation: gradientShift 8s ease-in-out infinite;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  pointer-events: none;
 }
 
-/* giữ overlay và content ở trên cùng */
+/* Vignette effect */
+.bannerSection::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
 .bannerOverlay {
   position: relative;
   z-index: 2;
   text-align: center;
   color: white;
-  animation: fadeInUp 1.5s ease-out;
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(60px);
   }
   to {
     opacity: 1;
@@ -95,307 +106,330 @@
 }
 
 .bannerContent {
-  max-width: 800px;
-  padding: 0 20px;
+  max-width: 900px;
+  padding: 0 30px;
 }
 
 .bannerTitle {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  animation: slideInLeft 1.8s ease-out;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  animation: slideInTitle 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
 }
 
-@keyframes slideInLeft {
+@keyframes slideInTitle {
   from {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateY(40px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .bannerSubtitle {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  animation: slideInRight 1.8s ease-out 0.3s both;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  margin-bottom: 2.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  font-weight: 400;
+  line-height: 1.6;
+  opacity: 0.95;
+  animation: slideInSubtitle 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s backwards;
 }
 
-@keyframes slideInRight {
+@keyframes slideInSubtitle {
   from {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateY(30px);
   }
   to {
-    opacity: 1;
-    transform: translateX(0);
+    opacity: 0.95;
+    transform: translateY(0);
   }
 }
 
 .bannerCta {
-  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   color: white;
   border: none;
-  padding: 15px 40px;
-  font-size: 1.2rem;
-  font-weight: bold;
+  padding: 18px 48px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  animation: bounceIn 2s ease-out 0.6s both;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInButton 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s backwards;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-@keyframes bounceIn {
-  0% {
+@keyframes fadeInButton {
+  from {
     opacity: 0;
-    transform: scale(0.3);
+    transform: translateY(20px) scale(0.9);
   }
-  50% {
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
+  to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
   }
+}
+
+.bannerCta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.bannerCta:hover::before {
+  left: 100%;
 }
 
 .bannerCta:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
 }
 
-/* Container */
+.bannerCta:active {
+  transform: translateY(-2px);
+}
+
+/* ===== CONTAINER ===== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Hotel Description */
+/* ===== HOTEL DESCRIPTION ===== */
 .hotelDescription {
-  padding: 80px 0;
-  background: white;
+  padding: 100px 0;
+  background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
 }
 
 .hotelDescription h2 {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: clamp(2rem, 4vw, 2.5rem);
   margin-bottom: 2rem;
-  color: #333;
+  color: #222;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.hotelDescription h2::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #ee5a6f);
+  border-radius: 2px;
 }
 
 .hotelDescription p {
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
   line-height: 1.8;
-  color: #666;
+  color: #555;
   text-align: center;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 30px auto 0;
 }
 
+/* ===== HIGHLIGHTS SECTION ===== */
 .highlightsSection {
-  padding: 80px 20px;
+  padding: 100px 20px;
   background: #f8f9fa;
   text-align: center;
 }
 
 .highlightsSection h2 {
-  font-size: 2.2rem;
-  margin-bottom: 50px;
-  color: #333;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 60px;
+  color: #222;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+}
+
+.highlightsSection h2::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #ee5a6f);
+  border-radius: 2px;
 }
 
 .highlightsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .highlightItem {
   background: white;
-  padding: 20px 20px;
-  border-radius: 15px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .highlightItem:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  border-color: #ff6b6b;
 }
 
 .icon {
-  font-size: 2.4rem;
+  font-size: 3rem;
   color: #ff6b6b;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.highlightItem:hover .icon {
+  transform: scale(1.1) rotateY(360deg);
 }
 
 .highlightItem h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
   color: #222;
+  font-weight: 600;
 }
 
 .highlightItem p {
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.7;
 }
 
+/* ===== FEATURED ROOMS ===== */
 .featuredRooms {
-  padding: 80px 100px;
+  padding: 100px 100px;
   background: white;
 }
 
 .featuredRooms h2 {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: clamp(2rem, 4vw, 2.5rem);
   margin-bottom: 3rem;
-  color: #333;
+  color: #222;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
+.featuredRooms h2::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #ee5a6f);
+  border-radius: 2px;
+}
+
+/* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .bannerTitle {
-    font-size: 3rem;
-  }
-
-  .bannerSubtitle {
-    font-size: 1.1rem;
-  }
-
   .highlightsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
   }
 
   .featuredRooms {
-    padding: 60px 40px;
+    padding: 80px 40px;
   }
 }
 
 @media (max-width: 768px) {
-  .bannerTitle {
-    font-size: 2.5rem;
+  .bannerSection {
+    height: 80vh;
+    min-height: 500px;
   }
 
-  .bannerSubtitle {
-    font-size: 1.2rem;
+  .bannerContent {
+    padding: 0 20px;
   }
 
-  .locationAmenities .container {
+  .hotelDescription {
+    padding: 80px 0;
+  }
+
+  .highlightsSection {
+    padding: 80px 20px;
+  }
+
+  .highlightsGrid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 20px;
   }
 
-  .amenitiesGrid {
-    grid-template-columns: 1fr;
+  .highlightItem {
+    padding: 30px 25px;
   }
 
-  .roomsGrid {
-    grid-template-columns: 1fr;
+  .featuredRooms {
+    padding: 80px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bannerSection {
+    height: 70vh;
+    min-height: 450px;
+  }
+
+  .bannerCta {
+    padding: 15px 35px;
   }
 
   .hotelDescription {
     padding: 60px 0;
   }
 
-  .hotelDescription h2 {
-    font-size: 1.8rem;
-  }
-
-  .hotelDescription p {
-    font-size: 1.1rem;
-  }
-
   .highlightsSection {
-    padding: 60px 20px;
-  }
-
-  .highlightsSection h2 {
-    font-size: 1.8rem;
-    margin-bottom: 40px;
-  }
-
-  .highlightsGrid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .featuredRooms {
-    padding: 60px 20px;
-  }
-
-  .featuredRooms h2 {
-    font-size: 1.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .bannerSection {
-    height: 60vh;
-  }
-
-  .bannerTitle {
-    font-size: 2rem;
-  }
-
-  .bannerSubtitle {
-    font-size: 1rem;
-  }
-
-  .bannerCta {
-    padding: 12px 30px;
-    font-size: 1rem;
-  }
-
-  .hotelDescription {
-    padding: 40px 0;
-  }
-
-  .hotelDescription h2 {
-    font-size: 1.5rem;
-  }
-
-  .hotelDescription p {
-    font-size: 1rem;
-  }
-
-  .highlightsSection {
-    padding: 40px 16px;
-  }
-
-  .highlightsSection h2 {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
+    padding: 60px 16px;
   }
 
   .highlightItem {
-    padding: 16px;
+    padding: 25px 20px;
   }
 
-  .highlightItem h3 {
-    font-size: 1.1rem;
-  }
-
-  .highlightItem p {
-    font-size: 0.9rem;
+  .icon {
+    font-size: 2.5rem;
   }
 
   .featuredRooms {
-    padding: 40px 16px;
-  }
-
-  .featuredRooms h2 {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+    padding: 60px 16px;
   }
 }
