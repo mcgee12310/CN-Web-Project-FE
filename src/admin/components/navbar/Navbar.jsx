@@ -1,59 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Navbar.module.css";
-import { Hotel, ChevronDown } from 'lucide-react';
+import { ChevronDown, LogOut, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const userString = localStorage.getItem('user');
+  const navigate = useNavigate();
+
+  const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
-  const userName = user?.fullName || 'Admin User';
-  const userEmail = user?.email || 'admin@example.com';
+  const userName = user?.fullName || "Admin User";
 
-  // Hàm tạo avatar từ tên
   const getAvatarUrl = (name) =>
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name
-    )}&background=random`;
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
-  // Hàm tạo màu nền từ tên
-  const getColorFromName = (name) => {
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const hue = hash % 360;
-    return `hsl(${hue}, 65%, 55%)`;
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  const goToUserView = () => {
+    navigate("/");
   };
 
   return (
     <div className={styles.navbar}>
-      {/* Logo bên trái - Redesigned */}
+      {/* Logo */}
       <div className={styles.logo}>
-        <div className={styles.logoBox}>
-          {/* <Hotel className={styles.logoIcon} /> */}
-          <img
-          src="/hikari-logo.png"
-          alt="avatar"
-          className={styles.logoIcon}
-        />
-        </div>
+        <img src="/hikari-logo3.png" alt="logo" className={styles.logoIcon} />
         <div className={styles.logoText}>
           <span className={styles.logoName}>HIKARI</span>
           <span className={styles.logoSubtext}>HOTEL</span>
         </div>
       </div>
 
-      {/* Avatar admin bên phải với tên động */}
-      <div className={styles.user}>
-        <div className={styles.userInfo}>
+      {/* User menu */}
+      <div className={styles.userWrapper}>
+        <div className={styles.user}>
           <span className={styles.username}>{userName}</span>
+          <img src={getAvatarUrl(userName)} className={styles.avatar} />
+          <ChevronDown className={styles.chevron} />
         </div>
-        <img
-          src={getAvatarUrl(userName)}
-          alt="avatar"
-          className={styles.avatar}
-        />
-        <ChevronDown className={styles.chevron} />
+
+        <div className={styles.dropdown}>
+          <button className={styles.dropdownItem} onClick={goToUserView}>
+            <User size={16} />
+            <span>Giao diện người dùng</span>
+          </button>
+
+          <button
+            className={`${styles.dropdownItem} ${styles.logout}`}
+            onClick={handleLogout}
+          >
+            <LogOut size={16} />
+            <span>Đăng xuất</span>
+          </button>
+        </div>
       </div>
     </div>
   );

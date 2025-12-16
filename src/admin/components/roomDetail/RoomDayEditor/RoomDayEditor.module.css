@@ -5,6 +5,9 @@
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   min-width: inherit;
   margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -23,12 +26,12 @@
 .dateFormGroup {
   align-items: center;
   display: flex;
-  justify-content: space-between; /* This will put space between the two items */
+  justify-content: space-between;
   margin-bottom: 16px;
 }
 
 .roomSelect {
-  width: 150%;
+  width: 100%;
 }
 
 .formItem {
@@ -44,64 +47,52 @@ label {
   margin-bottom: 6px;
 }
 
-input, select {
-  padding: 8px 12px;
+.infoText {
+  padding: 10px 12px;
+  background-color: #f5f5f5;
   border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.actions {
-  display: flex;
-  justify-content: right;
-  gap: 12px;
-}
-
-.addBtn {
-  background-color: #10835c;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  margin-left: auto;
-  margin-bottom: 8px;
-  width: fit-content;
-  height: fit-content;
-}
-
-.deleteBtn {
-  background-color: #bc3838;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 16px;
-  width: auto;
-  height: fit-content;
-}
-
-.saveBtn {
-  background-color: #4f46e5;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.saveBtn:disabled {
-  background-color: #a5b4fc;
-  cursor: not-allowed;
-}
-
-.cancelBtn {
-  background-color: #ddd;
+  font-size: 1rem;
   color: #333;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
+}
+
+.bookingLink {
+  color: #2563eb;
+  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bookingLink:hover {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.noData {
+  color: #6b7280;
+  font-style: italic;
+  padding: 12px;
+  text-align: center;
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+.editBox {
+  margin-top: 24px;
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  width: 70%;
+}
+
+.editBox h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .available {
@@ -112,15 +103,27 @@ input, select {
   background-color: #eb717b !important;
 }
 
+.selected {
+  border: 3px solid #fbbf24 !important;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3) !important;
+}
+
 :global(.react-calendar) {
-  width: 100%;
+  width: 70%;
   border: none;
   background: white;
 }
 
+:global(.react-calendar__month-view__days) {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 8px !important;
+}
+
 :global(.react-calendar__tile) {
-  height: 80px;
-  border-radius: 10px;
+  height: 70px;
+  max-width: 100% !important;
+  /* flex-basis: auto !important; */
 }
 
 :global(.react-calendar__tile--active) {
@@ -132,7 +135,7 @@ input, select {
   font-size: large !important;
 }
 
-:global(.react-calendar__tile--now) {
+/* :global(.react-calendar__tile--now) {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -150,4 +153,4 @@ input, select {
   background-color: #4f46e5 !important;
   box-shadow: none !important;
   color: #e7e6e6 !important;
-}
+} */

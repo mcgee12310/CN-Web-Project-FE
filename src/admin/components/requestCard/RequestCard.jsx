@@ -6,8 +6,9 @@ import AddGuestModal from "../addGuestModal/AddGuestModal";
 import { toast } from "react-toastify";
 import bookingService from "../../../services/admin/booking";
 
-const RequestCard = ({ request, onUpdate }) => {
+const RequestCard = ({ request, note, onUpdate }) => {
   const [formData, setFormData] = useState(request);
+  // const [bookingnote, setNote] = useState(note);
   const [openAdd, setOpenAdd] = useState(false);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
 
@@ -80,7 +81,7 @@ const RequestCard = ({ request, onUpdate }) => {
             <label>Ghi chú</label>
             <Input.TextArea
               rows={3}
-              value={formData.note}
+              value={note}
               readOnly
               style={{ resize: "none", overflowY: "auto" }}
             />

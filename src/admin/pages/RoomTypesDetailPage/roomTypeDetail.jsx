@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button } from "antd";
 import { toast } from "react-toastify";
-
 import ImageGallery from "../../components/roomDetail/ImageGallery/ImageGallery";
 import RoomInfo from "../../components/roomDetail/RoomInfo/RoomInfo";
 import RoomImagesEdit from "../../components/roomDetail/RoomImages/RoomImagesEdit";
 import RoomReviews from "../../components/roomDetail/RoomReviews/RoomReviews";
-
 import styles from "./roomTypeDetail.module.css";
 import roomTypeService from "../../../services/admin/roomType";
 import amenityService from "../../../services/admin/amenity";
+import { usePageTitle } from '../../../utils/usePageTitle';
 
 function RoomDetail() {
+  usePageTitle('Chi tiết loại phòng');
   const { id } = useParams();
   const navigate = useNavigate();
 

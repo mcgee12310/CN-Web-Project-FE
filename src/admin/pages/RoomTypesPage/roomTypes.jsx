@@ -5,12 +5,14 @@ import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import AddRoomTypeModal from "../../components/addRoomTypeModal/AddRoomTypeModal";
 import styles from "./roomTypes.module.css";
 import roomTypeService from "../../../services/admin/roomType";
+import { usePageTitle } from '../../../utils/usePageTitle';
+
 function RoomTypes() {
+  usePageTitle('Danh sách loại phòng');
   const [search, setSearch] = useState("");
   const [roomTypes, setRoomTypes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openAddRoomType, setOpenAddRoomType] = useState(false);
-
 
   // ✅ Gọi API lấy tất cả room types
   useEffect(() => {

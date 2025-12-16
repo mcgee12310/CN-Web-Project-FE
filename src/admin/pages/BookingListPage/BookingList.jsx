@@ -10,9 +10,11 @@ import styles from "./BookingList.module.css";
 import { useNavigate } from "react-router-dom";
 import { formatPrice, formatDate, formatStatus } from "../../../utils/format";
 import { toast } from "react-toastify";
+import { usePageTitle } from '../../../utils/usePageTitle';
 import bookingService from "../../../services/admin/booking";
 
 const BookingList = () => {
+  usePageTitle('Danh sách đơn');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -210,7 +212,7 @@ const BookingList = () => {
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} đơn`
           }}
-          scroll={{ y: 500 }}
+          scroll={{ y: 800 }}
         />
       </div>
       <Modal

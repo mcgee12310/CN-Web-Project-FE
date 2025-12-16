@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Table } from "antd";
 import { formatDate, formatPrice, formatStatus } from '../../../utils/format';
+import { usePageTitle } from '../../../utils/usePageTitle';
 import dashboardService from '../../../services/admin/dashboard'; // giả sử bạn tạo service gọi API
 
 const Dashboard = () => {
+  usePageTitle('Tổng quan');
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -87,7 +89,13 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.header}>Dashboard</h2>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Trang tổng quan</h1>
+          <p className={styles.subtitle}>Theo dõi và quản lí các thông tin chung của hệ thống</p>
+        </div>
+      </div>
+
       <div className={styles.mainContent}>
         <div className={styles.statsRow}>
           <div className={styles.statCard} style={{ borderLeftColor: "#f59e0b" }}>
@@ -96,7 +104,7 @@ const Dashboard = () => {
           </div>
 
           <div className={styles.statCard}>
-            <span className={styles.statLabel}>Tổng số user</span>
+            <span className={styles.statLabel}>Tổng số người dùng</span>
             <span className={styles.statValue}>{totalUsers}</span>
           </div>
 

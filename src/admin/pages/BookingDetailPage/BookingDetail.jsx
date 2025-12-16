@@ -5,9 +5,11 @@ import styles from "./BookingDetail.module.css";
 import RequestCard from "../../components/requestCard/RequestCard";
 import userService from "../../../services/admin/user";
 import bookingService from "../../../services/admin/booking";
+import { usePageTitle } from '../../../utils/usePageTitle';
 import { formatDate, formatStatus, formatPrice } from "../../../utils/format";
 
 export default function BookingDetail({ }) {
+  usePageTitle('Chi tiết đơn');
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [requests, setRequests] = useState([]);
@@ -56,11 +58,16 @@ export default function BookingDetail({ }) {
       prev.map((r) => (r.id === updatedRequest.id ? updatedRequest : r))
     );
   };
+  
   const tabItems = requests.map((req) => ({
     key: String(req.id),
     label: `Request ${req.id}`,
     children: (
-      <RequestCard request={req} onUpdate={handleUpdate} />
+      <RequestCard 
+        request={req} 
+        note={booking.bookingNote}
+        onUpdate={handleUpdate} 
+      />
     ),
   }));
 
