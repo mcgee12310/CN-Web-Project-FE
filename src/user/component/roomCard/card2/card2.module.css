@@ -253,38 +253,14 @@
 }
 
 @media (max-width: 1024px) {
-  .roomImageWrapper {
-    min-width: 200px;
-  }
-
-  .roomInfo h3 {
-    font-size: 1.2rem;
-    padding-right: 110px;
-  }
-
-  .roomPrice {
-    font-size: 1.1rem;
-    min-width: 100px;
-  }
-
-  .roomCard {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 768px) {
   .roomCard {
     flex-direction: column;
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
   }
 
   .roomImageWrapper {
     width: 100%;
     min-width: 100%;
-    height: 220px;
+    height: 240px;
   }
 
   .roomImage {
@@ -292,25 +268,30 @@
   }
 
   .roomInfo {
-    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto; /* 1 đầu – 1 cuối */
+    align-items: center;
+    column-gap: 12px;
   }
 
   .roomInfo h3 {
-    font-size: 1.2rem;
-    padding-right: 0;
-    margin-bottom: 10px;
+    grid-column: 1;
+    padding-right: 0; /* bỏ hack cũ */
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .roomClass {
+    grid-column: 2;
+    justify-self: end;
+    align-self: start;
   }
 
   .roomPrice {
-    position: static;
-    margin-top: 12px;
-    font-size: 1.2rem;
+    position: static; /* ✅ bỏ absolute */
+    margin-top: 10px;
     text-align: left;
-  }
-
-  .roomDetails,
-  .roomAmenities {
-    font-size: 0.9rem;
+    min-width: auto;
   }
 }
 

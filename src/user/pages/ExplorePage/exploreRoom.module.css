@@ -32,13 +32,12 @@
 }
 
 @media (max-width: 1024px) {
-  .content {
-    flex-direction: column;
-    gap: 30px;
+  .main {
+    padding: 20px 16px;
   }
 
-  .sidebarContainer {
-    width: 100%;
+  .content {
+    gap: 30px;
   }
 
   .sidebarContainer > * {
@@ -46,12 +45,17 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
   .main {
     padding: 20px 16px;
   }
 
   .content {
-    gap: 20px;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .sidebarContainer {
+    width: 100%;
   }
 }

@@ -148,34 +148,6 @@ const MemberInfoModal = ({
                     </p>
                   </div>
                 </div>
-
-                {/* Stats */}
-                <div className={styles.tierStats}>
-                  <div className={styles.statBox}>
-                    <div className={styles.statValue}>
-                      {selectedTier.discountPercent}%
-                    </div>
-                    <div className={styles.statLabel}>Giảm giá</div>
-                  </div>
-                  <div className={styles.statBox}>
-                    <div className={styles.statValue}>
-                      {selectedTier.minBookings}
-                    </div>
-                    <div className={styles.statLabel}>Đơn tối thiểu</div>
-                  </div>
-                  <div className={styles.statBox}>
-                    <div className={styles.statValue}>
-                      {selectedTier.userCount}
-                    </div>
-                    <div className={styles.statLabel}>Thành viên</div>
-                  </div>
-                  <div className={styles.statBox}>
-                    <div className={styles.statValue}>
-                      #{selectedTier.tierOrder}
-                    </div>
-                    <div className={styles.statLabel}>Thứ hạng</div>
-                  </div>
-                </div>
               </div>
 
               {/* Requirements */}
@@ -200,30 +172,12 @@ const MemberInfoModal = ({
                 <h4 className={styles.sectionTitle}>
                   <FaStar size={18} /> Quyền lợi thành viên
                 </h4>
-                <ul className={styles.benefits}>
-                  <li>✓ Giảm giá {selectedTier.discountPercent}%</li>
-                  <li>✓ Ưu tiên nhận phòng sớm và trả phòng muộn</li>
-                </ul>
+                {selectedTier.code !== "BRONZE" ? (
+                  <ul className={styles.benefits}>
+                    <li>✓ Giảm giá {selectedTier.discountPercent}%</li>
+                  </ul>
+                ) : null}
               </div>
-
-              {/* CTA */}
-              {selectedTier.code !== currentTier &&
-                selectedTier.tierOrder > (currentTierData?.tierOrder || 0) && (
-                  <div
-                    className={`${styles.cta} ${getTierClass(
-                      selectedTier.code
-                    )}`}
-                  >
-                    <h4>Nâng cấp lên hạng {selectedTier.name}</h4>
-                    <p>
-                      Còn thiếu{" "}
-                      {formatCurrency(
-                        selectedTier.minSpending -
-                          (currentTierData?.minSpending || 0)
-                      )}
-                    </p>
-                  </div>
-                )}
             </div>
           )}
         </div>

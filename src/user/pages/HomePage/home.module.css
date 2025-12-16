@@ -406,7 +406,7 @@
 @media (max-width: 480px) {
   .bannerSection {
     height: 70vh;
-    min-height: 450px;
+    min-height: 300px;
   }
 
   .bannerCta {

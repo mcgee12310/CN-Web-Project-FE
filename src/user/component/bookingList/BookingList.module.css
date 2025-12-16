@@ -234,10 +234,6 @@
     gap: 12px;
   }
 
-  .priceSection {
-    justify-content: space-between;
-  }
-
   .actions {
     width: 100%;
     margin-left: 0;

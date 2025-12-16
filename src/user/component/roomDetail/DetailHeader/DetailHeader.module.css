@@ -81,8 +81,16 @@
   }
 
   .formGroup {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .input {
+    width: 95%;
     flex: none;
-    width: 100%;
   }
 
   .searchButton {

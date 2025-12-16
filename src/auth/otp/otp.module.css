@@ -1,445 +1,194 @@
+/* ================= CONTAINER ================= */
 .otpContainer {
   min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: url("/background.jpg") center/cover no-repeat;
-  padding: 20px;
+  padding: 12px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ================= CARD ================= */
 .otpCard {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  padding: 28px 24px;
   width: 100%;
-  max-width: 450px;
-  position: relative;
-  overflow: hidden;
-  animation: fadeInUp 0.6s ease-out;
+  max-width: 380px; /* ❗ giảm mạnh */
+  animation: fadeInUp 0.4s ease-out;
 }
 
+/* ================= BACK ================= */
 .backButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: none;
   border: none;
   color: #666;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  padding: 8px 0;
-  margin-bottom: 20px;
-  transition: color 0.3s ease;
+  margin-bottom: 16px;
 }
 
-.backButton:hover {
-  color: #ff6b6b;
-}
-
-.backButton svg {
-  font-size: 1.2rem;
-}
-
+/* ================= HEADER ================= */
 .otpHeader {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .otpTitle {
-  font-size: 2rem;
+  font-size: 1.6rem; /* ❗ giảm */
   font-weight: 700;
-  padding-bottom: 3px;
-  color: #333;
-  margin: 0 0 12px 0;
+  margin-bottom: 8px;
   background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .otpSubtitle {
+  font-size: 0.9rem;
   color: #666;
-  font-size: 0.95rem;
-  margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.otpSubtitle strong {
-  color: #333;
-  font-weight: 600;
-}
-
+/* ================= FORM ================= */
 .otpForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
+/* ================= OTP INPUT ================= */
 .otpInputs {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 20px 0;
+  gap: 8px;
+  margin: 16px 0;
 }
 
 .otpInput {
-  width: 50px;
-  height: 60px;
+  width: 42px; /* ❗ nhỏ hơn */
+  height: 50px;
   border: 2px solid #e1e5e9;
-  border-radius: 12px;
-  font-size: 1.5rem;
+  border-radius: 10px;
+  font-size: 1.25rem;
   font-weight: 600;
   text-align: center;
   background: #f8f9fa;
-  transition: all 0.3s ease;
-  color: #333;
+  transition: all 0.2s ease;
 }
 
 .otpInput:focus {
   outline: none;
   border-color: #ff6b6b;
   background: white;
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
-  transform: scale(1.05);
 }
 
-.otpInput:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.inputError {
-  border-color: #e74c3c;
-  background: #fdf2f2;
-}
-
-.inputError:focus {
-  border-color: #e74c3c;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
-}
-
+/* ================= ERROR ================= */
 .errorMessage {
-  color: #e74c3c;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 8px;
   text-align: center;
-  padding: 10px;
   background: #fdf2f2;
-  border-radius: 8px;
-  border: 1px solid #fadbd8;
+  border-radius: 6px;
 }
 
-.timerContainer {
-  text-align: center;
-  margin: 10px 0;
-}
-
+/* ================= TIMER ================= */
 .timerText {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .timer {
   color: #ff6b6b;
   font-weight: 600;
-  font-size: 1rem;
 }
 
+/* ================= BUTTON ================= */
 .verifyButton {
-  background: linear-gradient(135deg, #ff8e8e 0%, #ff6b6b 100%);
+  background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
   color: white;
   border: none;
-  padding: 14px 20px;
+  padding: 12px;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  position: relative;
-  overflow: hidden;
 }
 
 .verifyButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 6px 14px rgba(255, 107, 107, 0.3);
 }
 
-.verifyButton:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.verifyButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.verifyButton::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s;
-}
-
-.verifyButton:hover:not(:disabled)::before {
-  left: 100%;
-}
-
-.resendContainer {
-  text-align: center;
-  margin-top: 10px;
-}
-
+/* ================= RESEND ================= */
 .resendText {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 0;
+  font-size: 0.85rem;
 }
 
 .resendButton {
-  background: none;
-  border: none;
-  color: #ff6b6b;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 4px;
-  text-decoration: underline;
-  transition: color 0.3s ease;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
-.resendButton:hover:not(.disabled) {
-  color: #ff5252;
-}
-
-.resendButton.disabled {
-  color: #999;
-  cursor: not-allowed;
-  text-decoration: none;
-}
-
+/* ================= FOOTER ================= */
 .otpFooter {
-  text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 20px;
+  padding-top: 14px;
   border-top: 1px solid #e1e5e9;
 }
 
 .footerText {
+  font-size: 0.8rem;
   color: #999;
-  font-size: 0.85rem;
-  margin: 0;
-  line-height: 1.5;
 }
 
+/* ================= TABLET ================= */
+@media (min-width: 600px) {
+  .otpCard {
+    max-width: 420px;
+    padding: 32px 28px;
+  }
+
+  .otpInput {
+    width: 46px;
+    height: 54px;
+  }
+
+  .otpInput {
+    width: 30px;
+    height: 58px;
+    font-size: 1.35rem;
+  }
+}
+
+/* ================= DESKTOP ================= */
+@media (min-width: 768px) {
+  .otpCard {
+    max-width: 440px;
+    padding: 36px;
+  }
+
+  .otpTitle {
+    font-size: 1.8rem;
+  }
+
+  .otpInput {
+    width: 30px;
+    height: 58px;
+    font-size: 1.35rem;
+  }
+}
+
+/* ================= ANIMATION ================= */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Tablet - Medium screens */
-@media (min-width: 481px) and (max-width: 768px) {
-  .otpCard {
-    max-width: 500px;
-    padding: 45px;
-  }
-
-  .otpTitle {
-    font-size: 2.2rem;
-  }
-
-  .otpInput {
-    width: 55px;
-    height: 65px;
-    font-size: 1.6rem;
-  }
-
-  .otpInputs {
-    gap: 14px;
-  }
-}
-
-/* Desktop - Large screens */
-@media (min-width: 769px) and (max-width: 1200px) {
-  .otpContainer {
-    padding: 40px;
-  }
-
-  .otpCard {
-    max-width: 550px;
-    padding: 50px;
-  }
-
-  .otpTitle {
-    font-size: 2.4rem;
-    margin-bottom: 16px;
-  }
-
-  .otpSubtitle {
-    font-size: 1.05rem;
-  }
-
-  .otpInput {
-    width: 60px;
-    height: 70px;
-    font-size: 1.8rem;
-    border-radius: 14px;
-  }
-
-  .otpInputs {
-    gap: 16px;
-    margin: 30px 0;
-  }
-
-  .verifyButton {
-    padding: 16px 24px;
-    font-size: 1.05rem;
-  }
-
-  .timerText,
-  .resendText {
-    font-size: 1rem;
-  }
-
-  .footerText {
-    font-size: 0.9rem;
-  }
-}
-
-/* Extra Large screens */
-@media (min-width: 1201px) {
-  .otpContainer {
-    padding: 60px;
-  }
-
-  .otpCard {
-    max-width: 600px;
-    padding: 60px;
-    border-radius: 24px;
-  }
-
-  .backButton {
-    font-size: 1.05rem;
-    margin-bottom: 25px;
-  }
-
-  .backButton svg {
-    font-size: 1.4rem;
-  }
-
-  .otpHeader {
-    margin-bottom: 40px;
-  }
-
-  .otpTitle {
-    font-size: 2.6rem;
-    margin-bottom: 18px;
-  }
-
-  .otpSubtitle {
-    font-size: 1.1rem;
-    line-height: 1.7;
-  }
-
-  .otpForm {
-    gap: 25px;
-  }
-
-  .otpInput {
-    width: 65px;
-    height: 75px;
-    font-size: 2rem;
-    border-radius: 16px;
-    border-width: 2.5px;
-  }
-
-  .otpInputs {
-    gap: 18px;
-    margin: 35px 0;
-  }
-
-  .errorMessage {
-    font-size: 1rem;
-    padding: 12px;
-  }
-
-  .timerText,
-  .resendText {
-    font-size: 1.05rem;
-  }
-
-  .timer {
-    font-size: 1.1rem;
-  }
-
-  .verifyButton {
-    padding: 18px 28px;
-    font-size: 1.1rem;
-    border-radius: 12px;
-    margin-top: 15px;
-  }
-
-  .otpFooter {
-    margin-top: 35px;
-    padding-top: 25px;
-  }
-
-  .footerText {
-    font-size: 0.95rem;
-  }
-}
-
-/* Mobile - Small screens */
-@media (max-width: 480px) {
-  .otpContainer {
-    padding: 10px;
-  }
-
-  .otpCard {
-    padding: 30px 20px;
-    border-radius: 15px;
-    max-width: 100%;
-  }
-
-  .otpTitle {
-    font-size: 1.75rem;
-  }
-
-  .otpInputs {
-    gap: 8px;
-  }
-
-  .otpInput {
-    width: 45px;
-    height: 55px;
-    font-size: 1.3rem;
-  }
-
-  .timerText {
-    font-size: 0.85rem;
-  }
-
-  .footerText {
-    font-size: 0.8rem;
   }
 }

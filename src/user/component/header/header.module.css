@@ -1,57 +1,57 @@
+/* ================== HEADER ================== */
 .headerContainer {
-  width: 100%;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
+  background: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
   position: sticky;
   top: 0;
   z-index: 100;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0 24px;
 }
 
+/* ================== LEFT ================== */
 .headerLeft {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 20px;
-  padding: 60px;
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #ff8e8e;
   cursor: pointer;
   user-select: none;
 }
 
+/* ================== NAV ================== */
 .headerNav {
   display: flex;
   gap: 24px;
 }
 
-.headerNav a {
+.link {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
   color: #333;
   position: relative;
-  transition: all 0.3s ease;
+  transition: color 0.2s ease;
 }
 
-.headerNav a:hover {
+.link:hover {
   color: #ff8e8e;
 }
 
-.headerNav a.active {
+.active {
   color: #ff8e8e;
   font-weight: 600;
 }
 
-.headerNav a.active::after {
+.active::after {
   content: "";
   position: absolute;
   bottom: -6px;
@@ -62,22 +62,22 @@
   border-radius: 2px;
 }
 
+/* ================== ACTIONS ================== */
 .actions {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 60px;
 }
 
 .btnLogin {
   background: transparent;
   border: 2px solid #ff8e8e;
   color: #ff8e8e;
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btnLogin:hover {
@@ -88,85 +88,116 @@
 .btnSignup {
   background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
   color: white;
-  border: 2px solid #ff8e8e;
-  padding: 8px 16px;
+  border: none;
+  padding: 6px 14px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btnSignup:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-}
-
-.actions svg {
+.icon {
   font-size: 1.4rem;
   color: #ff8e8e;
   cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.actions svg:hover {
-  transform: scale(1.1);
 }
 
 .actions img {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
   border: 2px solid #ff8e8e33;
 }
 
-@media (max-width: 900px) {
+/* ================== HAMBURGER ================== */
+.hamburger {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #ff8e8e;
+}
+
+/* ================== MOBILE MENU ================== */
+.mobileMenu {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 99;
+  padding: 12px 0;
+}
+
+.mobileLink {
+  padding: 14px 24px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+}
+
+.mobileLink:hover {
+  background: #fff1f1;
+  color: #ff8e8e;
+}
+
+.mobileAuth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 24px;
+}
+
+.mobileAuth button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #ff8e8e;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mobileProfile {
+  padding: 14px 24px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ================== TABLET ================== */
+@media (max-width: 768px) {
   .headerContainer {
-    padding: 0 20px;
+    height: 64px;
+    padding: 0 16px;
   }
 
   .headerNav {
     gap: 16px;
   }
 
-  .btnLogin,
-  .btnSignup {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
-
-  .actions svg {
-    font-size: 1.2rem;
-  }
-
-  .actions img {
-    width: 32px;
-    height: 32px;
+  .logo {
+    font-size: 1.3rem;
   }
 }
 
+/* ================== MOBILE ================== */
 @media (max-width: 480px) {
   .headerContainer {
-    flex-direction: column;
-    height: auto;
-    padding: 10px 0px;
-    gap: 10px;
-    position: sticky;
-  }
-
-  .headerLeft {
-    padding-bottom: 0px;
+    height: 64px;
+    padding: 0 12px;
   }
 
   .headerNav {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: none;
   }
 
-  .actions {
-    justify-content: center;
-    gap: 10px;
+  .hamburger {
+    display: block;
+  }
+
+  .btnLogin,
+  .btnSignup {
+    display: none;
   }
 }

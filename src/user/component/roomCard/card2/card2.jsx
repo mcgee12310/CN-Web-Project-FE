@@ -9,17 +9,9 @@ function Card2({ rooms }) {
   const cardsPerPage = 5;
   const navigate = useNavigate();
 
-  // Hàm tạo icon sao theo số review
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (rating >= i) stars.push(<FaStar key={i} className={styles.star} />);
-      else if (rating >= i - 0.5)
-        stars.push(<FaStarHalfAlt key={i} className={styles.star} />);
-      else stars.push(<FaRegStar key={i} className={styles.star} />);
-    }
-    return stars;
-  };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [rooms]);
 
   const formatPrice = (price) => {
     return price.toLocaleString("vi-VN") + " VNĐ";

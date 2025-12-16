@@ -226,7 +226,7 @@
 }
 
 /* --- RESPONSIVE: Mobile quay về 1 cột --- */
-@media (max-width: 768px) {
+@media (max-width: 745px) {
   .accountPage {
     margin: 20px;
   }
@@ -241,7 +241,6 @@
     border-right: none;
     border-bottom: 1px solid #f0f0f0;
     min-width: auto;
-    width: 100%;
   }
 
   .stats {
@@ -252,7 +251,6 @@
   .form {
     grid-template-columns: 1fr;
     padding: 30px 20px;
-    width: 100%;
   }
 
   .field:nth-child(1),
@@ -260,5 +258,19 @@
   .submit,
   .delete {
     grid-column: span 1;
+  }
+}
+
+@media (max-width: 825px) {
+  .avatarSection {
+    padding: 20px 0px;
+  }
+  .statItem {
+    padding: 12px;
+    margin: 20px;
+    width: 200px;
+  }
+  .form {
+    padding: 40px 20px;
   }
 }
