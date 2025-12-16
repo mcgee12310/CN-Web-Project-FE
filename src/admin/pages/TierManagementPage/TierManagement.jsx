@@ -4,10 +4,12 @@ import { EditOutlined, DeleteOutlined, PlusOutlined, MoreOutlined } from '@ant-d
 import styles from './TierManagement.module.css';
 import { toast } from 'react-toastify';
 import tierService from '../../../services/admin/tier';
+import { usePageTitle } from '../../../utils/usePageTitle';
 
 const { TextArea } = Input;
 
 function TierManagement() {
+  usePageTitle('Hạng người dùng');
   const [tiers, setTiers] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);

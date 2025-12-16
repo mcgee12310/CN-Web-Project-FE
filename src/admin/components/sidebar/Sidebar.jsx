@@ -48,17 +48,6 @@ const Sidebar = () => {
           );
         })}
       </nav>
-      
-      {/* Nút Logout ở phía dưới */}
-      <div className={styles.logoutContainer}>
-        <button 
-          onClick={handleLogout}
-          className={`${styles.menuButton} ${styles.logoutButton}`}
-        >
-          <LogOut className={styles.icon} />
-          <span style={{ fontWeight: 500 }}>Đăng xuất</span>
-        </button>
-      </div>
     </div>
   );
 };

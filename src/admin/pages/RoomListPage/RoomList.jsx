@@ -5,8 +5,11 @@ import styles from "./RoomList.module.css";
 import AddRoomModal from "../../components/addRoomModal/AddRoomModal";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import roomService from "../../../services/admin/room"; // <-- tạo file này
+import roomService from "../../../services/admin/room";
+import { usePageTitle } from '../../../utils/usePageTitle';
+
 const RoomList = () => {
+  usePageTitle('Danh sách phòng');
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);

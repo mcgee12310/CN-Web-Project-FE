@@ -95,14 +95,14 @@ function Card2({ rooms }) {
               <p className={styles.roomAmenities}>{room.description}</p>
               <p className={styles.roomAmenities}>Sức chứa: {room.capacity}</p>
               <div className={styles.roomFooter}>
-                <div className={styles.review}>
+                {/* <div className={styles.review}>
                   <span className={styles.stars}>
                     {renderStars(room.review)}
                   </span>
                   <span className={styles.ratingValue}>
                     {room.review} ({room.reviewCount} reviews)
                   </span>
-                </div>
+                </div> */}
               </div>
               <div className={styles.roomPrice}>
                 {formatPrice(room.price)}/đêm

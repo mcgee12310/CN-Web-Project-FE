@@ -6,7 +6,10 @@ import RoomInfo from "../../components/roomInfo/RoomInfo";
 import styles from "./RoomDetailPage.module.css";
 import roomService from "../../../services/admin/room";
 import { toast } from "react-toastify";
+import { usePageTitle } from '../../../utils/usePageTitle';
+
 function RoomDetail() {
+  usePageTitle('Chi tiết phòng');
   const { id } = useParams();
   const navigate = useNavigate();
   const [room, setRoom] = useState(null);

@@ -6,8 +6,10 @@ import { formatDate, formatPrice, formatStatus } from "../../../utils/format";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import userService from "../../../services/admin/user";
+import { usePageTitle } from '../../../utils/usePageTitle';
 
 const UserDetail = () => {
+  usePageTitle('Chi tiết người dùng');
   const navigate = useNavigate();
   const { id } = useParams();
   const [search, setSearch] = useState("");

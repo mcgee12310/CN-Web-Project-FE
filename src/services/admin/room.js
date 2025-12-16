@@ -58,6 +58,19 @@ const roomService = {
       throw error;
     }
   },
+
+  getRoomCalendar: async (id, from, to) => {
+    try {
+      // Đảm bảo URL có tham số query cho ngày tháng
+      const response = await apiClient.get(
+        `/api/admin/rooms/${id}/calendar?from=${from}&to=${to}`
+      );
+      // Giả định response.data chứa mảng lịch
+      return response.data; 
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 export default roomService;

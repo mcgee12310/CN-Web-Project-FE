@@ -1,6 +1,6 @@
 .sidebar {
   width: 16rem;
-  height: 89vh;
+  height: 100%;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -75,21 +75,4 @@
   width: 1.5rem;
   height: 1.5rem;
   color: white;
-}
-
-.logoutContainer {
-  padding: 1rem;
-  border-top: 1px solid #e5e7eb;
-  margin-top: auto;
-}
-
-.logoutButton {
-  width: 100%;
-  justify-content: flex-start;
-  color: #e53e3e;
-}
-
-.logoutButton:hover {
-  background-color: #ffeaea;
-  color: #c53030;
 }

@@ -5,7 +5,10 @@ import styles from "./UserList.module.css";
 import { useNavigate } from "react-router-dom";
 import userService from "../../../services/admin/user"; // <-- API service
 import { toast } from "react-toastify";
+import { usePageTitle } from '../../../utils/usePageTitle';
+
 const UserList = () => {
+  usePageTitle('Danh sách người dùng');
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -147,8 +150,6 @@ const UserList = () => {
         </div>
       </div>
 
-
-
       <Table
         columns={columns}
         dataSource={filteredData}
@@ -157,7 +158,7 @@ const UserList = () => {
           showSizeChanger: true,
           showTotal: (total) => `Tổng ${total} người dùng`
         }}
-        scroll={{ y: 500 }}
+        scroll={{ y: 800 }}
       />
     </div>
   );

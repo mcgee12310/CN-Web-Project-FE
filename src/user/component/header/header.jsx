@@ -33,8 +33,8 @@ const Header = () => {
         {/* LEFT */}
         <div className={styles.headerLeft}>
           <div className={styles.logo} onClick={() => handleNavigate("/")}>
-            Logo
-          </div>
+          <img src="/hikari-logo3.png" alt="logo" className={styles.logoIcon} />
+        </div>
 
           {/* DESKTOP NAV */}
           <nav className={styles.headerNav}>
