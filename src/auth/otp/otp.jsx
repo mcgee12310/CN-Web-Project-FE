@@ -4,6 +4,7 @@ import styles from "./otp.module.css";
 import { IoArrowBack } from "react-icons/io5";
 import authService from "../../services/auth";
 import { toast } from "react-toastify";
+import Loading from "../../user/component/loading/Loading";
 
 const OTP = () => {
   const navigate = useNavigate();
@@ -199,7 +200,7 @@ const OTP = () => {
             className={styles.verifyButton}
             disabled={isLoading || otp.join("").length !== 6}
           >
-            {isLoading ? "Đang xác thực..." : "Xác thực"}
+            {isLoading ? <Loading /> : "Xác thực"}
           </button>
 
           <div className={styles.resendContainer}>

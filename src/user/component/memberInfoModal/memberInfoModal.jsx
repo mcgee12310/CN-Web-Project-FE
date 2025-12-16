@@ -7,6 +7,7 @@ import { FaStar, FaCrown, FaAward, FaGem } from "react-icons/fa";
 import { BsLightningFill } from "react-icons/bs";
 
 import profileService from "../../../services/user/profile";
+import Loading from "../../component/loading/Loading";
 
 const MemberInfoModal = ({
   isOpen,
@@ -127,7 +128,7 @@ const MemberInfoModal = ({
 
         {/* Body */}
         <div className={styles.modalBody}>
-          {loading && <p className={styles.loading}>Đang tải dữ liệu...</p>}
+          {loading && <Loading />}
 
           {!loading && selectedTier && (
             <div className={styles.tierDetails}>

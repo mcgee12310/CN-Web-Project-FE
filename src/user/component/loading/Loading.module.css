@@ -1,0 +1,37 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== DEFAULT (DESKTOP) ===== */
+.lottie {
+  width: 420px;
+  height: 420px;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+  .lottie {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .lottie {
+    width: 220px;
+    height: 220px;
+  }
+}

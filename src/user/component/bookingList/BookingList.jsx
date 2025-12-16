@@ -15,7 +15,7 @@ import styles from "./BookingList.module.css";
 
 import BookingDetailModal from "../../component/bookingDetailModal/BookingDetailModal";
 import profileService from "../../../services/user/profile";
-import Booking1Page from "../../../user/pages/BookingPage/booking1";
+import Loading from "../../component/loading/Loading";
 
 const BookingList = () => {
   const [search, setSearch] = useState("");
@@ -40,6 +40,10 @@ const BookingList = () => {
 
     fetchBookings();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const handleView = (booking) => {
     // 1. Nếu đang chờ thanh toán → quay lại trang thanh toán

@@ -3,6 +3,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import styles from "./RoomReviews.module.css";
 import roomService from "../../../../services/user/room";
 import { Empty } from "antd";
+import Loading from "../../loading/Loading";
 
 function RoomReviews({ roomTypeId }) {
   const [reviews, setReviews] = useState([]);
@@ -44,7 +45,7 @@ function RoomReviews({ roomTypeId }) {
     });
   };
 
-  if (loading) return null;
+  if (loading) return <Loading />;
 
   return (
     <section className={styles.reviews}>

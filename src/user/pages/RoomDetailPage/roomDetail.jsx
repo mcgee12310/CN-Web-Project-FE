@@ -10,6 +10,7 @@ import BookingSection from "../../component/roomDetail/BookingSection/BookingSec
 import styles from "./roomDetail.module.css";
 import roomService from "../../../services/user/room";
 import roomTypeService from "../../../services/admin/roomType";
+import Loading from "../../component/loading/Loading";
 
 function RoomDetail() {
   const { id } = useParams();
@@ -81,7 +82,7 @@ function RoomDetail() {
     fetchRoomDetail(checkInDate, checkOutDate);
   }, [id, checkInDate, checkOutDate]);
 
-  if (isInitialLoading) return <p>Loading...</p>;
+  if (isInitialLoading) return <Loading />;
   if (!roomData) return <p>Không tìm thấy phòng!</p>;
 
   const handleDateChange = (newCheckInDate, newCheckOutDate) => {

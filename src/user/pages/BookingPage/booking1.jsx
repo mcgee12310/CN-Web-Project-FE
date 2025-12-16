@@ -6,6 +6,7 @@ import styles from "./booking.module.css";
 import { IoChevronBack, IoPricetag } from "react-icons/io5";
 import { toast } from "react-toastify";
 import profileService from "../../../services/user/profile";
+import Loading from "../../component/loading/Loading";
 
 function Booking1Page() {
   const { id: bookingId } = useParams(); // /booking/payment/:id
@@ -86,7 +87,7 @@ function Booking1Page() {
 
       <main className={styles.main}>
         {loading ? (
-          <div className={styles.loading}>Loading...</div>
+          <Loading />
         ) : !bookingData ? (
           <div className={styles.error}>Không tìm thấy booking</div>
         ) : (

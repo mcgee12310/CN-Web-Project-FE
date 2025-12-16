@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 import styles from "./FeedbackModal.module.css";
 import profileService from "../../../services/user/profile";
+import Loading from "../loading/Loading";
 
 const FeedbackModal = ({ visible, onClose, booking }) => {
   const [rating, setRating] = useState(0);
@@ -43,6 +44,10 @@ const FeedbackModal = ({ visible, onClose, booking }) => {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Modal

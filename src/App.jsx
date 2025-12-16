@@ -1,16 +1,22 @@
+import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./auth/login/login";
 import Signup from "./auth/signup/signup";
 import OTP from "./auth/otp/otp";
 import ResendOtp from "./auth/otp/resendOtp";
-import Home from "./user/pages/HomePage/home";
-import ExploreRoom from "./user/pages/ExplorePage/exploreRoom";
-import RoomDetail from "./user/pages/RoomDetailPage/roomDetail";
-import BookingPage from "./user/pages/BookingPage/booking";
-import Booking1Page from "./user/pages/BookingPage/booking1";
-import VNPayCallback from "./user/pages/CallbackPage/callbackPage";
+import Loading from "./user/component/loading/Loading";
 import { useAuth } from "./auth/auth-context";
+
+// Lazy-loaded user pages so we can show the Lottie loading during transitions
+const Home = lazy(() => import("./user/pages/HomePage/home"));
+const ExploreRoom = lazy(() => import("./user/pages/ExplorePage/exploreRoom"));
+const RoomDetail = lazy(() => import("./user/pages/RoomDetailPage/roomDetail"));
+const BookingPage = lazy(() => import("./user/pages/BookingPage/booking"));
+const Booking1Page = lazy(() => import("./user/pages/BookingPage/booking1"));
+const VNPayCallback = lazy(() =>
+  import("./user/pages/CallbackPage/callbackPage")
+);
 
 // Admin imports would go here
 import AdminLayout from "./admin/AdminLayout";
@@ -37,46 +43,48 @@ import ChangePassword from "./user/component/changePassword/ChangePassword";
 function App() {
   const { user } = useAuth();
   return (
-    <Routes>
-      <Route path="*" element={<>404 - Page not found</>} />
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/resend-otp" element={<ResendOtp />} />
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route path="*" element={<>404 - Page not found</>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/resend-otp" element={<ResendOtp />} />
 
-      {/* Admin Routes */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} /> {/* mặc định /admin */}
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="users" element={<UserList />} />
-        <Route path="users/:id" element={<UserDetail />} />
-        <Route path="bookings" element={<BookingList />} />
-        <Route path="bookings/:id" element={<BookingDetail />} />
-        <Route path="room-types" element={<RoomTypes />} />
-        <Route path="room-types/:id" element={<RoomTypeDetail />} />
-        <Route path="rooms" element={<RoomList />} />
-        <Route path="rooms/:id" element={<AdminRoomDetail />} />
-        <Route path="reviews" element={<Reviews />} />
-        <Route path="tiers" element={<TierManagement />} />
-        <Route path="chats" element={<AdminChats />} />
-      </Route>
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} /> {/* mặc định /admin */}
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="users" element={<UserList />} />
+          <Route path="users/:id" element={<UserDetail />} />
+          <Route path="bookings" element={<BookingList />} />
+          <Route path="bookings/:id" element={<BookingDetail />} />
+          <Route path="room-types" element={<RoomTypes />} />
+          <Route path="room-types/:id" element={<RoomTypeDetail />} />
+          <Route path="rooms" element={<RoomList />} />
+          <Route path="rooms/:id" element={<AdminRoomDetail />} />
+          <Route path="reviews" element={<Reviews />} />
+          <Route path="tiers" element={<TierManagement />} />
+          <Route path="chats" element={<AdminChats />} />
+        </Route>
 
-      {/* User Routes */}
-      <Route path="/profile" element={<UserProfile />}>
-        <Route index element={<AccountSettings />} />
-        <Route path="setting" element={<AccountSettings />} />
-        <Route path="bookings" element={<UserBookings />} />
-        <Route path="reviews" element={<MyReviews />} />
-        <Route path="password" element={<ChangePassword />} />
-      </Route>
+        {/* User Routes */}
+        <Route path="/profile" element={<UserProfile />}>
+          <Route index element={<AccountSettings />} />
+          <Route path="setting" element={<AccountSettings />} />
+          <Route path="bookings" element={<UserBookings />} />
+          <Route path="reviews" element={<MyReviews />} />
+          <Route path="password" element={<ChangePassword />} />
+        </Route>
 
-      <Route path="/otp" element={<OTP />} />
-      <Route path="/rooms" element={<ExploreRoom />} />
-      <Route path="/room/:id" element={<RoomDetail />} />
-      <Route path="/booking/payment" element={<BookingPage />} />
-      <Route path="/booking/payment/:id" element={<Booking1Page />} />
-      <Route path="/api/payment/vnpay/callback" element={<VNPayCallback />} />
-    </Routes>
+        <Route path="/otp" element={<OTP />} />
+        <Route path="/rooms" element={<ExploreRoom />} />
+        <Route path="/room/:id" element={<RoomDetail />} />
+        <Route path="/booking/payment" element={<BookingPage />} />
+        <Route path="/booking/payment/:id" element={<Booking1Page />} />
+        <Route path="/api/payment/vnpay/callback" element={<VNPayCallback />} />
+      </Routes>
+    </Suspense>
   );
 }
 

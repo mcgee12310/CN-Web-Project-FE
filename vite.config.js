@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    assetsInclude: ["**/*.lottie"],
     server: {
       allowedHosts: ["fatima-pulverulently-seminomadically.ngrok-free.dev"],
     },
