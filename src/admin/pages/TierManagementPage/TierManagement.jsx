@@ -155,49 +155,49 @@ function TierManagement() {
       title: 'Mã',
       dataIndex: 'code',
       key: 'code',
-      width: 120,
+      width: '10%',
       render: (code) => <Tag color="blue" className={styles.codeTag}>{code}</Tag>
     },
     {
       title: 'Tên hạng',
       dataIndex: 'name',
       key: 'name',
-      width: 150,
+      width: '15%',
       render: (name) => <strong>{name}</strong>
     },
     {
       title: 'Chi tiêu tối thiểu',
       dataIndex: 'minSpending',
       key: 'minSpending',
-      width: 180,
+      width: '15%',
       render: (amount) => formatMoney(amount)
     },
     {
       title: 'Đơn tối thiểu',
       dataIndex: 'minBookings',
       key: 'minBookings',
-      width: 130,
+      width: '10%',
       render: (count) => `${count} đơn`
     },
     {
       title: 'Giảm giá',
       dataIndex: 'discountPercent',
       key: 'discountPercent',
-      width: 110,
+      width: '10%',
       render: (percent) => <Tag color="green" style={{ fontWeight: 'bold' }}>{percent}%</Tag>
     },
     {
       title: 'Số thành viên',
       dataIndex: 'userCount',
       key: 'userCount',
-      width: 130,
+      width: '10%',
       render: (count) => `${count} người`
     },
     {
       title: 'Trạng thái',
       dataIndex: 'active',
       key: 'active',
-      width: 120,
+      width: '10%',
       render: (active) => (
         <Tag color={active ? 'success' : 'error'}>
           {active ? 'Hoạt động' : 'Tắt'}
@@ -259,7 +259,7 @@ function TierManagement() {
           showSizeChanger: true,
           showTotal: (total) => `Tổng ${total} hạng`
         }}
-        scroll={{ x: 1200 }}
+        scroll={{ }}
       />
 
       {/* Modal */}

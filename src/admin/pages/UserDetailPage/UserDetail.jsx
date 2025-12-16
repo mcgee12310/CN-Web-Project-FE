@@ -124,21 +124,24 @@ const UserDetail = () => {
       dataIndex: "bookingCode",
       key: "code",
       sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
-      render: text => <span className={styles.codeCell}>{text}</span>
+      render: text => <span className={styles.codeCell}>{text}</span>,
+      width: '10%',
     },
     {
       title: "Tên phòng",
       dataIndex: "roomType",
       key: "roomType",
       sorter: (a, b) => a.roomType.localeCompare(b.roomType),
-      render: text => <span className={styles.roomCell}>{text}</span>
+      render: text => <span className={styles.roomCell}>{text}</span>,
+      width: '20%',
     },
     {
       title: "Tổng giá trị",
       dataIndex: "price",
       key: "price",
       sorter: (a, b) => a.price - b.price,
-      render: (_, record) => formatPrice(record.price)
+      render: (_, record) => formatPrice(record.price),
+      width: '20%',
     },
     {
       title: "Trạng thái",
@@ -151,14 +154,16 @@ const UserDetail = () => {
         { text: 'COMPLETED', value: 'COMPLETED' },
       ],
       onFilter: (value, record) => record.status === value,
-      render: (_, record) => formatStatus(record.status)
+      render: (_, record) => formatStatus(record.status),
+      width: '20%',
     },
     {
       title: "Ngày tạo",
       dataIndex: "bookingDate",
       key: "date",
       sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
-      render: date => <div className={styles.dateCell}>{formatDate(date)}</div>
+      render: date => <div className={styles.dateCell}>{formatDate(date)}</div>,
+      width: '20%',
     },
     {
       title: "Hành động",

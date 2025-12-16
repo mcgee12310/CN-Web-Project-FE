@@ -59,26 +59,26 @@ const UserList = () => {
         <div className={styles.nameCell}><span>{text}</span></div>
       ),
       sorter: (a, b) => a.name.localeCompare(b.name),
-      // width: 150,
+      width: '15%',
     },
     {
       title: "Email",
       dataIndex: "email",
       render: (text) => <div className={styles.emailCell}><span>{text}</span></div>,
       sorter: (a, b) => a.email.localeCompare(b.email),
-      // width: 200,
+      width: '20%',
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
       render: (text) => <div className={styles.phoneCell}><span>{text}</span></div>,
-      // width: 150,
+      width: '15%',
     },
     {
       title: "Hạng",
       dataIndex: "customerTier",
       render: (text) => <div className={styles.badge}><span>{text ? text : "Vô hạng"}</span></div>,
-      // width: 150,
+      width: '12%',
     },
     {
       title: "Vai trò",
@@ -93,7 +93,7 @@ const UserList = () => {
           {role === "ADMIN" ? "Quản trị viên" : "Người dùng"}
         </span>
       ),
-      // width: 120,
+      width: '15%',
     },
     {
       title: "Trạng thái",
@@ -108,7 +108,7 @@ const UserList = () => {
           {status == true ? "Hoạt động" : "Dừng"}
         </span>
       ),
-      // width: 120,
+      width: '12%',
     },
     {
       title: "Hành động",
@@ -122,7 +122,6 @@ const UserList = () => {
           />
         );
       },
-      width: 80,
       align: "center",
     },
   ];
@@ -158,7 +157,7 @@ const UserList = () => {
           showSizeChanger: true,
           showTotal: (total) => `Tổng ${total} người dùng`
         }}
-        scroll={{ x: 1200, y: 500 }}
+        scroll={{ y: 500 }}
       />
     </div>
   );
