@@ -3,6 +3,8 @@
   height: 89vh;
   background-color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -31,6 +33,8 @@
 
 .nav {
   padding: 1rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .menuButton {
@@ -46,6 +50,7 @@
   background: none;
   cursor: pointer;
   font-size: 1rem;
+  text-decoration: none;
 }
 
 .menuButton:hover {
@@ -70,4 +75,21 @@
   width: 1.5rem;
   height: 1.5rem;
   color: white;
+}
+
+.logoutContainer {
+  padding: 1rem;
+  border-top: 1px solid #e5e7eb;
+  margin-top: auto;
+}
+
+.logoutButton {
+  width: 100%;
+  justify-content: flex-start;
+  color: #e53e3e;
+}
+
+.logoutButton:hover {
+  background-color: #ffeaea;
+  color: #c53030;
 }

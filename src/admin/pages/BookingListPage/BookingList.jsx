@@ -96,6 +96,7 @@ const BookingList = () => {
       key: "code",
       sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
       render: (text) => <span className={styles.codeCell}>{text}</span>,
+      width: '15%',
     },
     {
       title: "Tên phòng",
@@ -105,6 +106,7 @@ const BookingList = () => {
       render: (_, record) => (
         <div className={styles.nameCell}>{record.roomType}</div>
       ),
+      width: '20%',
     },
     {
       title: "Tổng tiền",
@@ -114,6 +116,7 @@ const BookingList = () => {
       render: (price) => (
         <div className={styles.priceCell}>{formatPrice(price)}</div>
       ),
+      width: '20%',
     },
     {
       title: "Trạng thái",
@@ -127,6 +130,7 @@ const BookingList = () => {
       ],
       onFilter: (value, record) => record.status === value,
       render: (_, record) => formatStatus(record.status),
+      width: '15%',
     },
     {
       title: "Ngày đặt",
@@ -137,11 +141,11 @@ const BookingList = () => {
       render: (date) => (
         <div className={styles.dateCell}>{formatDate(date)}</div>
       ),
+      width: '20%',
     },
     {
       title: "Hành động",
       key: "action",
-      fixed: 'right',
       render: (_, record) => {
         const menu = (
           <Menu>
@@ -171,7 +175,6 @@ const BookingList = () => {
           </Dropdown>
         );
       },
-      width: 80,
       align: "center",
     },
   ];
@@ -207,7 +210,7 @@ const BookingList = () => {
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} đơn`
           }}
-          scroll={{ x: 1200, y: 500 }}
+          scroll={{ y: 500 }}
         />
       </div>
       <Modal

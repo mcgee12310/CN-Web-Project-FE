@@ -29,7 +29,7 @@
 }
 
 .ratingNumber {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #4f46e5;
   line-height: 1;
@@ -127,6 +127,63 @@
   line-height: 1.6;
   color: #555;
   margin: 0;
+}
+
+/* Container cho link */
+.showMoreContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  margin-top: 12px;
+}
+
+/* Link text với mũi tên */
+.showMoreButton {
+  background: none;
+  border: none;
+  color: #6b7280; /* Màu xám */
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Mũi tên xuống - hiển thị khi chưa mở hết */
+.showMoreButton:not(.collapsed)::after {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+/* Mũi tên lên - hiển thị khi đã mở hết */
+.showMoreButton.collapsed::after {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect */
+.showMoreButton:hover {
+  color: #374151; /* Xám đậm hơn */
+}
+
+.showMoreButton:hover::after {
+  transform: translateY(2px);
+}
+
+/* Active effect */
+.showMoreButton:active {
+  color: #1f2937;
+}
+
+/* Focus state cho accessibility */
+.showMoreButton:focus {
+  outline: none;
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

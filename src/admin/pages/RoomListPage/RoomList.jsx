@@ -46,6 +46,7 @@ const RoomList = () => {
     {
       title: "Tên phòng",
       dataIndex: "roomNumber",
+      width: '15%',
       sorter: (a, b) => a.roomNumber.localeCompare(b.roomNumber),
       render: (text) => (
         <div className={styles.nameCell}>
@@ -56,6 +57,7 @@ const RoomList = () => {
     {
       title: "Loại phòng",
       dataIndex: "roomTypeName",
+      width: '20%',
       sorter: (a, b) => a.roomTypeName.localeCompare(b.roomTypeName),
       render: (text) => <span className={styles.type}>{text}</span>,
     },
@@ -63,10 +65,12 @@ const RoomList = () => {
       title: "Mô tả",
       dataIndex: "description",
       render: (text) => <span className={styles.desc}>{text}</span>,
+      width: '40%',
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
+      width: '15%',
       filters: [
         { text: "Khả dụng", value: "AVAILABLE" },
         { text: "Đã đặt", value: "BOOKED" },
@@ -143,7 +147,7 @@ const RoomList = () => {
           showSizeChanger: true,
           showTotal: (total) => `Tổng ${total} phòng`
         }}
-        scroll={{ x: 1200, y: 500 }}
+        scroll={{ y: 800 }}
       />
 
       <AddRoomModal
