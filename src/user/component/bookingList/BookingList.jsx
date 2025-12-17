@@ -104,7 +104,10 @@ const BookingList = () => {
       </div>
 
       {filteredData.length === 0 ? (
-        <Empty description="Không tìm thấy đơn đặt phòng" />
+        <Empty
+          description="Không tìm thấy đơn đặt phòng"
+          className={styles.empty}
+        />
       ) : (
         <div className={styles.cardList}>
           {filteredData.map((booking) => {

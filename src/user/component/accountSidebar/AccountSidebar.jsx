@@ -27,21 +27,10 @@ export default function AccountSidebar({ active }) {
       icon: Lock,
       path: "/profile/password",
     },
-    { id: 5, label: "Đăng xuất", icon: LogOut, action: "logout" },
   ];
 
-  const { logout } = useAuth();
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   const handleMenuClick = (item) => {
-    if (item.action === "logout") {
-      handleLogout();
-    } else {
-      navigate(item.path);
-    }
+    navigate(item.path);
   };
 
   return (

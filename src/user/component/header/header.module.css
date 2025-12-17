@@ -60,7 +60,6 @@
   letter-spacing: 1.5px;
 }
 
-
 .headerNav {
   display: flex;
   gap: 24px;
@@ -128,9 +127,13 @@
   cursor: pointer;
 }
 
-.icon {
-  font-size: 1.4rem;
-  color: #ff8e8e;
+.btnLogout {
+  background: linear-gradient(135deg, #ff8e8e, #ff6b6b);
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -198,7 +201,6 @@
   cursor: pointer;
 }
 
-/* ================== TABLET ================== */
 @media (max-width: 768px) {
   .headerContainer {
     height: 64px;
@@ -206,31 +208,10 @@
   }
 
   .headerNav {
-    gap: 16px;
-  }
-
-  .logo {
-    font-size: 1.3rem;
-  }
-}
-
-/* ================== MOBILE ================== */
-@media (max-width: 480px) {
-  .headerContainer {
-    height: 64px;
-    padding: 0 12px;
-  }
-
-  .headerNav {
-    display: none;
+    display: none; /* ẩn nav desktop */
   }
 
   .hamburger {
-    display: block;
-  }
-
-  .btnLogin,
-  .btnSignup {
-    display: none;
+    display: block; /* hiện hamburger cạnh logo */
   }
 }

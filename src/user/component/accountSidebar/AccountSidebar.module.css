@@ -53,21 +53,43 @@
 
 @media (max-width: 1024px) {
   .sidebar {
-    width: 95%;
-    padding: 1rem;
+    width: 97%;
+    padding: 0.75rem 0.5rem;
     position: static;
     border-radius: 12px;
 
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    overflow-x: auto;
+    /* ngang dạng “tab” */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem;
+
+    overflow-x: hidden; /* không scroll ngang nữa */
   }
 
   .menuItem {
-    flex: 0 0 auto;
-    width: auto;
-    padding: 0.5rem 1rem;
-    white-space: nowrap;
+    width: 100%;
+    padding: 0.5rem 0.25rem;
+
+    /* icon trên - chữ dưới */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+
+    text-align: center;
+    white-space: normal; /* bỏ nowrap để chữ xuống dòng */
+  }
+
+  .menuItem span {
+    font-size: 0.7rem;
+    line-height: 1.1;
+  }
+
+  .icon {
+    font-size: 22px;
+  }
+
+  .logoutButton {
+    width: 100%;
   }
 }
