@@ -9,7 +9,6 @@ import RoomReviews from "../../component/roomDetail/RoomReviews/RoomReviews";
 import BookingSection from "../../component/roomDetail/BookingSection/BookingSection";
 import styles from "./roomDetail.module.css";
 import roomService from "../../../services/user/room";
-import roomTypeService from "../../../services/admin/roomType";
 import Loading from "../../component/loading/Loading";
 
 function RoomDetail() {
@@ -65,7 +64,7 @@ function RoomDetail() {
       );
       setRoomData(data);
 
-      const imageRes = await roomTypeService.getRoomTypeImages(id);
+      const imageRes = await roomService.getRoomTypeImages(id);
       const roomImages = imageRes.data || [];
 
       setImages(normalizeImages(roomImages));

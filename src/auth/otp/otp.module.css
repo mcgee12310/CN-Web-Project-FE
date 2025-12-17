@@ -144,27 +144,8 @@
   color: #999;
 }
 
-/* ================= TABLET ================= */
-@media (min-width: 600px) {
-  .otpCard {
-    max-width: 420px;
-    padding: 32px 28px;
-  }
-
-  .otpInput {
-    width: 46px;
-    height: 54px;
-  }
-
-  .otpInput {
-    width: 30px;
-    height: 58px;
-    font-size: 1.35rem;
-  }
-}
-
 /* ================= DESKTOP ================= */
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .otpCard {
     max-width: 440px;
     padding: 36px;
@@ -175,8 +156,27 @@
   }
 
   .otpInput {
-    width: 30px;
+    width: 40px;
     height: 58px;
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .otpCard {
+    max-width: 420px;
+    padding: 32px 28px;
+    margin: 10px;
+  }
+
+  .otpInput {
+    width: 46px;
+    height: 54px;
+  }
+
+  .otpInput {
+    width: 35px;
+    height: 53px;
     font-size: 1.35rem;
   }
 }

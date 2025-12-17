@@ -517,6 +517,7 @@
 
   .modalContent {
     border-radius: 16px 16px 0 0;
+    margin: 20px;
   }
 
   .userAvatar {

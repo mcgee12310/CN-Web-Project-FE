@@ -20,6 +20,16 @@ const roomService = {
       throw error;
     }
   },
+  getRoomTypeImages: async (roomTypeId) => {
+    try {
+      const response = await apiClient.get(
+        `/api/public/room-types/${roomTypeId}/images`
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
   getRoomReviews: async (roomTypeId) => {
     try {
       const response = await apiClient.get(

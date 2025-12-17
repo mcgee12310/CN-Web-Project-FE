@@ -71,13 +71,13 @@ const Login = () => {
       }
       const message = error.response.data?.error;
       toast.error(message);
-      if (
-        message ===
-        "Tài khoản chưa được xác thực. Vui lòng xác thực OTP từ email."
-      ) {
-        localStorage.setItem("pendingVerificationEmail", formData.email);
-        navigate("/otp", { state: { email: formData.email } });
-      }
+      // if (
+      //   message ===
+      //   "Tài khoản chưa được xác thực. Vui lòng xác thực OTP từ email."
+      // ) {
+      //   localStorage.setItem("pendingVerificationEmail", formData.email);
+      //   navigate("/otp", { state: { email: formData.email } });
+      // }
     }
   };
 

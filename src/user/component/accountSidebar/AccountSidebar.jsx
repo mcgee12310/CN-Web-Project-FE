@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { User, CreditCard, Star, Lock, LogOut } from "lucide-react";
 import styles from "./AccountSidebar.module.css";
-import { useAuth } from "../../../auth/auth-context";
 
 export default function AccountSidebar({ active }) {
   const navigate = useNavigate();
