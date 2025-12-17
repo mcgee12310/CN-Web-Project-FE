@@ -9,17 +9,18 @@ const Header = () => {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const tabsLoggedOut = [
+  const tabsUser = [
     { id: "home", label: "Trang chủ", path: "/" },
     { id: "explore", label: "Khám phá", path: "/rooms" },
   ];
 
-  const tabsLoggedIn = [
+  const tabAdminLoggedIn = [
     { id: "home", label: "Trang chủ", path: "/" },
     { id: "explore", label: "Khám phá", path: "/rooms" },
+    { id: "dashboard", label: "Trang quản lý", path: "/admin" },
   ];
 
-  const tabs = user ? tabsLoggedIn : tabsLoggedOut;
+  const tabs = user?.role == "ADMIN" ? tabAdminLoggedIn : tabsUser;
 
   const handleNavigate = (path) => {
     navigate(path);

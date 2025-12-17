@@ -135,7 +135,6 @@ function BookingSection({
     // 1. Kiểm tra đăng nhập
     if (!user) {
       toast.warn("Bạn cần đăng nhập để có thể đặt phòng");
-      navigate("/login");
       return;
     }
 

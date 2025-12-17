@@ -73,7 +73,6 @@
     /* icon trên - chữ dưới */
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 0.25rem;
 
     text-align: center;

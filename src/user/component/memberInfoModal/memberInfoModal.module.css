@@ -464,7 +464,6 @@
 @media (max-width: 768px) {
   .modalContent {
     max-width: 100%;
-    max-height: 95vh;
     border-radius: 16px 16px 0 0;
     align-self: flex-end;
   }
@@ -488,7 +487,6 @@
   .tab {
     min-width: 100px;
     padding: 12px;
-    font-size: 14px;
   }
 
   .modalBody {
@@ -517,7 +515,7 @@
 
   .modalContent {
     border-radius: 16px 16px 0 0;
-    margin: 20px;
+    margin: 0px 20px;
   }
 
   .userAvatar {
@@ -535,5 +533,32 @@
   .tierIcon {
     width: 40px;
     height: 40px;
+  }
+}
+
+@media (max-width: 550px) {
+  .tab {
+    min-width: 80px;
+    padding: 10px 8px;
+  }
+
+  .tabContent {
+    flex-direction: column;
+    gap: 4px;
+    line-height: 1.1;
+  }
+
+  /* Giữ icon không bị shrink/mất */
+  .tabContent svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Chữ nhỏ dưới icon */
+  .tabContent span {
+    font-size: 11px;
+    text-align: center;
+    white-space: nowrap;
   }
 }
