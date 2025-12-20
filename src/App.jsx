@@ -39,8 +39,11 @@ import MyReviews from "./user/component/myReviews/MyReviews";
 import ChangePassword from "./user/component/changePassword/ChangePassword";
 
 export const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
+
+  // Wait for auth to load before redirecting
+  if (loading) return null;
 
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location }} />;
@@ -49,14 +52,21 @@ export const ProtectedRoute = ({ children }) => {
 };
 
 export const GuestRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  // Wait for auth to load before redirecting
+  if (loading) return null;
+
   if (user) return <Navigate to="/" replace />;
   return children;
 };
 
 export const AdminRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
+
+  // Wait for auth to load before redirecting
+  if (loading) return null;
 
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location }} />;
@@ -119,6 +129,10 @@ function App() {
               <Booking1Page />
             </ProtectedRoute>
           }
+        />
+        <Route
+          path="/payment/vnpay/callback"
+          element={<VNPayCallback />}
         />
 
         <Route
