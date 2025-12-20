@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Tabs } from "antd";
 import styles from "./BookingDetail.module.css";
 import RequestCard from "../../components/requestCard/RequestCard";
@@ -8,8 +8,9 @@ import bookingService from "../../../services/admin/booking";
 import { usePageTitle } from "../../../utils/usePageTitle";
 import { formatDate, formatStatus, formatPrice } from "../../../utils/format";
 
-export default function BookingDetail({}) {
+export default function BookingDetail({ }) {
   usePageTitle("Chi tiết đơn");
+  const navigate = useNavigate();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [requests, setRequests] = useState([]);
@@ -107,6 +108,16 @@ export default function BookingDetail({}) {
                 <span className={styles.label}>Hạng:</span>
                 <span className={styles.badge}>{user.customerTier}</span>
               </div>
+
+              <div className={styles.infoRow}>
+                <div
+                  className={styles.userLink}
+                  onClick={() => {navigate(`/admin/users/${user.id}`)}}
+                >
+                  Xem chi tiết người dùng
+                </div>
+              </div>
+
             </>
           ) : (
             <div>Không tìm thấy thông tin người dùng</div>
@@ -122,6 +133,11 @@ export default function BookingDetail({}) {
           <div className={styles.infoRow}>
             <span className={styles.label}>Mã đơn:</span>
             <span>{booking.bookingCode}</span>
+          </div>
+
+          <div className={styles.infoRow}>
+            <span className={styles.label}>Loại phòng:</span>
+            <span>{booking.roomType}</span>
           </div>
 
           <div className={styles.infoRow}>

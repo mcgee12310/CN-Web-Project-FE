@@ -3,6 +3,7 @@
   background-color: #fff;
   border-radius: 12px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -32,19 +33,23 @@
   justify-content: flex-end;
   margin-bottom: 16px;
 }
+
 .searchBox {
   width: 300px;
   display: flex;
   align-items: space-between;
 }
+
 .nameCell {
   font-weight: 600;
   color: #111827;
 }
+
 .emailCell {
   color: #374151;
   font-size: 0.9rem;
 }
+
 .phoneCell {
   color: #1f2937;
   font-size: 0.9rem;
@@ -52,6 +57,7 @@
   letter-spacing: 0.3px;
   white-space: nowrap;
 }
+
 .dobCell {
   color: #6b7280;
   font-size: 0.85rem;
@@ -74,6 +80,14 @@
   box-shadow: 0 2px 4px rgba(78, 133, 196, 0.1);
 }
 
+.notverified {
+  background-color: #faad14;
+  border-radius: 9999px;
+  padding: 8px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
 .active {
   background-color: #10b981;
   border-radius: 9999px;
@@ -81,46 +95,103 @@
   font-weight: 600;
   padding: 8px;
 }
+
 .inactive {
   border-radius: 9999px;
   padding: 8px;
   background-color: #555;
   color: #ffffff;
+  font-weight: 600;
 }
+
 .roleUser {
-  background-color: #ecfdf5; /* xanh nhạt */
-  color: #047857; /* xanh ngọc đậm */
+  background-color: #ecfdf5;
+  /* xanh nhạt */
+  color: #047857;
+  /* xanh ngọc đậm */
   font-weight: 500;
   padding: 8px;
   border-radius: 9999px;
   display: inline-block;
   font-size: 0.85rem;
 }
+
 .roleAdmin {
-  background-color: #eef2ff; /* tím nhạt */
-  color: #4338ca; /* tím đậm */
+  background-color: #eef2ff;
+  /* tím nhạt */
+  color: #4338ca;
+  /* tím đậm */
   font-weight: 500;
   padding: 8px;
   border-radius: 9999px;
   display: inline-block;
   font-size: 0.85rem;
 }
+
 .actions {
   cursor: pointer;
   color: #555;
   align-items: center;
 }
+
 /* Custom style for Antd Table */
+.tableWrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .antdTable {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
 }
-.antdTable .ant-table-thead > tr > th {
+
+.antdTable .ant-table-thead>tr>th {
   background-color: #1e3a8a;
   color: #fff;
   font-weight: 600;
 }
-.antdTable .ant-table-tbody > tr:hover > td {
+
+.antdTable .ant-table-tbody>tr:hover>td {
   background-color: #000000;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .searchBox {
+    width: 100%;
+  }
+
+  .searchBox input {
+    width: 100% !important;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 12px;
+  }
+
+  .header {
+    padding: 16px;
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
 }

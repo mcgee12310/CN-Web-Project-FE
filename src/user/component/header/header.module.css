@@ -201,6 +201,7 @@
   cursor: pointer;
 }
 
+/* ================== RESPONSIVE ================== */
 @media (max-width: 768px) {
   .headerContainer {
     height: 64px;
@@ -208,10 +209,85 @@
   }
 
   .headerNav {
-    display: none; /* ẩn nav desktop */
+    display: none;
+    /* ẩn nav desktop */
   }
 
   .hamburger {
-    display: block; /* hiện hamburger cạnh logo */
+    display: block;
+    /* hiện hamburger cạnh logo */
+  }
+
+  /* Responsive cho Logo */
+  .logo {
+    gap: 0.5rem;
+  }
+
+  .logoIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .logoName {
+    font-size: 1rem;
+  }
+
+  .logoSubtext {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContainer {
+    padding: 0 12px;
+  }
+
+  /* Logo nhỏ hơn trên màn hình rất nhỏ */
+  .logo {
+    gap: 0.4rem;
+  }
+
+  .logoIcon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .logoName {
+    font-size: 0.875rem;
+  }
+
+  .logoSubtext {
+    font-size: 0.45rem;
+    letter-spacing: 1px;
+  }
+
+  /* Actions cũng nhỏ hơn */
+  .actions img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .btnLogin,
+  .btnSignup,
+  .btnLogout {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 360px) {
+
+  /* Ẩn subtext trên màn hình cực nhỏ */
+  .logoSubtext {
+    display: none;
+  }
+
+  .logoIcon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .logoName {
+    font-size: 0.8rem;
   }
 }

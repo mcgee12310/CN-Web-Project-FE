@@ -18,16 +18,7 @@ const Sidebar = () => {
     { id: 'tiers', label: 'Hạng', icon: BarChartBigIcon, path: '/admin/tiers' },
     // { id: 'review', label: 'Đánh giá', icon: Star, path: '/admin/reviews' },
   ];
-
-  const handleLogout = () => {
-    // 1. Xóa token hoặc thông tin xác thực (ví dụ: từ localStorage)
-    localStorage.removeItem('user'); 
-    console.log('Đã đăng xuất.');
-
-    // 2. Chuyển hướng người dùng đến trang đăng nhập
-    navigate('/login'); 
-  };
-
+  
   return (
     <div className={styles.sidebar}>
       {/* Menu chính */}

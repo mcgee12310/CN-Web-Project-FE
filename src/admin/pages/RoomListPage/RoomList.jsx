@@ -150,7 +150,7 @@ const RoomList = () => {
           showSizeChanger: true,
           showTotal: (total) => `Tổng ${total} phòng`
         }}
-        scroll={{ y: 800 }}
+        // scroll={{ y: 800 }}
       />
 
       <AddRoomModal

@@ -3,34 +3,41 @@
   background-color: #fff;
   border-radius: 12px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 48px;
 }
+
 .header h2 {
   margin: 0;
   font-size: 2rem;
   font-weight: 600;
 }
+
 .content {
   display: flex;
   gap: 40px;
   align-items: flex-start;
+  min-width: 0; /* ⭐ BẮT BUỘC */
 }
+
 /* USER INFO */
 .userInfo {
   width: 280px;
   border-right: 1px solid #e5e5e5;
   padding-right: 24px;
 }
+
 .avatarSection {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
 }
+
 .avatar {
   width: 60px;
   height: 60px;
@@ -53,6 +60,14 @@
   box-shadow: 0 2px 4px rgba(78, 133, 196, 0.1);
 }
 
+.notverified {
+  background-color: #faad14;
+  border-radius: 9999px;
+  padding: 8px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
 .active {
   background-color: #10b981;
   border-radius: 9999px;
@@ -60,49 +75,64 @@
   font-weight: 600;
   padding: 8px;
 }
+
 .inactive {
   border-radius: 9999px;
   padding: 8px;
   background-color: #555;
   color: #ffffff;
 }
+
 .roleUser {
-  background-color: #ecfdf5; /* xanh nhạt */
-  color: #047857; /* xanh ngọc đậm */
+  background-color: #ecfdf5;
+  /* xanh nhạt */
+  color: #047857;
+  /* xanh ngọc đậm */
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 9999px;
   display: inline-block;
   font-size: 0.85rem;
 }
+
 .roleAdmin {
-  background-color: #eef2ff; /* tím nhạt */
-  color: #4338ca; /* tím đậm */
+  background-color: #eef2ff;
+  /* tím nhạt */
+  color: #4338ca;
+  /* tím đậm */
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 9999px;
   display: inline-block;
   font-size: 0.85rem;
 }
+
 .name {
   font-size: 18px;
   font-weight: 500;
 }
+
 .infoItem {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
   border-top: 1px dashed #eee;
 }
+
 .infoItem span:first-child {
   color: #666;
 }
+
 .infoItem.button-center {
-  display: flex;           /* biến div thành flex container */
-  justify-content: center; /* canh ngang giữa */
-  align-items: center;     /* canh dọc giữa */
+  display: flex;
+  /* biến div thành flex container */
+  justify-content: center;
+  /* canh ngang giữa */
+  align-items: center;
+  /* canh dọc giữa */
   margin: 10px 0;
 }
+
 .buttonContainer {
   display: flex;
   justify-content: center;
@@ -111,6 +141,7 @@
   padding-top: 10px;
   border-top: 1px dashed #eee;
 }
+
 .deleteBtn {
   background-color: #bc3838;
   color: white;
@@ -121,10 +152,12 @@
   font-weight: 500;
   transition: all 0.3s ease;
 }
+
 .deleteBtn:hover {
   background-color: #a02e2e;
   transform: translateY(-2px);
 }
+
 .restoreBtn {
   background-color: #10835c;
   color: white;
@@ -135,40 +168,50 @@
   font-weight: 500;
   transition: all 0.3s ease;
 }
+
 .restoreBtn:hover {
   background-color: #0a5a42;
   transform: translateY(-2px);
 }
+
 /* BOOKING SECTION */
 .bookingSection {
   flex: 1;
+  min-width: 0; /* ⭐ BẮT BUỘC */
 }
+
 .bookingHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
+
 .bookingTitle {
   font-size: 1.2rem;
   font-weight: 600;
 }
+
 .search {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
 }
+
 .search:focus {
   border-color: #6b5bff;
 }
+
 /* TABLE */
 .codeCell {
   font-weight: 600;
-  color: #1677ff; /* Màu chủ đạo Ant Design */
+  color: #1677ff;
+  /* Màu chủ đạo Ant Design */
   cursor: pointer;
   transition: color 0.2s ease;
 }
+
 .codeCell:hover {
   color: #0958d9;
 }
@@ -181,22 +224,76 @@
 
 .priceCell {
   font-weight: 600;
-  color: #52c41a; /* xanh tiền */
+  color: #52c41a;
+  /* xanh tiền */
 }
+
 .priceCell::after {
   content: " VNĐ";
   font-size: 12px;
   color: #999;
 }
+
 .dateCell {
   color: #595959;
   font-size: 14px;
   font-style: italic;
   font-weight: bold;
 }
+
 .viewBtn {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .userInfo {
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+  }
+
+  .avatarSection {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .infoItem {
+    font-size: 14px;
+  }
+
+  .bookingHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .bookingTitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .content {
+    gap: 24px;
+  }
+
+  .userInfo {
+    width: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .bookingHeader input {
+    width: 100% !important;
+  }
 }

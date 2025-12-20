@@ -5,37 +5,48 @@ import "react-calendar/dist/Calendar.css";
 import styles from "./RoomDayEditor.module.css";
 import { formatDate } from "../../../../utils/format";
 
-// Import service đã tạo
 import roomService from "../../../../services/admin/room";
 
-// Constants: Dùng để xác định khoảng ngày cần tải (ví dụ: tháng hiện tại)
+/**
+ * Format date YYYY-MM-DD (tránh lệch timezone)
+ */
+const formatDateToYYYYMMDD = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * Lấy khoảng ngày của tháng hiện tại
+ */
 const getMonthRange = (date) => {
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  // Trả về định dạng YYYY-MM-DD
   return {
-    from: firstDay.toISOString().split("T")[0],
-    to: lastDay.toISOString().split("T")[0],
+    from: formatDateToYYYYMMDD(firstDay),
+    to: formatDateToYYYYMMDD(lastDay),
   };
 };
 
-// Component chỉ xem lịch phòng, không chỉnh sửa
 function RoomDayEditor({ roomData = {} }) {
   const navigate = useNavigate();
+  const roomId = roomData.id;
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [dayInfo, setDayInfo] = useState(null);
 
-  // State mới để lưu dữ liệu lịch từ API
+  // dữ liệu lịch theo tháng
   const [calendarData, setCalendarData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // State theo dõi tháng đang hiển thị trên Calendar
+  // tháng đang hiển thị (CHỈ dùng để gọi API)
   const [activeDate, setActiveDate] = useState(new Date());
 
-  const roomId = roomData.id;
-
-  // GỌI API LẤY LỊCH PHÒNG
+  /**
+   * GỌI API KHI ĐỔI THÁNG
+   */
   useEffect(() => {
     if (!roomId) return;
 
@@ -44,11 +55,8 @@ function RoomDayEditor({ roomData = {} }) {
       const { from, to } = getMonthRange(activeDate);
 
       try {
-        // Gọi service với ID phòng và dải ngày
         const data = await roomService.getRoomCalendar(roomId, from, to);
-        console.log(data);
-        // Lưu dữ liệu lịch vào state
-        setCalendarData(data);
+        setCalendarData(data || []);
       } catch (err) {
         console.error("Lỗi khi tải lịch phòng:", err);
       } finally {
@@ -59,76 +67,84 @@ function RoomDayEditor({ roomData = {} }) {
     fetchCalendarData();
   }, [roomId, activeDate]);
 
-  // HIỂN THỊ CHI TIẾT NGÀY ĐƯỢC CHỌN
+  /**
+   * CẬP NHẬT THÔNG TIN NGÀY ĐƯỢC CHỌN
+   */
   useEffect(() => {
-    if (!selectedDate || !calendarData) return;
+    if (!selectedDate) {
+      setDayInfo(null);
+      return;
+    }
 
-    const dayStr = selectedDate.toISOString().split("T")[0];
+    const dayStr = formatDateToYYYYMMDD(selectedDate);
     const found = calendarData.find((d) => d.date === dayStr);
-
     setDayInfo(found || null);
   }, [selectedDate, calendarData]);
 
-  // CẬP NHẬT TILE CLASSIFICATION (MÀU SẮC TRÊN LỊCH)
+  /**
+   * TÔ MÀU NGÀY TRÊN CALENDAR
+   */
   const tileClassName = ({ date, view }) => {
-  if (view !== "month" || loading) return "";
+    if (view !== "month" || loading) return "";
 
-  const dayStr = date.toISOString().split("T")[0];
-  const info = calendarData.find((d) => d.date === dayStr);
+    const dayStr = formatDateToYYYYMMDD(date);
+    const info = calendarData.find((d) => d.date === dayStr);
 
-  let classes = [];
-  
-  // 1. Thêm class trạng thái (Available/Unavailable)
-  if (info) {
-    classes.push(info.isAvailable ? styles.available : styles.unavailable);
-  }
+    const classes = [];
 
-  // 2. Highlight ngày hiện tại (nếu cần)
-  // Lấy ngày hôm nay
-  const todayStr = new Date().toISOString().split("T")[0];
-  if (dayStr === todayStr) {
-    // Thêm class today VÀ chỉ thêm class today nếu nó KHÔNG phải là ngày được chọn
-    // (Vì ngày được chọn thường có style mạnh hơn)
-    if (!selectedDate || dayStr !== selectedDate.toISOString().split("T")[0]) {
-      classes.push(styles.today); 
+    // trạng thái phòng
+    if (info) {
+      classes.push(info.isAvailable ? styles.available : styles.unavailable);
     }
-  }
 
-  // 3. Thêm class ngày được chọn
-  if (
-    selectedDate &&
-    dayStr === selectedDate.toISOString().split("T")[0]
-  ) {
-    classes.push(styles.selected);
-  }
+    // hôm nay
+    const todayStr = formatDateToYYYYMMDD(new Date());
+    if (
+      dayStr === todayStr &&
+      (!selectedDate ||
+        dayStr !== formatDateToYYYYMMDD(selectedDate))
+    ) {
+      classes.push(styles.today);
+    }
 
-  return classes.join(" ");
-};
+    // ngày đang chọn
+    if (selectedDate && dayStr === formatDateToYYYYMMDD(selectedDate)) {
+      classes.push(styles.selected);
+    }
 
-  // Xử lý khi click vào booking code
+    return classes.join(" ");
+  };
+
+  /**
+   * CLICK BOOKING
+   */
   const handleBookingClick = () => {
     if (dayInfo?.bookingId) {
       navigate(`/admin/bookings/${dayInfo.bookingId}`);
     }
   };
 
-  if (!roomData || !roomId) return <p>Không có dữ liệu phòng (thiếu ID phòng).</p>;
-  if (loading && calendarData.length === 0) return <p>Đang tải lịch...</p>;
+  if (!roomId) {
+    return <p>Không có dữ liệu phòng (thiếu ID phòng).</p>;
+  }
 
   return (
     <section className={styles.container}>
-      {/* Calendar */}
+      {/* CALENDAR */}
       <Calendar
-        onActiveStartDateChange={({ activeStartDate }) => {
-          setActiveDate(activeStartDate);
-        }}
-        onClickDay={(date) => setSelectedDate(date)}
-        tileClassName={tileClassName}
         locale="vi-VN"
-        value={selectedDate}
+        onClickDay={(date) => setSelectedDate(date)}
+        onActiveStartDateChange={({ activeStartDate }) => {
+          if (activeStartDate) {
+            setActiveDate(activeStartDate);
+            setSelectedDate(null);
+            setDayInfo(null);
+          }
+        }}
+        tileClassName={tileClassName}
       />
 
-      {/* Hiển thị thông tin ngày đã chọn */}
+      {/* THÔNG TIN NGÀY */}
       {selectedDate && (
         <div className={styles.editBox}>
           <h3>Ngày: {formatDate(selectedDate)}</h3>
@@ -138,14 +154,14 @@ function RoomDayEditor({ roomData = {} }) {
               <div className={styles.formGroup}>
                 <label>Giá phòng</label>
                 <div className={styles.infoText}>
-                  {dayInfo.price.toLocaleString('vi-VN')} VNĐ
+                  {dayInfo.price.toLocaleString("vi-VN")} VNĐ
                 </div>
               </div>
 
               <div className={styles.formGroup}>
                 <label>Trạng thái</label>
                 <div className={styles.infoText}>
-                  {dayInfo.isAvailable ? "Còn phòng" : "Hết phòng"}
+                  {dayInfo.isAvailable ? "Còn phòng" : "Đã đặt"}
                 </div>
               </div>
 
@@ -171,3 +187,4 @@ function RoomDayEditor({ roomData = {} }) {
 }
 
 export default RoomDayEditor;
+  

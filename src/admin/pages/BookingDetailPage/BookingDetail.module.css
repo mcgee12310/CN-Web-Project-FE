@@ -58,6 +58,14 @@
   margin-right: 8px;
 }
 
+.userLink {
+  color: #2563eb;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
 .sectionTitle {
   margin-top: 20px;
   font-size: 18px;

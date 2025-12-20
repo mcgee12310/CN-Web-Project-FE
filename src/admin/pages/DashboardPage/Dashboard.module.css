@@ -112,6 +112,7 @@ h3{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+  min-width: 0; /* ⭐ */
 }
 
 .tableTitle {
@@ -125,6 +126,9 @@ h3{
   padding: 20px;
   border-radius: 14px;
   border: solid 1px #7d7d7d;
+
+  min-width: 0;     /* ⭐ CHỐT */
+  overflow: hidden;/* ⭐ NGĂN TABLE ĐẨY */
 }
 
 .tableTitle {
@@ -133,9 +137,23 @@ h3{
   margin-bottom: 16px;
 }
 
+.tableTitle a {
+  color: #6366f1;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.tableTitle a:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
 .codeCell {
   font-weight: 600;
-  color: #1677ff; /* Màu chủ đạo Ant Design */
+  color: #1677ff;
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -162,4 +180,274 @@ h3{
   color: #6b7280;
   font-size: 0.85rem;
   font-weight: bold;
+}
+
+/* ================== RESPONSIVE ================== */
+
+/* Tablet lớn */
+@media (max-width: 1200px) {
+  .statsRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .chartsSection {
+    gap: 1.5rem;
+  }
+
+  .tablesSection {
+    gap: 20px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .container {
+    padding: 12px;
+  }
+
+  .header {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .statLabel {
+    font-size: 14px;
+  }
+
+  .statValue {
+    font-size: 24px;
+  }
+
+  .chartCard {
+    padding: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+}
+
+/* Tablet nhỏ / Mobile lớn */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px;
+  }
+
+  .header {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .statCard {
+    padding: 14px;
+  }
+
+  .statLabel {
+    font-size: 13px;
+  }
+
+  .statValue {
+    font-size: 22px;
+  }
+
+  .chartsSection {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .chartCard {
+    padding: 1rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .tablesSection {
+    margin-top: 24px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tableCard {
+    padding: 16px;
+  }
+
+  .tableTitle {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .tableTitle a {
+    font-size: 13px;
+  }
+
+  /* Table cells nhỏ hơn */
+  .emailCell,
+  .phoneCell {
+    font-size: 0.8125rem;
+  }
+
+  .dateCell {
+    font-size: 0.75rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 6px;
+  }
+
+  .header {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .statsRow {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .statCard {
+    padding: 12px;
+    border-left-width: 3px;
+  }
+
+  .statLabel {
+    font-size: 12px;
+  }
+
+  .statValue {
+    font-size: 20px;
+    margin-top: 4px;
+  }
+
+  .chartsSection {
+    gap: 1rem;
+  }
+
+  .chartCard {
+    padding: 0.875rem;
+  }
+
+  h3 {
+    font-size: 0.9375rem;
+    margin-bottom: 8px;
+  }
+
+  .tablesSection {
+    margin-top: 20px;
+    gap: 12px;
+  }
+
+  .tableCard {
+    padding: 12px;
+  }
+
+  .tableTitle {
+    font-size: 14px;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .tableTitle a {
+    font-size: 12px;
+  }
+
+  .codeCell,
+  .nameCell {
+    font-size: 0.8125rem;
+  }
+
+  .emailCell,
+  .phoneCell {
+    font-size: 0.75rem;
+  }
+
+  .dateCell {
+    font-size: 0.6875rem;
+  }
+}
+
+/* Mobile cực nhỏ */
+@media (max-width: 360px) {
+  .container {
+    padding: 4px;
+  }
+
+  .header {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .subtitle {
+    font-size: 0.6875rem;
+  }
+
+  .statCard {
+    padding: 10px;
+  }
+
+  .statLabel {
+    font-size: 11px;
+  }
+
+  .statValue {
+    font-size: 18px;
+  }
+
+  .chartCard {
+    padding: 0.75rem;
+  }
+
+  h3 {
+    font-size: 0.875rem;
+  }
+
+  .tableCard {
+    padding: 10px;
+  }
 }

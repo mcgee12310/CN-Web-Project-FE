@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.css";
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { ChevronDown, LogOut, User, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
 
   const userString = localStorage.getItem("user");
@@ -25,12 +25,20 @@ const Navbar = () => {
 
   return (
     <div className={styles.navbar}>
-      {/* Logo */}
-      <div className={styles.logo}>
-        <img src="/hikari-logo3.png" alt="logo" className={styles.logoIcon} />
-        <div className={styles.logoText}>
-          <span className={styles.logoName}>HIKARI</span>
-          <span className={styles.logoSubtext}>HOTEL</span>
+      {/* Left Section: Hamburger + Logo */}
+      <div className={styles.leftSection}>
+        {/* Hamburger Menu - chỉ hiện trên mobile */}
+        <button className={styles.hamburger} onClick={onToggleSidebar}>
+          <Menu />
+        </button>
+
+        {/* Logo */}
+        <div className={styles.logo} onClick={() => { navigate("/admin") }}>
+          <img src="/hikari-logo3.png" alt="logo" className={styles.logoIcon} />
+          <div className={styles.logoText}>
+            <span className={styles.logoName}>HIKARI</span>
+            <span className={styles.logoSubtext}>HOTEL</span>
+          </div>
         </div>
       </div>
 
@@ -38,7 +46,7 @@ const Navbar = () => {
       <div className={styles.userWrapper}>
         <div className={styles.user}>
           <span className={styles.username}>{userName}</span>
-          <img src={getAvatarUrl(userName)} className={styles.avatar} />
+          <img src={getAvatarUrl(userName)} alt="avatar" className={styles.avatar} />
           <ChevronDown className={styles.chevron} />
         </div>
 

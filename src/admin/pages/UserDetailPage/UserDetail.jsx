@@ -20,6 +20,7 @@ const UserDetail = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [modalAction, setModalAction] = useState(""); // "delete" | "restore"
+  
   // fetch user info từ API
   useEffect(() => {
     const fetchUserData = async () => {
@@ -63,14 +64,17 @@ const UserDetail = () => {
   const handleView = (record) => {
     navigate(`/admin/bookings/${record.id}`);
   };
+  
   const handleDelete = () => {
     setModalAction("delete");
     setModalVisible(true);
   };
+  
   const handleRestore = () => {
     setModalAction("restore");
     setModalVisible(true);
   };
+  
   const handleModalOk = async () => {
     try {
       setModalLoading(true);
@@ -100,6 +104,7 @@ const UserDetail = () => {
       setModalVisible(false);
     }
   };
+  
   const getAvatarUrl = (name) =>
     `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
@@ -114,68 +119,80 @@ const UserDetail = () => {
   };
 
   const getRoleClass = (role) => role === "ADMIN" ? styles.roleAdmin : styles.roleUser;
-  const getUserStatusClass = (status) => status ? styles.active : styles.inactive;
+  
+  // Hàm xử lý trạng thái người dùng với kiểm tra isVerified
+  const getUserStatusClass = (status, isVerified) => {
+    if (isVerified === false) return styles.notverified;
+    return status ? styles.active : styles.inactive;
+  };
+  
+  const getUserStatusText = (status, isVerified) => {
+    if (isVerified === false) return "Chưa xác thực";
+    return status ? "Hoạt động" : "Ngừng hoạt động";
+  };
 
   const filtered = bookings.filter(
     b => b.bookingCode?.toString().includes(search)
   );
 
   const columns = [
-    {
-      title: "Mã đơn",
-      dataIndex: "bookingCode",
-      key: "code",
-      sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
-      render: text => <span className={styles.codeCell}>{text}</span>,
-      width: '10%',
-    },
-    {
-      title: "Tên phòng",
-      dataIndex: "roomType",
-      key: "roomType",
-      sorter: (a, b) => a.roomType.localeCompare(b.roomType),
-      render: text => <span className={styles.roomCell}>{text}</span>,
-      width: '20%',
-    },
-    {
-      title: "Tổng giá trị",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price,
-      render: (_, record) => formatPrice(record.price),
-      width: '20%',
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        { text: 'PENDING', value: 'PENDING' },
-        { text: 'CONFIRMED', value: 'CONFIRMED' },
-        { text: 'CANCELED', value: 'CANCELED' },
-        { text: 'COMPLETED', value: 'COMPLETED' },
-      ],
-      onFilter: (value, record) => record.status === value,
-      render: (_, record) => formatStatus(record.status),
-      width: '20%',
-    },
-    {
-      title: "Ngày tạo",
-      dataIndex: "bookingDate",
-      key: "date",
-      sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
-      render: date => <div className={styles.dateCell}>{formatDate(date)}</div>,
-      width: '20%',
-    },
-    {
-      title: "Hành động",
-      key: "action",
-      render: (_, record) => (
-        <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
-      ),
-      align: "center",
-    },
-  ];
+  {
+    title: "Mã đơn",
+    dataIndex: "bookingCode",
+    key: "code",
+    sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
+    render: text => <span className={styles.codeCell}>{text}</span>,
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+  {
+    title: "Tên phòng",
+    dataIndex: "roomType",
+    key: "roomType",
+    sorter: (a, b) => a.roomType.localeCompare(b.roomType),
+    render: text => <span className={styles.roomCell}>{text}</span>,
+    responsive: ["sm", "md", "lg"],
+  },
+  {
+    title: "Tổng giá",
+    dataIndex: "price",
+    key: "price",
+    sorter: (a, b) => a.price - b.price,
+    render: (_, record) => formatPrice(record.price),
+    responsive: ["md", "lg"],
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+    key: "status",
+    filters: [
+      { text: "PENDING", value: "PENDING" },
+      { text: "CONFIRMED", value: "CONFIRMED" },
+      { text: "CANCELED", value: "CANCELED" },
+      { text: "COMPLETED", value: "COMPLETED" },
+    ],
+    onFilter: (value, record) => record.status === value,
+    render: (_, record) => formatStatus(record.status),
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+  {
+    title: "Ngày tạo",
+    dataIndex: "bookingDate",
+    key: "date",
+    sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
+    render: date => <div className={styles.dateCell}>{formatDate(date)}</div>,
+    responsive: ["lg"],
+  },
+  {
+    title: "Hành động",
+    key: "action",
+    render: (_, record) => (
+      <Button icon={<EyeOutlined />} onClick={() => handleView(record)} />
+    ),
+    align: "center",
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+];
+  
   return (
     <div className={styles.container}>
       <div className={styles.header}><h2>Chi tiết người dùng</h2></div>
@@ -198,7 +215,12 @@ const UserDetail = () => {
           <div className={styles.infoItem}><span>Tổng số đơn</span><span>{user.totalBookings ? user.totalBookings : "-"}</span></div>
           <div className={styles.infoItem}><span>Tổng chi tiêu</span><span>{user.totalSpent ? formatPrice(user.totalSpent) : "-"}</span></div>
           <div className={styles.infoItem}><span>Hạng</span><span className={`${styles.badge}`}>{user.customerTier || "Vô hạng"}</span></div>
-          <div className={styles.infoItem}><span>Trạng thái</span><span className={getUserStatusClass(user.status)}>{user.status ? "Hoạt động" : "Ngừng hoạt động"}</span></div>
+          <div className={styles.infoItem}>
+            <span>Trạng thái</span>
+            <span className={getUserStatusClass(user.status, user.isVerified)}>
+              {getUserStatusText(user.status, user.isVerified)}
+            </span>
+          </div>
           <div className={styles.infoItem}><span>Ngày tạo tài khoản</span><span>{formatDate(user.createdAt)}</span></div>
           <div className={styles.buttonContainer}>
             {user.status ? (
@@ -226,15 +248,16 @@ const UserDetail = () => {
             </div>
           </div>
           <Table
-            columns={columns}
-            dataSource={filtered}
-            rowKey="code"
-            loading={bookingLoading}
-            pagination={{
-              showSizeChanger: true,
-              showTotal: (total) => `Tổng ${total} đơn`
-            }}
-          />
+  columns={columns}
+  dataSource={filtered}
+  rowKey="code"
+  loading={bookingLoading}
+  pagination={{
+    showSizeChanger: true,
+    showTotal: (total) => `Tổng ${total} đơn`,
+  }}
+  scroll={{ x: "max-content" }}
+/>
         </div>
       </div>
       <Modal
