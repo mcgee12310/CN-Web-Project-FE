@@ -222,11 +222,12 @@ function BookingSection({
           totalPeople,
           selectedRooms: selectedRoomDetails,
           roomType: roomData?.name ?? "Phòng",
-          price: roomData?.price ?? "",
+          roomPrice: roomData?.price ?? "",
           new_price: response?.amount ?? "",
           heroImage: Array.isArray(roomData?.images) ? roomData.images[0] : "",
           paymentUrl: response?.paymentUrl || "",
           bookingNote: bookingNote,
+          discount: response?.discount || 0,
         },
       });
     } catch (error) {

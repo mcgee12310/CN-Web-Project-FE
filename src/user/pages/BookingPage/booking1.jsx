@@ -41,6 +41,7 @@ function Booking1Page() {
 
   // ================= SAFE DATA =================
   const safeBooking = bookingData || {};
+  console.log("Booking Data:", safeBooking);
   const {
     roomType = "",
     image = "",
@@ -67,6 +68,10 @@ function Booking1Page() {
     const diff = new Date(checkOut) - new Date(checkIn);
     return diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
   }, [checkIn, checkOut]);
+
+  // Tính tổng số phòng và khách từ tất cả các requests
+  const totalRooms = requests.length;
+  const totalGuests = requests.reduce((sum, req) => sum + (req.guests || 0), 0);
 
   // ================= PRICE =================
   const formatPrice = (value) => value?.toLocaleString("vi-VN") + " VNĐ";
@@ -121,7 +126,9 @@ function Booking1Page() {
                     </span>
                   </div>
 
-                  <p className={styles.roomMeta}>1 phòng • {guests} khách</p>
+                  <p className={styles.roomMeta}>
+                    {totalRooms} phòng • {totalGuests} khách
+                  </p>
                 </div>
               </div>
 
@@ -146,7 +153,7 @@ function Booking1Page() {
 
                 <div>
                   <h2 className={styles.sectionLabel}>Tổng khách</h2>
-                  <p className={styles.sectionValue}>{guests} khách</p>
+                  <p className={styles.sectionValue}>{totalGuests} khách</p>
                 </div>
               </div>
 

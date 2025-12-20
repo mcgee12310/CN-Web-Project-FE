@@ -17,13 +17,21 @@ function BookingPage() {
     totalPeople,
     selectedRooms = [],
     roomType = "Phòng",
-    price = "",
+    roomPrice = "",
     new_price = "",
     heroImage = "",
     paymentUrl = "",
+    discount = 0,
   } = bookingData || {};
 
-  // 🔹 Tính số đêm
+  const formatPrice = (price) => price.toLocaleString("vi-VN") + " VNĐ";
+
+  // --- TÍNH TOÁN GIÁ TIỀN ---
+  const oldPrice = new_price / (1 - discount / 100);
+  console.log("Old Price:", oldPrice);
+  console.log("New Price:", new_price);
+  console.log("Discount (%):", discount);
+
   const numberOfNights = useMemo(() => {
     if (!checkInDate || !checkOutDate) return 0;
     const start = new Date(checkInDate);
@@ -33,19 +41,7 @@ function BookingPage() {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   }, [checkInDate, checkOutDate]);
 
-  // 🔹 Đơn giá
-  const unitPrice = useMemo(() => {
-    if (!price) return 0;
-    const numeric = parseInt(String(price).replace(/[^\d]/g, ""), 10);
-    return Number.isNaN(numeric) ? 0 : numeric;
-  }, [price]);
-
-  const formatPrice = (price) => price.toLocaleString("vi-VN") + " VNĐ";
-
   const nightsUsed = numberOfNights > 0 ? numberOfNights : 1;
-  const roomCount = selectedRooms.length;
-  const totalPrice =
-    unitPrice > 0 && roomCount > 0 ? unitPrice * roomCount * nightsUsed : 0;
 
   const effectiveTotalPeople = useMemo(() => {
     if (typeof totalPeople === "number" && totalPeople > 0) return totalPeople;
@@ -109,7 +105,9 @@ function BookingPage() {
                 <div className={styles.roomPriceRow}>
                   <IoPricetag className={styles.roomPriceIcon} />
                   <span className={styles.roomPrice}>
-                    {price ? `${formatPrice(unitPrice)}` : "Giá đang cập nhật"}
+                    {roomPrice
+                      ? `${formatPrice(roomPrice)} / đêm`
+                      : "Giá đang cập nhật"}
                   </span>
                 </div>
                 <p className={styles.roomMeta}>
@@ -163,11 +161,11 @@ function BookingPage() {
             <div className={styles.totalPriceBox}>
               <h3 className={styles.totalPriceLabel}>Tổng tiền</h3>
 
-              {totalPrice > 0 ? (
-                new_price && new_price !== totalPrice ? (
+              {oldPrice > 0 ? (
+                new_price && new_price !== oldPrice ? (
                   <div className={styles.priceWrapper}>
                     <span className={styles.oldPrice}>
-                      {formatPrice(totalPrice)}
+                      {formatPrice(oldPrice)}
                     </span>
                     <span className={styles.newPrice}>
                       {formatPrice(new_price)}
@@ -175,7 +173,7 @@ function BookingPage() {
                   </div>
                 ) : (
                   <p className={styles.totalPriceValue}>
-                    {formatPrice(totalPrice)}
+                    {formatPrice(oldPrice)}
                   </p>
                 )
               ) : (
