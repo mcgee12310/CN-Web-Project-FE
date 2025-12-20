@@ -24,7 +24,9 @@ const UserList = () => {
         email: u.email,
         phone: u.phone,
         customerTier: u.customerTier,
-        status: u.status,
+        // Kiểm tra isVerified trước, nếu chưa verify thì status = "notverified"
+        // Nếu đã verify rồi thì lấy status gốc
+        status: u.isVerified === false ? "notverified" : u.status,
         role: u.role,
         created: new Date(u.createdAt).toLocaleDateString("vi-VN"),
       }));
@@ -36,6 +38,7 @@ const UserList = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -55,79 +58,97 @@ const UserList = () => {
     }
   };
   const columns = [
-    {
-      title: "Tên người dùng",
-      dataIndex: "name",
-      render: (text, record) => (
-        <div className={styles.nameCell}><span>{text}</span></div>
-      ),
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      width: '15%',
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      render: (text) => <div className={styles.emailCell}><span>{text}</span></div>,
-      sorter: (a, b) => a.email.localeCompare(b.email),
-      width: '20%',
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phone",
-      render: (text) => <div className={styles.phoneCell}><span>{text}</span></div>,
-      width: '15%',
-    },
-    {
-      title: "Hạng",
-      dataIndex: "customerTier",
-      render: (text) => <div className={styles.badge}><span>{text ? text : "Vô hạng"}</span></div>,
-      width: '12%',
-    },
-    {
-      title: "Vai trò",
-      dataIndex: "role",
-      filters: [
-        { text: "Quản trị viên", value: "ADMIN" },
-        { text: "Người dùng", value: "USER" },
-      ],
-      onFilter: (value, record) => record.role === value,
-      render: (role) => (
-        <span className={role === "ADMIN" ? styles.roleAdmin : styles.roleUser}>
-          {role === "ADMIN" ? "Quản trị viên" : "Người dùng"}
+  {
+    title: "Tên người dùng",
+    dataIndex: "name",
+    render: (text) => (
+      <div className={styles.nameCell}>
+        <span>{text}</span>
+      </div>
+    ),
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    render: (text) => (
+      <div className={styles.emailCell}>
+        <span>{text}</span>
+      </div>
+    ),
+    sorter: (a, b) => a.email.localeCompare(b.email),
+    responsive: ["sm", "md", "lg"],
+  },
+  {
+    title: "Số điện thoại",
+    dataIndex: "phone",
+    render: (text) => (
+      <div className={styles.phoneCell}>
+        <span>{text}</span>
+      </div>
+    ),
+    responsive: ["md", "lg"],
+  },
+  {
+    title: "Hạng",
+    dataIndex: "customerTier",
+    render: (text) => (
+      <div className={styles.badge}>
+        <span>{text ? text : "Vô hạng"}</span>
+      </div>
+    ),
+    responsive: ["lg"],
+  },
+  {
+    title: "Vai trò",
+    dataIndex: "role",
+    filters: [
+      { text: "Quản trị viên", value: "ADMIN" },
+      { text: "Người dùng", value: "USER" },
+    ],
+    onFilter: (value, record) => record.role === value,
+    render: (role) => (
+      <span className={role === "ADMIN" ? styles.roleAdmin : styles.roleUser}>
+        {role === "ADMIN" ? "Quản trị viên" : "Người dùng"}
+      </span>
+    ),
+    responsive: ["md", "lg"],
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+    filters: [
+      { text: "Hoạt động", value: true },
+      { text: "Dừng", value: false },
+      { text: "Chưa xác thực", value: "notverified" },
+    ],
+    onFilter: (value, record) => record.status === value,
+    render: (status) => {
+      if (status === "notverified") {
+        return <span className={styles.notverified}>Chưa xác thực</span>;
+      }
+      return (
+        <span className={status ? styles.active : styles.inactive}>
+          {status ? "Hoạt động" : "Dừng"}
         </span>
-      ),
-      width: '15%',
+      );
     },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      filters: [
-        { text: "Hoạt động", value: true },
-        { text: "Dừng", value: false },
-      ],
-      onFilter: (value, record) => record.status === value,
-      render: (status) => (
-        <span className={status == true ? styles.active : styles.inactive}>
-          {status == true ? "Hoạt động" : "Dừng"}
-        </span>
-      ),
-      width: '12%',
-    },
-    {
-      title: "Hành động",
-      key: "action",
-      fixed: 'right',
-      render: (_, record) => {
-        return (
-          <Button
-            icon={<EyeOutlined />}
-            onClick={() => handleView(record)}
-          />
-        );
-      },
-      align: "center",
-    },
-  ];
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+  {
+    title: "Hành động",
+    key: "action",
+    align: "center",
+    render: (_, record) => (
+      <Button
+        icon={<EyeOutlined />}
+        onClick={() => handleView(record)}
+      />
+    ),
+    responsive: ["xs", "sm", "md", "lg"],
+  },
+];
 
   return (
     <div className={styles.container}>
@@ -149,17 +170,19 @@ const UserList = () => {
           </div>
         </div>
       </div>
+      <div className={styles.tableWrapper}>
+        <Table
+  columns={columns}
+  dataSource={filteredData}
+  loading={loading}
+  pagination={{
+    showSizeChanger: true,
+    showTotal: (total) => `Tổng ${total} người dùng`,
+  }}
+  scroll={{ x: "max-content" }}
+/>
+      </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        loading={loading}
-        pagination={{
-          showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} người dùng`
-        }}
-        scroll={{ y: 800 }}
-      />
     </div>
   );
 };

@@ -209,7 +209,7 @@ function TierManagement() {
     {
       title: 'Hành động',
       key: 'actions',
-      width: 150,
+      // width: 150,
       fixed: 'right',
       render: (_, record) => (
         <Space>

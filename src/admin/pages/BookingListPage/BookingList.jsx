@@ -92,62 +92,53 @@ const BookingList = () => {
 
   // 🧩 columns (GIỮ NGUYÊN STYLE)
   const columns = [
-    {
-      title: "Mã đơn",
-      dataIndex: "bookingCode",
-      key: "code",
-      sorter: (a, b) => a.bookingCode.localeCompare(b.bookingCode),
-      render: (text) => <span className={styles.codeCell}>{text}</span>,
-      width: '15%',
-    },
-    {
-      title: "Tên phòng",
-      dataIndex: "roomType",
-      key: "roomType",
-      sorter: (a, b) => a.roomType.localeCompare(b.roomType),
-      render: (_, record) => (
-        <div className={styles.nameCell}>{record.roomType}</div>
-      ),
-      width: '20%',
-    },
-    {
-      title: "Tổng tiền",
-      dataIndex: "totalPrice",
-      key: "price",
-      sorter: (a, b) => a.price - b.price,
-      render: (price) => (
-        <div className={styles.priceCell}>{formatPrice(price)}</div>
-      ),
-      width: '20%',
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      filters: [
-        { text: "Chờ thanh toán", value: "PAYMENT_PENDING" },
-        { text: "Đã thanh toán", value: "PAYMENT_COMPLETED" },
-        { text: "Đã hủy", value: "CANCELLED" },
-        { text: "Hoàn thành", value: "COMPLETED" },
-      ],
-      onFilter: (value, record) => record.status === value,
-      render: (_, record) => formatStatus(record.status),
-      width: '15%',
-    },
-    {
-      title: "Ngày đặt",
-      dataIndex: "bookingDate",
-      key: "date",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => new Date(a.bookingDate) - new Date(b.bookingDate),
-      render: (date) => (
-        <div className={styles.dateCell}>{formatDate(date)}</div>
-      ),
-      width: '20%',
-    },
-    {
-      title: "Hành động",
-      key: "action",
+  {
+    title: "Mã đơn",
+    dataIndex: "bookingCode",
+    key: "code",
+    width: 160,
+    render: (text) => <span className={styles.codeCell}>{text}</span>,
+  },
+  {
+    title: "Tên phòng",
+    dataIndex: "roomType",
+    key: "roomType",
+    width: 220,
+    render: (_, record) => (
+      <div className={styles.nameCell}>{record.roomType}</div>
+    ),
+  },
+  {
+    title: "Tổng tiền",
+    dataIndex: "totalPrice",
+    key: "price",
+    width: 180,
+    render: (price) => (
+      <div className={styles.priceCell}>{formatPrice(price)}</div>
+    ),
+  },
+  {
+    title: "Trạng thái",
+    dataIndex: "status",
+    key: "status",
+    width: 160,
+    render: (_, record) => formatStatus(record.status),
+  },
+  {
+    title: "Ngày đặt",
+    dataIndex: "bookingDate",
+    key: "date",
+    width: 180,
+    render: (date) => (
+      <div className={styles.dateCell}>{formatDate(date)}</div>
+    ),
+  },
+  {
+    title: "Hành động",
+    key: "action",
+    width: 120,
+    fixed: "right",
+    align: "center",
       render: (_, record) => {
         const menu = (
           <Menu>
@@ -177,7 +168,6 @@ const BookingList = () => {
           </Dropdown>
         );
       },
-      align: "center",
     },
   ];
 
@@ -212,7 +202,7 @@ const BookingList = () => {
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} đơn`
           }}
-          scroll={{ y: 800 }}
+          // scroll={{ y: 800 }}
         />
       </div>
       <Modal

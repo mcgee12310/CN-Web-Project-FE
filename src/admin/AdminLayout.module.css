@@ -13,14 +13,15 @@
 .body {
   flex: 1;
   display: flex;
-  flex-direction: column; /* 👈 */
-  overflow-y: auto;       /* 👈 scroll ở đây */
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 /* Content: sidebar + main */
 .content {
   display: flex;
   flex: 1 0 auto;
+  min-height: 0; /* QUAN TRỌNG cho scroll */
 }
 
 /* Sidebar */
@@ -28,6 +29,7 @@
   flex: 0 0 16rem;
   background: white;
   box-shadow: 1px 0 2px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
 }
 
 /* Main */
@@ -35,11 +37,102 @@
   flex: 1;
   padding: 1.5rem;
   background-color: #f9fafb;
+  overflow-y: auto;
 }
 
 /* Footer */
 .footer {
   flex-shrink: 0;
+  width: 100vw;
   background-color: white;
   border-top: 1px solid #e0e0e0;
+}
+
+/* ================== RESPONSIVE ================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .sidebar {
+    flex: 0 0 14rem; /* Thu nhỏ sidebar */
+  }
+
+  .main {
+    padding: 1.25rem;
+  }
+}
+
+/* Mobile - Ẩn sidebar mặc định */
+@media (max-width: 768px) {
+  .content {
+    position: relative;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 64px; /* Dưới navbar */
+    left: -16rem; /* Ẩn bên trái */
+    bottom: 0;
+    z-index: 50;
+    width: 16rem;
+    transform: translateX(0);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+
+  /* Class để show sidebar khi click hamburger */
+  .sidebarOpen {
+    transform: translateX(16rem);
+  }
+
+  /* Overlay khi sidebar mở */
+  .overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 49;
+    display: none;
+  }
+
+  .overlayVisible {
+    display: block;
+  }
+
+  .main {
+    padding: 1rem;
+    width: 100%;
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+  .main {
+    padding: 0.75rem;
+  }
+
+  .sidebar {
+    width: 14rem;
+    left: -14rem;
+  }
+
+  .sidebarOpen {
+    transform: translateX(14rem);
+  }
+}
+
+/* Mobile cực nhỏ */
+@media (max-width: 360px) {
+  .main {
+    padding: 0.5rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+
+  .sidebarOpen {
+    transform: translateX(100%);
+  }
 }
