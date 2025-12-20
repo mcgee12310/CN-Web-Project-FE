@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Input, Tag, Button, Menu, Dropdown, Modal } from "antd";
+import { Table, Input, Button, Menu, Dropdown, Modal } from "antd";
 import {
   SearchOutlined,
   EyeOutlined,
@@ -10,35 +10,41 @@ import styles from "./BookingList.module.css";
 import { useNavigate } from "react-router-dom";
 import { formatPrice, formatDate, formatStatus } from "../../../utils/format";
 import { toast } from "react-toastify";
-import { usePageTitle } from '../../../utils/usePageTitle';
+import { usePageTitle } from "../../../utils/usePageTitle";
 import bookingService from "../../../services/admin/booking";
 
 const BookingList = () => {
-  usePageTitle('Danh sách đơn');
+  usePageTitle("Danh sách đơn");
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
+
   const navigate = useNavigate();
 
-  // 📡 fetch bookings
+  /* ================= FETCH ================= */
   const fetchBookings = async () => {
     try {
       setLoading(true);
       const res = await bookingService.getAllBookings();
 
-      // 👉 map dữ liệu API → table
-      const mappedData = res.data.map((b) => ({
-        id: b.id,
-        bookingCode: b.bookingCode,
-        roomType: b.roomType,
-        userName: b.user?.name || b.userName,
-        totalRoom: b.totalRoom,
-        totalPrice: b.price,
-        status: b.status,
-        bookingDate: b.bookingDate,
-      }));
+      const mappedData = res.data
+        .map((b) => ({
+          id: b.id,
+          bookingCode: b.bookingCode,
+          roomType: b.roomType,
+          userName: b.user?.name || b.userName,
+          totalRoom: b.totalRoom,
+          totalPrice: b.price,
+          status: b.status,
+          bookingDate: b.bookingDate,
+        }))
+        // ⭐ MẶC ĐỊNH: ĐƠN MỚI NHẤT TRƯỚC
+        .sort(
+          (a, b) => new Date(b.bookingDate) - new Date(a.bookingDate)
+        );
 
       setData(mappedData);
     } catch (err) {
@@ -52,6 +58,7 @@ const BookingList = () => {
     fetchBookings();
   }, []);
 
+  /* ================= ACTION ================= */
   const handleView = (record) => {
     navigate(`/admin/bookings/${record.id}`);
   };
@@ -71,74 +78,93 @@ const BookingList = () => {
 
     try {
       await bookingService.cancelBooking(bookingToCancel.id);
-      toast.success(`Hủy đơn ${bookingToCancel.bookingCode} thành công`);
+      toast.success(
+        `Hủy đơn ${bookingToCancel.bookingCode} thành công`
+      );
       closeCancelModal();
       fetchBookings();
     } catch (error) {
-      console.error(error);
-      const errorMessage =
-        error?.response?.data?.error ||
-        error?.response?.data?.message ||
-        "Hủy đơn thất bại";
-      toast.error(errorMessage);
+      toast.error(
+        error?.response?.data?.message || "Hủy đơn thất bại"
+      );
       closeCancelModal();
     }
   };
 
-  // 🔍 search theo mã đơn
+  /* ================= SEARCH ================= */
   const filteredData = data.filter((b) =>
-    b.bookingCode?.toLowerCase().includes(search.toLowerCase())
+    b.bookingCode
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
   );
 
-  // 🧩 columns (GIỮ NGUYÊN STYLE)
+  /* ================= COLUMNS ================= */
   const columns = [
-  {
-    title: "Mã đơn",
-    dataIndex: "bookingCode",
-    key: "code",
-    width: 160,
-    render: (text) => <span className={styles.codeCell}>{text}</span>,
-  },
-  {
-    title: "Tên phòng",
-    dataIndex: "roomType",
-    key: "roomType",
-    width: 220,
-    render: (_, record) => (
-      <div className={styles.nameCell}>{record.roomType}</div>
-    ),
-  },
-  {
-    title: "Tổng tiền",
-    dataIndex: "totalPrice",
-    key: "price",
-    width: 180,
-    render: (price) => (
-      <div className={styles.priceCell}>{formatPrice(price)}</div>
-    ),
-  },
-  {
-    title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
-    width: 160,
-    render: (_, record) => formatStatus(record.status),
-  },
-  {
-    title: "Ngày đặt",
-    dataIndex: "bookingDate",
-    key: "date",
-    width: 180,
-    render: (date) => (
-      <div className={styles.dateCell}>{formatDate(date)}</div>
-    ),
-  },
-  {
-    title: "Hành động",
-    key: "action",
-    width: 120,
-    fixed: "right",
-    align: "center",
+    {
+      title: "Mã đơn",
+      dataIndex: "bookingCode",
+      key: "bookingCode",
+      width: 160,
+      sorter: (a, b) =>
+        a.bookingCode.localeCompare(b.bookingCode),
+      render: (text) => (
+        <span className={styles.codeCell}>{text}</span>
+      ),
+    },
+    {
+      title: "Tên phòng",
+      dataIndex: "roomType",
+      key: "roomType",
+      width: 220,
+      sorter: (a, b) =>
+        a.roomType.localeCompare(b.roomType),
+      render: (text) => (
+        <div className={styles.nameCell}>{text}</div>
+      ),
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      width: 180,
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
+      render: (price) => (
+        <div className={styles.priceCell}>
+          {formatPrice(price)}
+        </div>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      width: 160,
+      sorter: (a, b) =>
+        a.status.localeCompare(b.status),
+      render: (_, record) =>
+        formatStatus(record.status),
+    },
+    {
+      title: "Ngày đặt",
+      dataIndex: "bookingDate",
+      key: "bookingDate",
+      width: 180,
+      sorter: (a, b) =>
+        new Date(a.bookingDate) -
+        new Date(b.bookingDate),
+      defaultSortOrder: "descend",
+      render: (date) => (
+        <div className={styles.dateCell}>
+          {formatDate(date)}
+        </div>
+      ),
+    },
+    {
+      title: "Hành động",
+      key: "action",
+      width: 120,
+      fixed: "right",
+      align: "center",
       render: (_, record) => {
         const menu = (
           <Menu>
@@ -150,9 +176,11 @@ const BookingList = () => {
               Xem
             </Menu.Item>
 
-            {!["COMPLETED", "CANCELLED"].includes(record.status) && (
+            {!["COMPLETED", "CANCELLED"].includes(
+              record.status
+            ) && (
               <Menu.Item
-                key="delete"
+                key="cancel"
                 icon={<DeleteOutlined />}
                 onClick={() => openCancelModal(record)}
                 danger
@@ -162,6 +190,7 @@ const BookingList = () => {
             )}
           </Menu>
         );
+
         return (
           <Dropdown overlay={menu} trigger={["click"]}>
             <Button icon={<MoreOutlined />} />
@@ -171,23 +200,34 @@ const BookingList = () => {
     },
   ];
 
+  /* ================= RENDER ================= */
   return (
     <>
       <div className={styles.container}>
         <div className={styles.header}>
           <div>
-            <h1 className={styles.title}>Danh sách đơn đặt phòng</h1>
-            <p className={styles.subtitle}>Quản lý danh sách đơn đặt phòng hiện tại</p>
+            <h1 className={styles.title}>
+              Danh sách đơn đặt phòng
+            </h1>
+            <p className={styles.subtitle}>
+              Quản lý danh sách đơn đặt phòng hiện tại
+            </p>
           </div>
 
           <div className={styles.controls}>
             <div className={styles.searchBox}>
               <SearchOutlined />
               <Input
-                placeholder="Tìm kiếm theo mã đơn..."
+                placeholder="Tìm theo mã đơn..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{ width: 250, height: 40, marginLeft: 8 }}
+                onChange={(e) =>
+                  setSearch(e.target.value)
+                }
+                style={{
+                  width: 240,
+                  height: 40,
+                  marginLeft: 8,
+                }}
               />
             </div>
           </div>
@@ -198,13 +238,15 @@ const BookingList = () => {
           dataSource={filteredData}
           rowKey="id"
           loading={loading}
+          scroll={{ x: 1100 }}   // ⭐ chống tràn container
           pagination={{
             showSizeChanger: true,
-            showTotal: (total) => `Tổng ${total} đơn`
+            showTotal: (total) =>
+              `Tổng ${total} đơn`,
           }}
-          // scroll={{ y: 800 }}
         />
       </div>
+
       <Modal
         title="Xác nhận hủy đơn"
         open={showCancelModal}
@@ -214,10 +256,15 @@ const BookingList = () => {
         cancelText="Đóng"
         okButtonProps={{ danger: true }}
       >
-        <p>Bạn có chắc chắn muốn hủy đơn <strong>{bookingToCancel?.bookingCode}</strong> không?</p>
+        <p>
+          Bạn có chắc chắn muốn hủy đơn{" "}
+          <strong>
+            {bookingToCancel?.bookingCode}
+          </strong>{" "}
+          không?
+        </p>
       </Modal>
     </>
-
   );
 };
 

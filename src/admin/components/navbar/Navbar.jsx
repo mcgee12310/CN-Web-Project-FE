@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Navbar.module.css";
+import { useAuth } from "../../../auth/auth-context";
 import { ChevronDown, LogOut, User, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ onToggleSidebar }) => {
   const navigate = useNavigate();
-
+  
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
 
@@ -17,6 +18,7 @@ const Navbar = ({ onToggleSidebar }) => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login");
+    window.location.reload();
   };
 
   const goToUserView = () => {
