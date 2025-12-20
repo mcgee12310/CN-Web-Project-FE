@@ -132,11 +132,7 @@ function App() {
         />
         <Route
           path="/payment/vnpay/callback"
-          element={
-            <ProtectedRoute>
-              <VNPayCallback />
-            </ProtectedRoute>
-          }
+          element={<VNPayCallback />}
         />
 
         <Route
