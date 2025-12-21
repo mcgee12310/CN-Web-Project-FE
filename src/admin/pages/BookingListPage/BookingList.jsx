@@ -104,7 +104,7 @@ const BookingList = () => {
       title: "Mã đơn",
       dataIndex: "bookingCode",
       key: "bookingCode",
-      width: 160,
+      width: 100,
       sorter: (a, b) =>
         a.bookingCode.localeCompare(b.bookingCode),
       render: (text) => (
@@ -126,7 +126,7 @@ const BookingList = () => {
       title: "Tổng tiền",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      width: 180,
+      width: 120,
       sorter: (a, b) => a.totalPrice - b.totalPrice,
       render: (price) => (
         <div className={styles.priceCell}>
@@ -148,7 +148,7 @@ const BookingList = () => {
       title: "Ngày đặt",
       dataIndex: "bookingDate",
       key: "bookingDate",
-      width: 180,
+      width: 100,
       sorter: (a, b) =>
         new Date(a.bookingDate) -
         new Date(b.bookingDate),
@@ -162,8 +162,7 @@ const BookingList = () => {
     {
       title: "Hành động",
       key: "action",
-      width: 120,
-      fixed: "right",
+      width: 100,
       align: "center",
       render: (_, record) => {
         const menu = (
@@ -238,7 +237,7 @@ const BookingList = () => {
           dataSource={filteredData}
           rowKey="id"
           loading={loading}
-          scroll={{ x: 1100 }}   // ⭐ chống tràn container
+          // scroll={{ x: 1100 }}   // ⭐ chống tràn container
           pagination={{
             showSizeChanger: true,
             showTotal: (total) =>
