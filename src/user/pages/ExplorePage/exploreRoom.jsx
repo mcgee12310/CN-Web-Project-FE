@@ -52,7 +52,10 @@ function ExploreRoom() {
         toast.warn("Hiện tại không có phòng phù hợp");
       }
     } catch (error) {
-      console.error("Lỗi tải phòng available:", error);
+      // console.error("Lỗi tải phòng available:", error);
+      toast.error(
+        error.response?.data?.error || "Đã xảy ra lỗi khi tìm kiếm phòng"
+      );
     }
   };
 
