@@ -11,9 +11,11 @@ const roomService = {
   },
   getRoomAvailable: async (checkIn, checkOut) => {
     try {
-      const response = await apiClient.post("api/public/room-types/available", {
-        checkInDate: checkIn,
-        checkOutDate: checkOut,
+      const response = await apiClient.get("api/public/room-types/available", {
+        params: {
+          checkInDate: checkIn,
+          checkOutDate: checkOut,
+        },
       });
       return response.data;
     } catch (error) {
