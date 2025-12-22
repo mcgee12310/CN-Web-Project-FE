@@ -52,8 +52,8 @@ const MyReviews = () => {
 
   const filteredData = reviews.filter(
     (review) =>
-      review.bookingCode.toLowerCase().includes(search.toLowerCase()) ||
-      review.roomName.toLowerCase().includes(search.toLowerCase())
+      review.bookingCode?.toLowerCase().includes(search.toLowerCase()) ||
+      review.roomType?.toLowerCase().includes(search.toLowerCase())
   );
 
   const getRatingText = (rating) => {
@@ -77,7 +77,7 @@ const MyReviews = () => {
         <div className={styles.searchBox}>
           <SearchOutlined className={styles.searchIcon} />
           <Input
-            placeholder="Tìm theo mã đơn hoặc tên phòng..."
+            placeholder="Tìm theo mã đơn hoặc tên loại phòng..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className={styles.searchInput}
