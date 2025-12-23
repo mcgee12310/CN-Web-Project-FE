@@ -64,19 +64,19 @@ const Dashboard = () => {
 
   const userColumns = [
     {
-      title: "Tên", dataIndex: "name", key: "name", render: (text, record) => (
+      title: "Họ tên", dataIndex: "name", key: "name", render: (text, record) => (
         <div className={styles.codeCell}>
           <span>{text}</span>
         </div>
       ),
     },
-    {
-      title: "Email", dataIndex: "email", key: "email", render: (text, record) => (
-        <div className={styles.emailCell}>
-          <span>{text}</span>
-        </div>
-      ),
-    },
+    // {
+    //   title: "Email", dataIndex: "email", key: "email", render: (text, record) => (
+    //     <div className={styles.emailCell}>
+    //       <span>{text}</span>
+    //     </div>
+    //   ),
+    // },
     {
       title: "Số điện thoại", dataIndex: "phone", key: "phone", render: (text, record) => (
         <div className={styles.phoneCell}>

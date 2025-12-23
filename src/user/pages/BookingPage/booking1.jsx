@@ -203,7 +203,7 @@ function Booking1Page() {
                 </button>
 
                 <p className={styles.paymentNote}>
-                  Chúng tôi sẽ giữ chỗ trong vòng 30 phút.
+                  Chúng tôi sẽ giữ chỗ trong vòng 15 phút.
                 </p>
               </section>
             </div>
