@@ -166,6 +166,9 @@ const MemberInfoModal = ({
                     <strong>{selectedTier.minBookings} đơn</strong>
                   </div>
                 </div>
+                <div className={styles.requirementNote}>
+                  * Chỉ cần <strong>đạt 1 trong 2 điều kiện</strong>
+                </div>
               </div>
 
               {/* Benefits */}

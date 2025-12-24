@@ -76,7 +76,9 @@ export default function AccountSettings() {
       toast.success("Cập nhật thông tin thành công!");
       fetchProfile();
     } catch (error) {
-      toast.error("Cập nhật thất bại!");
+      toast.error(error.response?.data?.error.birthDate);
+      toast.error(error.response?.data?.error.phone);
+      toast.error(error.response?.data?.error.name);
     }
   };
 

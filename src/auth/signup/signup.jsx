@@ -105,10 +105,12 @@ const Signup = () => {
       localStorage.setItem("pendingVerificationEmail", formData.email);
       navigate("/otp");
     } catch (error) {
+      console.error("Signup error:", error);
       if (error.status == 404) {
         toast.error("Không thể kết nối đến máy chủ. Vui lòng thử lại sau.");
       } else {
-        toast.error(error.response.data?.error);
+        toast.error(error.response.data?.error.birthDate);
+        toast.error(error.response.data?.error.password);
       }
     }
   };

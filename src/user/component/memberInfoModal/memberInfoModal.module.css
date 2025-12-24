@@ -343,6 +343,16 @@
   font-weight: 700;
 }
 
+.requirementNote {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 6px 12px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
 /* Benefits */
 .benefits {
   list-style: none;
