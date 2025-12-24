@@ -3,13 +3,14 @@ const userService = {
   getAllUsers: async () => {
     try {
       const response = await apiClient.get(
-        `/api/admin/users`
+        `/api/admin/users/all`
       );
       return response;
     } catch (error) {
       throw error;
     }
   },
+  
   getUserDetail: async (id) => {
     try {
       const response = await apiClient.get(

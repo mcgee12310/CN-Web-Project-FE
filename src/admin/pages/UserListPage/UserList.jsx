@@ -17,7 +17,7 @@ const UserList = () => {
     try {
       setLoading(true);
       const res = await userService.getAllUsers();
-      const data = res.data.content.map((u) => ({
+      const data = res.data.map((u) => ({
         key: u.id,
         id: u.id,
         name: u.name,

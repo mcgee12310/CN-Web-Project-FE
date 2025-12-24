@@ -35,7 +35,7 @@
 /* Main */
 .main {
   flex: 1;
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: #f9fafb;
   overflow-y: auto;
 }
@@ -43,7 +43,7 @@
 /* Footer */
 .footer {
   flex-shrink: 0;
-  width: 100vw;
+  width: 100%;
   background-color: white;
   border-top: 1px solid #e0e0e0;
 }
