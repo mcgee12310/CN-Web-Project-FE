@@ -153,9 +153,15 @@ const MemberInfoModal = ({
 
               {/* Requirements */}
               <div className={styles.section}>
-                <h4 className={styles.sectionTitle}>
-                  <FaAward size={18} /> Điều kiện đạt hạng
-                </h4>
+                <div>
+                  <h4 className={styles.sectionTitle}>
+                    <FaAward size={18} /> Điều kiện đạt hạng
+                  </h4>
+
+                  <p className={styles.requirementDesc}>
+                    * Chỉ cần đạt 1 trong 2 điều kiện
+                  </p>
+                </div>
                 <div className={styles.requirements}>
                   <div className={styles.requirement}>
                     <span>Chi tiêu tối thiểu</span>
@@ -165,9 +171,6 @@ const MemberInfoModal = ({
                     <span>Số đơn đặt tối thiểu</span>
                     <strong>{selectedTier.minBookings} đơn</strong>
                   </div>
-                </div>
-                <div className={styles.requirementNote}>
-                  * Chỉ cần <strong>đạt 1 trong 2 điều kiện</strong>
                 </div>
               </div>
 
