@@ -12,7 +12,6 @@ import styles from "./AddGuestModal.module.css";
 import { toast } from "react-toastify";
 import bookingService from "../../../services/admin/booking";
 
-
 const emptyGuest = {
   fullName: "",
   identityType: "",
@@ -21,10 +20,8 @@ const emptyGuest = {
   identityIssuedPlace: "",
 };
 
-
 const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
   const [guests, setGuests] = useState([{ ...emptyGuest }]);
-
 
   const handleChange = (index, key, value) => {
     const newGuests = [...guests];
@@ -32,17 +29,14 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
     setGuests(newGuests);
   };
 
-
   const addGuest = () => {
     setGuests([...guests, { ...emptyGuest }]);
   };
-
 
   const removeGuest = (index) => {
     if (guests.length === 1) return;
     setGuests(guests.filter((_, i) => i !== index));
   };
-
 
   const handleSubmit = async () => {
     // validate all guests
@@ -60,15 +54,12 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
       }
     }
 
-
     const payload = {
       requestId,
       guests,
     };
 
-
     console.log(payload);
-
 
     try {
       await bookingService.checkInRequest(payload);
@@ -79,19 +70,17 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
     } catch (error) {
       console.error(error);
       const msg =
-        error?.response?.data?.message || "Check-in thất bại";
-
-
+        error?.response?.data?.error ||       // ✅ đúng theo BE trả về
+        error?.response?.data?.message ||     // fallback nếu BE đổi key
+        "Check-in thất bại";
       toast.error(msg);
     }
   };
-
 
   const handleClose = () => {
     setGuests([{ ...emptyGuest }]); // Reset form on close
     onClose();
   };
-
 
   return (
     <Modal
@@ -103,7 +92,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
       className={styles.modal}
     >
       <h2 className={styles.title}>Danh sách khách nhận phòng</h2>
-
 
       {guests.map((guest, index) => (
         <div key={index} className={styles.guestCard}>
@@ -117,7 +105,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
             )}
           </div>
 
-
           <div className={styles.formContainer}>
             <div className={styles.formRow}>
               <label>Họ tên</label>
@@ -128,7 +115,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
                 }
               />
             </div>
-
 
             <div className={styles.formRow}>
               <label>Loại giấy tờ</label>
@@ -144,7 +130,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
               />
             </div>
 
-
             <div className={styles.formRow}>
               <label>Số định danh</label>
               <Input
@@ -154,9 +139,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
                 }
               />
             </div>
-
-
-
 
             <div className={styles.formRow}>
               <label>Ngày cấp</label>
@@ -172,7 +154,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
                 }
               />
             </div>
-
 
             <div className={styles.formRow}>
               <label>Nơi cấp</label>
@@ -190,7 +171,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
           </div>
         </div>
       ))}
-
 
       <Button
         type="dashed"
