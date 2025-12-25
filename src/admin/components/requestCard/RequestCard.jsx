@@ -131,6 +131,7 @@ const RequestCard = ({ request, note, onUpdate }) => {
             <AddGuestModal
               open={openAdd}
               requestId={request.id}
+              guestsNumber={formData.guests}
               onClose={() => setOpenAdd(false)}
               onSuccess={handleCheckInSuccess}
             />
