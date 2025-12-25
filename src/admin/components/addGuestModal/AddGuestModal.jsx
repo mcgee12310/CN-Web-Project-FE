@@ -20,9 +20,8 @@ const emptyGuest = {
   identityIssuedPlace: "",
 };
 
-const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
+const AddGuestModal = ({ open, onClose, requestId, guestsNumber, onSuccess }) => {
   const [guests, setGuests] = useState([{ ...emptyGuest }]);
-
   const handleChange = (index, key, value) => {
     const newGuests = [...guests];
     newGuests[index][key] = value;
@@ -30,6 +29,10 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
   };
 
   const addGuest = () => {
+    if (guests.length >= guestsNumber) {
+      toast.warning(`Số lượng khách tối đa là ${guestsNumber}`);
+      return;
+    }
     setGuests([...guests, { ...emptyGuest }]);
   };
 
@@ -92,7 +95,6 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
       className={styles.modal}
     >
       <h2 className={styles.title}>Danh sách khách nhận phòng</h2>
-
       {guests.map((guest, index) => (
         <div key={index} className={styles.guestCard}>
           <div className={styles.guestHeader}>
@@ -139,7 +141,7 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
                 }
               />
             </div>
-
+          
             <div className={styles.formRow}>
               <label>Ngày cấp</label>
               <DatePicker
@@ -177,9 +179,10 @@ const AddGuestModal = ({ open, onClose, requestId, onSuccess }) => {
         block
         icon={<PlusOutlined />}
         onClick={addGuest}
+        disabled={guests.length >= guestsNumber}
         style={{ marginBottom: 16 }}
       >
-        Thêm khách
+        Thêm khách {guests.length >= guestsNumber && `(Đã đạt giới hạn ${guestsNumber})`}
       </Button>
 
       <div className={styles.footer}>
