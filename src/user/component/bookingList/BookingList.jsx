@@ -10,7 +10,7 @@ import {
   DollarOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
-import { formatDate, formatPrice } from "../../../utils/format";
+import { formatDate, formatPrice, formatDateTime } from "../../../utils/format";
 import styles from "./BookingList.module.css";
 
 import BookingDetailModal from "../../component/bookingDetailModal/BookingDetailModal";
@@ -138,7 +138,7 @@ const BookingList = () => {
                     <div className={styles.dateInfo}>
                       <CalendarOutlined style={{ marginRight: 6 }} />
                       <span style={{ fontSize: 13, color: "#666" }}>
-                        {formatDate(booking.bookingDate)}
+                        {formatDateTime(booking.bookingDate)}
                       </span>
                     </div>
                   </div>

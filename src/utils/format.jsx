@@ -11,6 +11,23 @@ export const formatDate = (dateString) => {
   });
 };
 
+export const formatDateTime = (dateString) => {
+  if (!dateString) return "";
+
+  // Ép JS hiểu đây là UTC
+  const utcDate = new Date(dateString + "Z");
+
+  return utcDate.toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
 // Định dạng giá tiền
 export const formatPrice = (price) => {
   if (price == null) return "0 ₫";
@@ -31,22 +48,46 @@ export const formatStatus = (status) => {
 
   switch (status) {
     case "CANCELLED":
-      return <Tag color="red" style={tagStyle}>Đã hủy</Tag>;
+      return (
+        <Tag color="red" style={tagStyle}>
+          Đã hủy
+        </Tag>
+      );
 
     case "PAYMENT_COMPLETED":
-      return <Tag color="green" style={tagStyle}>Đã thanh toán</Tag>;
+      return (
+        <Tag color="green" style={tagStyle}>
+          Đã thanh toán
+        </Tag>
+      );
 
     case "PAYMENT_PENDING":
-      return <Tag color="orange" style={tagStyle}>Chờ thanh toán</Tag>;
+      return (
+        <Tag color="orange" style={tagStyle}>
+          Chờ thanh toán
+        </Tag>
+      );
 
     case "CHECKED_IN":
-      return <Tag color="green" style={tagStyle}>Đã nhận phòng</Tag>;
+      return (
+        <Tag color="green" style={tagStyle}>
+          Đã nhận phòng
+        </Tag>
+      );
 
     case "CHECKED_OUT":
-      return <Tag color="blue" style={tagStyle}>Đã trả phòng</Tag>;
+      return (
+        <Tag color="blue" style={tagStyle}>
+          Đã trả phòng
+        </Tag>
+      );
 
     case "COMPLETED":
-      return <Tag color="blue" style={tagStyle}>Hoàn thành</Tag>;
+      return (
+        <Tag color="blue" style={tagStyle}>
+          Hoàn thành
+        </Tag>
+      );
 
     default:
       return <Tag style={tagStyle}>{status}</Tag>;
