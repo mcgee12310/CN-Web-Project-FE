@@ -139,8 +139,12 @@ const BookingList = () => {
       dataIndex: "status",
       key: "status",
       width: 160,
-      sorter: (a, b) =>
-        a.status.localeCompare(b.status),
+      filters: [
+        { text: "Chờ thanh toán", value: "PAYMENT_PENDING" },
+        { text: "Đã thanh toán", value: "PAYMENT_COMPLETED" },
+        { text: "Đã hủy", value: "CANCELLED" },
+      ],
+      onFilter: (value, record) => record.status === value,
       render: (_, record) =>
         formatStatus(record.status),
     },
