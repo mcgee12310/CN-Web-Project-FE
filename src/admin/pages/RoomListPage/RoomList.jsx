@@ -76,7 +76,6 @@ const RoomList = () => {
       width: '15%',
       filters: [
         { text: "Khả dụng", value: "AVAILABLE" },
-        { text: "Đã đặt", value: "BOOKED" },
         { text: "Bảo trì", value: "MAINTENANCE" },
       ],
       onFilter: (value, record) => record.status === value,
