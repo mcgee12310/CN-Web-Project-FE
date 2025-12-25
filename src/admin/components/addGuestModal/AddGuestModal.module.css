@@ -19,19 +19,20 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.guestHeader{
+.guestHeader {
   display: flex;
   font-size: 1rem;
 }
 
-.deleteIcon{
+.deleteIcon {
   color: #e74c3c;
   margin-left: auto;
 }
 
 .formContainer {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 field = giãn đều */
+  grid-template-columns: repeat(5, 1fr);
+  /* 5 field = giãn đều */
   gap: 16px;
   width: 100%;
 }
@@ -54,8 +55,10 @@
 
 .footer {
   display: flex;
-  justify-content: flex-end; /* căn nút về phía bên phải */
-  gap: 10px; /* khoảng cách giữa 2 nút */
+  justify-content: flex-end;
+  /* căn nút về phía bên phải */
+  gap: 10px;
+  /* khoảng cách giữa 2 nút */
   margin-top: 20px;
 }
 
